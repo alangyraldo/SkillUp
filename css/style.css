@@ -340,4 +340,83 @@
   transform: translateX(4px);
 
 }
- 
+
+.navbar-brand {
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+.navbar-brand:hover {
+  transform: scale(1.08);
+}
+
+.btn-agendar {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.btn-agendar:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.btn-subir {
+  position: fixed;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border: none;
+  border-radius: 50%;
+  background: #6c47ff;
+  color: #fff;
+  font-size: 1.25rem;
+  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(108, 71, 255, 0.4);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(20px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.btn-subir.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: none;
+}
+
+.btn-subir.visible:hover {
+  transform: translateY(-4px) scale(1.08);
+}
+
+/* boton "las personas detras" igual al de agendar - alan */
+.mi-boton-centro {
+  width: fit-content !important;
+  padding: 0.6rem 1.25rem !important;
+  border-radius: 8px !important;
+  font-size: 0.9rem !important;
+  font-weight: 600 !important;
+  box-shadow: none !important;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease !important;
+}
+
+.mi-boton-centro:hover {
+  transform: translateY(-3px) scale(1.05) !important;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* cartas del equipo parejas - alan */
+.grid.grid-cols-4 > div {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.card.tarjeta-sombra .card-img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  object-position: top;
+} 
