@@ -30,10 +30,11 @@ async function loadComponent(elementId, filePath) {
  */
 async function loadSharedComponents() {
     return Promise.all([
-        loadComponent('header', 'header.html'),
-        loadComponent('nosotros', 'nosotros.html'),
-        // parte de alan para que cargue lo de gaby primero 
+         loadComponent('nosotros', 'nosotros.html'),
         loadComponent('valores', 'valores.html'),
+        loadComponent('header', 'header.html'),
+        loadComponent('footer', 'footer.html'),
+
     ]);
 }
 

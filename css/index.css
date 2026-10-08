@@ -1,6 +1,4 @@
-/* =========================
-   NAVBAR SKILLUP
-========================= */
+/* NAVBAR SKILLUP */
 
 .navbar-skillup {
     background-color: #ffffff;
@@ -8,22 +6,19 @@
 }
 
 
-/* =========================
-   LOGO
-========================= */
+ /*  LOGO*/
 
 .skillup-icon {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     object-fit: contain;
 }
 
 
 .skillup-text {
-    font-size: 30px;
-    font-weight: 700;
-    letter-spacing: -1.5px;
-    color: #10142f;
+    width: 120px;
+    object-fit: contain;
+    
 }
 
 
@@ -32,9 +27,7 @@
 }
 
 
-/* =========================
-   BUSCADOR
-========================= */
+   /*BUSCADOR*/
 
 .skillup-search {
     width: 280px;
@@ -83,9 +76,7 @@
 }
 
 
-/* =========================
-   MENÚ
-========================= */
+/* MENÚ*/
 
 .navbar-skillup .nav-link {
     color: #282828;
@@ -108,9 +99,7 @@
 }
 
 
-/* =========================
-   BOTÓN
-========================= */
+/* BOTÓN*/
 
 .btn-skillup {
     background-color: #5933ff;
