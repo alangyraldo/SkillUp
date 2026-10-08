@@ -31,6 +31,8 @@ async function loadComponent(elementId, filePath) {
 async function loadSharedComponents() {
     return Promise.all([
         loadComponent('header', 'header.html'),
+        // parte de alan para que cargue lo de gaby primero 
+        loadComponent('valores', 'valores.html'),
     ]);
 }
 
@@ -39,11 +41,11 @@ async function loadSharedComponents() {
  * Cargar componentes cuando el DOM esté listo
  */
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded',loadSharedComponents
-    );
+    document.addEventListener('DOMContentLoaded', () => {// agregue las animaciones 
+        loadSharedComponents().then(() => window.iniciarAnimaciones?.());
+    });
 } else {
-    loadSharedComponents();
-
+    loadSharedComponents().then(() => window.iniciarAnimaciones?.());
 }
 
 
