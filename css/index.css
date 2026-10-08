@@ -1,0 +1,321 @@
+/* =========================
+   NAVBAR SKILLUP
+========================= */
+
+.navbar-skillup {
+    background-color: #ffffff;
+    border-bottom: 1px solid #eeeeee;
+}
+
+
+/* =========================
+   LOGO
+========================= */
+
+.skillup-icon {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+}
+
+
+.skillup-text {
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: -1.5px;
+    color: #10142f;
+}
+
+
+.skillup-text span {
+    color: #5933ff;
+}
+
+
+/* =========================
+   BUSCADOR
+========================= */
+
+.skillup-search {
+    width: 280px;
+    height: 38px;
+
+    background-color: #f5f2f4;
+
+    border-radius: 12px;
+
+    box-shadow:
+        inset 0 2px 5px rgba(0, 0, 0, 0.10),
+        0 1px 3px rgba(0, 0, 0, 0.08);
+
+    overflow: hidden;
+}
+
+
+.skillup-search .form-control {
+    border: none;
+    background: transparent;
+
+    box-shadow: none;
+
+    font-size: 12px;
+}
+
+
+.skillup-search .form-control:focus {
+    background: transparent;
+    box-shadow: none;
+}
+
+
+.skillup-search .form-control::placeholder {
+    color: #aaa5a8;
+}
+
+
+.search-button {
+    width: 42px;
+
+    border: none;
+    background: transparent;
+
+    cursor: pointer;
+}
+
+
+/* =========================
+   MENÚ
+========================= */
+
+.navbar-skillup .nav-link {
+    color: #282828;
+
+    font-size: 12px;
+
+    white-space: nowrap;
+
+    transition: color 0.2s ease;
+}
+
+
+.navbar-skillup .nav-link:hover {
+    color: #5933ff;
+}
+
+
+.navbar-skillup .nav-link.active {
+    color: #5933ff;
+}
+
+
+/* =========================
+   BOTÓN
+========================= */
+
+.btn-skillup {
+    background-color: #5933ff;
+    color: white;
+
+    border-radius: 10px;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    padding: 11px 17px;
+
+    border: none;
+}
+
+
+.btn-skillup:hover {
+    background-color: #4824e8;
+    color: white;
+}
+
+
+/* NOSOTROS*/
+
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Montserrat', sans-serif;
+  background-color: #ffffff;
+  color: #1a1d20;
+  line-height: 1.6;
+}
+
+/* Clase clave para centrar el contenido y limitar el ancho máximo */
+.contenedor-centrado {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+#contenedor-principal {
+  width: 100%;
+}
+
+/* Etiquetas generales */
+.etiqueta {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 6px 16px;
+  border-radius: 50px;
+  margin-bottom: 24px;
+}
+
+.pastilla-morada {
+  background-color: #ede9fe;
+  color: #6366f1;
+}
+
+.pastilla-morada-clara {
+  background-color: #f3f0ff;
+  color: #6366f1;
+}
+
+/* Sección Encabezado (Abarca el 100% del ancho con color de fondo) */
+#seccion-encabezado {
+  width: 100%;
+  background-color: #f8f9fa; /* Fondo gris/morado suave para el banner superior */
+  padding: 80px 0;
+  text-align: center;
+}
+
+.titulo-principal {
+  font-size: 2.8rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #111827;
+  line-height: 1.25;
+  margin-bottom: 16px;
+}
+
+.texto-destacado {
+  color: #6366f1;
+}
+
+.subtitulo-principal {
+  color: #6b7280;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+/* Sección Historia */
+#seccion-historia {
+  width: 100%;
+  padding: 80px 0 40px 0;
+}
+
+.bloque-historia {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+  align-items: center;
+}
+
+.titulo-historia {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #111827;
+  line-height: 1.25;
+  margin-bottom: 24px;
+}
+
+.texto-historia {
+  color: #4b5563;
+  font-size: 0.92rem;
+  line-height: 1.65;
+  margin-bottom: 16px;
+}
+
+.texto-historia:last-child {
+  margin-bottom: 0;
+}
+
+.contenedor-imagen {
+  position: relative;
+}
+
+.imagen-historia {
+  width: 100%;
+  height: auto;
+  border-radius: 24px;
+  box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.08);
+  display: block;
+  object-fit: cover;
+}
+
+/* Sección Tarjetas (Misión / Visión) */
+#seccion-tarjetas {
+  width: 100%;
+  padding: 20px 0 80px 0;
+   background-color: #f8f9fa;
+}
+
+.bloque-tarjetas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+.tarjeta {
+  background-color: white;
+  border: 1px solid #f0f0f0;
+  border-radius: 20px;
+  padding: 32px 36px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tarjeta:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.04);
+}
+
+.numero-tarjeta {
+  display: block;
+  color: #818cf8;
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.titulo-tarjeta {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 8px;
+}
+
+.texto-tarjeta {
+  color: #6b7280;
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+/* Adaptación a dispositivos móviles */
+@media (max-width: 768px) {
+  #seccion-encabezado {
+    padding: 50px 0;
+  }
+
+  .titulo-principal {
+    font-size: 2rem;
+  }
+
+  .bloque-historia {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .bloque-tarjetas {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
