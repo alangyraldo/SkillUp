@@ -31,6 +31,7 @@ async function loadComponent(elementId, filePath) {
 async function loadSharedComponents() {
     return Promise.all([
         loadComponent('header', 'header.html'),
+        loadComponent('nosotros', 'nosotros.html'),
     ]);
 }
 
