@@ -374,7 +374,7 @@
   color: #fff;
   font-size: 1.25rem;
   cursor: pointer;
-  box-shadow: 0 10px 25px rgba(108, 71, 255, 0.4);
+  box-shadow: 0 10px 25px rgba(109, 71, 255, 0.4);
   opacity: 0;
   pointer-events: none;
   transform: translateY(20px);
