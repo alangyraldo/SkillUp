@@ -30,8 +30,11 @@ async function loadComponent(elementId, filePath) {
  */
 async function loadSharedComponents() {
     return Promise.all([
+         loadComponent('nosotros', 'nosotros.html'),
+        loadComponent('valores', 'valores.html'),
         loadComponent('header', 'header.html'),
         loadComponent('footer', 'footer.html'),
+
     ]);
 }
 
@@ -40,11 +43,11 @@ async function loadSharedComponents() {
  * Cargar componentes cuando el DOM esté listo
  */
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded',loadSharedComponents
-    );
+    document.addEventListener('DOMContentLoaded', () => {// agregue las animaciones 
+        loadSharedComponents().then(() => window.iniciarAnimaciones?.());
+    });
 } else {
-    loadSharedComponents();
-
+    loadSharedComponents().then(() => window.iniciarAnimaciones?.());
 }
 
 
