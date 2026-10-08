@@ -3,7 +3,7 @@ const includes = [...document.querySelectorAll('[data-include]')].map(async (el)
   el.innerHTML = await res.text();
 });
 
-Promise.all(includes).then(iniciarAnimaciones);
+loadSharedComponents().then(iniciarAnimaciones);
 
 function iniciarAnimaciones() {
  const items = document.querySelectorAll('.card, .valor-card');
