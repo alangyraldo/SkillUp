@@ -1,0 +1,13 @@
+.module-page{min-height:65vh}
+.module-heading{max-width:850px;margin-inline:auto}
+.module-heading .lead{color:#626579}
+.module-panel{
+    max-width:900px;
+    margin:0 auto;
+    background:#fff;
+    border:1px solid #e7e6f2;
+    border-radius:1.25rem;
+    padding:clamp(1.25rem,4vw,2.5rem);
+    box-shadow:0 12px 35px rgba(35,24,75,.07)
+}
+    .auth-form{max-width:520px;margin:auto}.form-feedback{color:#4a20e8;margin-top:1rem}.module-page .card{border:1px solid #e8e6f3;border-radius:1rem;box-shadow:0 8px 24px rgba(35,24,75,.05)}.module-page .card i{color:#4a20e8}.module-page h1{color:#21154b}.module-page .form-label{font-weight:600}

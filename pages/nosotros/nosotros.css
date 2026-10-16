@@ -1,0 +1,608 @@
+/* botón y tarjetas - brandon */
+
+.mi-boton-centro {
+
+    display: block !important;
+
+    margin-left: auto !important;
+
+    margin-right: auto !important;
+ 
+    margin-top: 30px !important;
+
+    margin-bottom: 30px !important;
+ 
+    background-color: #4A20E8 !important;
+
+    border-color: #4A20E8 !important;
+
+    color: #ffffff !important;
+
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.35) !important;
+
+    transition: all 0.3s ease-in-out !important;
+
+}
+
+* {
+
+    font-family: 'Montserrat', sans-serif !important;
+
+}
+ 
+.mi-boton-centro:hover {
+
+    transform: translateY(-2px) scale(1.03) !important;
+ 
+    background-color: #3512be !important;
+
+    border-color: #3512be !important;
+ 
+    box-shadow: 0px 15px 30px rgba(74, 32, 232, 0.6) !important;
+
+    cursor: pointer;
+
+}
+ 
+/* grid de las cartas del equipo (las clases grid de tailwind no existen en bootstrap) */
+
+.grid.grid-cols-4 {
+
+  display: grid;
+
+  grid-template-columns: repeat(4, 1fr);
+
+  gap: 1.5rem;
+
+  justify-items: center;
+
+}
+ 
+.card.tarjeta-sombra {
+
+  max-width: 100%;
+
+}
+ 
+@media (max-width: 992px) {
+
+  .grid.grid-cols-4 { grid-template-columns: repeat(2, 1fr); }
+
+}
+ 
+@media (max-width: 576px) {
+
+  .grid.grid-cols-4 { grid-template-columns: 1fr; }
+
+}
+ 
+/* valores - alan */
+
+.valores {
+
+  padding: 4rem 1.5rem;
+
+  text-align: center;
+
+}
+ 
+.valores__badge {
+
+  display: inline-block;
+
+  padding: 0.25rem 0.9rem;
+
+  border-radius: 999px;
+
+  background: #ece8ff;
+
+  color: #6c47ff;
+
+  font-size: 0.7rem;
+
+  font-weight: 600;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.05em;
+
+}
+ 
+.valores__titulo {
+
+  margin: 0.75rem 0 2.5rem;
+
+  font-size: 1.75rem;
+
+}
+ 
+.valores__grid {
+
+  display: grid;
+
+  grid-template-columns: repeat(5, 1fr);
+
+  gap: 1rem;
+
+  max-width: 1100px;
+
+  margin: 0 auto;
+
+}
+ 
+.valor-card {
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 0.75rem;
+
+  padding: 1.5rem 1rem;
+
+  background: #fff;
+
+  border: 1px solid #eee;
+
+  border-radius: 12px;
+
+  box-shadow: 0 20px 40px rgba(109, 108, 116, 0.226);
+
+}
+ 
+.valor-card__icono {
+
+  display: grid;
+
+  place-items: center;
+
+  width: 44px;
+
+  height: 44px;
+
+  border-radius: 10px;
+
+  background: #ece8ff;
+
+  color: #6c47ff;
+
+  font-size: 1.25rem;
+
+}
+ 
+.valor-card h3 {
+
+  margin: 0;
+
+  font-size: 0.9rem;
+
+  font-weight: 600;
+
+}
+ 
+/*  para la tablet */
+
+@media (max-width: 992px) {
+
+  .valores__grid { grid-template-columns: repeat(3, 1fr); }
+
+}
+ 
+/*  para movil */
+
+@media (max-width: 576px) {
+
+  .valores__grid { grid-template-columns: repeat(2, 1fr); }
+
+}
+ 
+ 
+.cta {
+
+  padding: 0 1.5rem 4rem;
+
+}
+ 
+.cta__box {
+
+  max-width: 800px;
+
+  margin: 0 auto;
+
+  padding: 3rem 1.5rem;
+
+  border-radius: 16px;
+
+  background: #6c47ff;
+
+  color: #fff;
+
+  text-align: center;
+
+  box-shadow: 0 20px 40px rgba(109, 108, 116, 0.468);
+
+}
+ 
+.cta__box h2 {
+
+  margin: 0 0 0.5rem;
+
+  font-size: 1.75rem;
+
+}
+ 
+.cta__box p {
+
+  margin: 0 0 1.5rem;
+
+  font-size: 0.9rem;
+
+  opacity: 0.9;
+
+}
+ 
+.cta__btn {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 0.5rem;
+
+  padding: 0.6rem 1.25rem;
+
+  border-radius: 8px;
+
+  background: #fff;
+
+  color: #1a1a2e;
+
+  font-size: 0.85rem;
+
+  font-weight: 600;
+
+  text-decoration: none;
+
+}
+ 
+/* animaciones - alan */
+
+.reveal {
+
+  opacity: 0;
+
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+}
+ 
+.reveal.visible {
+
+  opacity: 1;
+
+  animation: aparecer 0.7s ease backwards;
+
+}
+ 
+.reveal.visible:not(.cta__box):hover {
+
+  transform: translateY(-6px) scale(1.04);
+
+  box-shadow: 0 18px 40px rgba(108, 71, 255, 0.25) !important;
+
+}
+ 
+@keyframes aparecer {
+
+  from {
+
+    opacity: 0;
+
+    filter: blur(10px);
+
+    transform: translateY(30px) scale(0.96);
+
+  }
+
+}
+ 
+.cta__btn {
+
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+}
+ 
+.cta__btn:hover {
+
+  transform: translateY(-3px) scale(1.05);
+
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+
+}
+ 
+.cta__btn i {
+
+  transition: transform 0.25s ease;
+
+}
+ 
+.cta__btn:hover i {
+
+  transform: translateX(4px);
+
+}
+
+.navbar-brand {
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+.navbar-brand:hover {
+  transform: scale(1.08);
+}
+
+.btn-agendar {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.btn-agendar:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.btn-subir {
+  position: fixed;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border: none;
+  border-radius: 50%;
+  background: #6c47ff;
+  color: #fff;
+  font-size: 1.25rem;
+  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(109, 71, 255, 0.4);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(20px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.btn-subir.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: none;
+}
+
+.btn-subir.visible:hover {
+  transform: translateY(-4px) scale(1.08);
+}
+
+/* boton "las personas detras" igual al de agendar - alan */
+.mi-boton-centro {
+  width: fit-content !important;
+  padding: 0.6rem 1.25rem !important;
+  border-radius: 8px !important;
+  font-size: 0.9rem !important;
+  font-weight: 600 !important;
+  box-shadow: none !important;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease !important;
+}
+
+.mi-boton-centro:hover {
+  transform: translateY(-3px) scale(1.05) !important;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* cartas del equipo parejas - alan */
+.grid.grid-cols-4 > div {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.card.tarjeta-sombra .card-img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  object-position: top;
+} 
+ 
+
+/* NOSOTROS*/
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Montserrat', sans-serif;
+  background-color: #ffffff;
+  color: #1a1d20;
+  line-height: 1.6;
+}
+
+/* Clase clave para centrar el contenido y limitar el ancho máximo */
+.contenedor-centrado {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+#contenedor-principal {
+  width: 100%;
+}
+
+/* Etiquetas generales */
+.etiqueta {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 6px 16px;
+  border-radius: 50px;
+  margin-bottom: 24px;
+}
+
+.pastilla-morada {
+  background-color: #ede9fe;
+  color: #6366f1;
+}
+
+.pastilla-morada-clara {
+  background-color: #f3f0ff;
+  color: #6366f1;
+}
+
+/* Sección Encabezado (Abarca el 100% del ancho con color de fondo) */
+#seccion-encabezado {
+  width: 100%;
+  background-color: #f8f9fa; /* Fondo gris/morado suave para el banner superior */
+  padding: 80px 0;
+  text-align: center;
+}
+
+.titulo-principal {
+  font-size: 2.8rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #111827;
+  line-height: 1.25;
+  margin-bottom: 16px;
+}
+
+.texto-destacado {
+  color: #6366f1;
+}
+
+.subtitulo-principal {
+  color: #6b7280;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+/* Sección Historia */
+#seccion-historia {
+  width: 100%;
+  padding: 80px 0 40px 0;
+}
+
+.bloque-historia {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+  align-items: center;
+}
+
+.titulo-historia {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #111827;
+  line-height: 1.25;
+  margin-bottom: 24px;
+}
+
+.texto-historia {
+  color: #4b5563;
+  font-size: 0.92rem;
+  line-height: 1.65;
+  margin-bottom: 16px;
+}
+
+.texto-historia:last-child {
+  margin-bottom: 0;
+}
+
+.contenedor-imagen {
+  position: relative;
+}
+
+.imagen-historia {
+  width: 100%;
+  height: auto;
+  border-radius: 24px;
+  box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.08);
+  display: block;
+  object-fit: cover;
+}
+
+/* Sección Tarjetas (Misión / Visión) */
+#seccion-tarjetas {
+  width: 100%;
+  padding: 20px 0 80px 0;
+   background-color: #f8f9fa;
+}
+
+.bloque-tarjetas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+.tarjeta {
+  background-color: white;
+  border: 1px solid #f0f0f0;
+  border-radius: 20px;
+  padding: 32px 36px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tarjeta-sombra {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.tarjeta-sombra:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 30px rgba(108, 60, 255, 0.3);
+}
+
+.numero-tarjeta {
+  display: block;
+  color: #818cf8;
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.titulo-tarjeta {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 8px;
+}
+
+.texto-tarjeta {
+  color: #6b7280;
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+/* Adaptación a dispositivos móviles */
+@media (max-width: 768px) {
+  #seccion-encabezado {
+    padding: 50px 0;
+  }
+
+  .titulo-principal {
+    font-size: 2rem;
+  }
+
+  .bloque-historia {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .bloque-tarjetas {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+/* Ajustes de adaptación para la estructura modular */
+img { max-width: 100%; height: auto; }
+.grid-cols-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.25rem; }
+@media (max-width: 992px) { .grid-cols-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 576px) { .grid-cols-4 { grid-template-columns: minmax(0, 1fr); } .grid-cols-4 .card { width: min(100%, 18rem) !important; } }

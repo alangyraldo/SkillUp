@@ -1,0 +1,174 @@
+/* Contenedor Principal de la Sección */
+.fomulario-correo {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 40px;
+    max-width: 1100px;
+    margin: 60px auto;
+    padding: 0 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa; 
+}
+
+/* --- BLOQUE IZQUIERDO: INFORMACIÓN --- */
+.conversemos {
+    flex: 1;
+    max-width: 400px;
+}
+
+.conversemos h2 {
+    font-size: 28px;
+    color: #1a1a1a;
+    margin-bottom: 12px;
+    font-weight: 600;
+}
+
+.conversemos-desc {
+    color: #666;
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 32px;
+}
+
+.conversemos-items-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.conversemos-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+
+.icon-box {
+    width: 40px;
+    height: 40px;
+    background-color: #ede9fe; 
+    color: #6366f1; 
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+.conversemos-text strong {
+    display: block;
+    font-size: 14px;
+    color: #1a1a1a;
+    margin-bottom: 2px;
+}
+
+.conversemos-text p, .info-text a {
+    font-size: 13px;
+    color: #555;
+    text-decoration: none;
+}
+
+/* --- BLOQUE DERECHO: TARJETA DEL FORMULARIO --- */
+.contacto-card {
+    flex: 1.2;
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 24px; 
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); 
+}
+
+/* Cuadrícula interna del Formulario */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Campos de Asunto y Mensaje ocupan las dos columnas */
+.form-group.full-width {
+    grid-column: span 2;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+/* Estilo de los Inputs y Textareas */
+.form-group input, .form-group textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    font-size: 14px;
+    color: #333;
+    background-color: #fff;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.form-group input::placeholder, .form-group textarea::placeholder {
+    color: #9ca3af;
+}
+
+/* Efecto de foco en los campos */
+.form-group input:focus, .form-group textarea:focus {
+    border-color: #6366f1;
+}
+
+/* Redimensionar el textarea solo verticalmente */
+.form-group textarea {
+    resize: vertical;
+}
+
+/* Botón Morado de Envío */
+.btn-enviar {
+    grid-column: span 2;
+    background-color: #5830fc; 
+    color: #ffffff;
+    border: none;
+    padding: 14px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    margin-top: 10px;
+}
+
+.btn-enviar:hover {
+    background-color: #431cd6;
+}
+
+.btn-enviar:active {
+    transform: scale(0.99);
+}
+
+/* --- RESPONSIVE DESIGN (Para Celulares) --- */
+@media (max-width: 768px) {
+    .contacto-section {
+        flex-direction: column;
+        gap: 40px;
+        margin: 30px auto;
+    }
+    
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-group.full-width, .btn-enviar {
+        grid-column: span 1;
+    }
+    
+    .contacto-card {
+        padding: 24px;
+    }
+}

@@ -1,0 +1,64 @@
+<section class="fomulario-correo" id="formulario-correo">
+    <div class="conversemos">
+        <h2>Conversemos</h2>
+        <p class="conversemos-desc">Queremos que tu experiencia en SkillUp sea extraordinaria. Puedes escribirnos o
+            llamarnos.</p>
+
+        <div class="info-items-container">
+            <div class="conversemos-item">
+                <div class="icon-box">
+                </div>
+                <div class="conversemos-text">
+                    <strong>Correo electrónico</strong>
+                    <p>hola@skillup.com</p>
+                </div>
+            </div>
+
+            <div class="conversemos-item">
+                <div class="icon-box">
+                </div>
+                <div class="conversemos-text">
+                    <strong>Horario de atención</strong>
+                    <p>Lunes a viernes - 8:00 a. m. – 6:00 p. m.</p>
+                </div>
+            </div>
+
+            <div class="conversemos-item">
+                <div class="icon-box">
+                </div>
+                <div class="conversemos-text">
+                    <strong>Teléfono</strong>
+                    <p>+57 601 234 5678</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="contacto-card">
+        <form class="form-grid" id="form-contacto" action="https://formspree.io/f/mzedyrow" method="POST" novalidate>
+            <div class="form-group">
+                <label for="nombre">Nombre completo</label>
+                <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required>
+            </div>
+
+            <div class="form-group">
+                <label for="correo">Correo electrónico</label>
+                <input type="email" id="correo" name="email" placeholder="tucorreo@ejemplo.com" required>
+            </div>
+
+            <div class="form-group full-width">
+                <label for="asunto">Asunto</label>
+                <input type="text" id="asunto" name="asunto" placeholder="¿Cómo podemos ayudarte?" required>
+            </div>
+
+            <div class="form-group full-width">
+                <label for="mensaje">Mensaje</label>
+                <textarea id="mensaje" name="mensaje" rows="4" placeholder="cuéntanos un poco más.."
+                    required></textarea>
+            </div>
+
+            <button type="submit" class="btn-enviar">Enviar mensaje</button>
+        </form>
+    </div>
+</section>

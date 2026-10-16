@@ -1,0 +1,123 @@
+/* Definición de variables de diseño */
+:root {
+    --fuente-principal: 'Montserrat', sans-serif;
+    --color-fondo: #ffffff;
+    --color-texto-principal: #111111;
+    --color-texto-secundario: #555555;
+    --color-primario: #6324ee;
+    --color-fondo-insignia: #f0edff;
+    --color-borde: #eaeaea;
+}
+
+/* Estilos generales del documento */
+body {
+    font-family: var(--fuente-principal);
+    background-color: var(--color-fondo);
+    color: var(--color-texto-principal);
+    margin: 0;
+    padding: 0;
+}
+
+/* Contenedor principal que envuelve la sección para tu index.html */
+.seccion-preguntas-contenedor {
+    width: 100%;
+    padding: 40px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+/* Sección principal */
+.seccion-preguntas {
+    
+    width: 100%;
+    max-width: 900px;
+    margin: 50px auto;
+    text-align: center; 
+}
+
+/* Insignia superior */
+.insignia-preguntas {
+    display: inline-block;
+    background-color: var(--color-fondo-insignia);
+    color: var(--color-primario);
+    padding: 6px 16px;
+    border-radius: 50px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-bottom: 20px;
+}
+
+/* Título principal */
+.titulo-principal {
+    font-size: 36px;
+    font-weight: 600;
+    margin-bottom: 60px;
+    color: var(--color-texto-principal);
+}
+
+/* Contenedor de la lista */
+.contenedor-preguntas {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Cada ítem de pregunta */
+.item-pregunta {
+    padding: 24px 0;
+    border-bottom: 1px solid var(--color-borde);
+}
+
+/* Cabecera de la pregunta (Texto + Icono) */
+.cabecera-pregunta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.cabecera-pregunta h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+    color: var(--color-texto-principal);
+}
+
+/* Icono de más (+) con transición suave al rotar */
+.icono-pregunta {
+    font-size: 24px;
+    color: var(--color-primario);
+    font-weight: 400;
+    line-height: 1;
+    transition: transform 0.3s ease;
+}
+
+/* Contenedor colapsable de la respuesta */
+.contenedor-respuesta {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out, margin-top 0.3s ease-out;
+}
+
+/* Texto de la respuesta */
+.respuesta-pregunta {
+    font-size: 14px;
+    color: var(--color-texto-secundario);
+    margin-top: 0;
+    margin-bottom: 0;
+    line-height: 1.5;
+    max-width: 85%;
+}
+
+/* --- Clases activadas por JavaScript --- */
+.item-pregunta.activo .contenedor-respuesta {
+    max-height: 150px;
+    margin-top: 12px;
+}
+
+.item-pregunta.activo .icono-pregunta {
+    transform: rotate(45deg);
+}
