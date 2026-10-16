@@ -1,0 +1,381 @@
+/* Importar fuente Montserrat */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
+
+/* Reset básico y variables de color */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif;
+}
+
+:root {
+  --purpura-principal: #5B2EFF;
+  --violeta-intenso: #4A20E8;
+  --lavanda: #8B7CFF;
+  --lavanda-claro: #E9E5FF;
+  --blanco: #FFFFFF;
+  --azul-oscuro: #11142D;
+  --gris-claro: #F5F6FA;
+  --color-borde: #E2E8F0;
+  --texto-atenuado: #64748B;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  color: var(--azul-oscuro);
+  background-color: var(--blanco);
+}
+
+.contenedor-principal {
+  display: flex;
+  width: 100vw;
+  min-height: 100vh;
+}
+
+/* COLUMNA IZQUIERDA - HERO REGISTRO */
+.seccion-hero {
+  width: 42%;
+  background-color: var(--azul-oscuro);
+  color: var(--blanco);
+  padding: 3rem 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.icono-logo {
+  width: 40px;
+  height: 40px;
+  background-color: var(--purpura-principal);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#letras-logo {
+  width: 117px;
+  height: 60px;
+  
+}
+
+
+.contenido-hero {
+  max-width: 440px;
+  margin: auto 0;
+}
+
+.etiqueta {
+  display: inline-block;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #e2e8f0;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.titulo-hero {
+  font-size: 2.2rem;
+  font-weight: 800;
+  line-height: 1.15;
+  margin-bottom: 1rem;
+}
+
+.titulo-hero .resaltado {
+  color: var(--lavanda);
+}
+
+.subtitulo-hero {
+  color: #cbd5e1;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.caracteristicas-hero {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-top: 2rem;
+}
+
+.tarjeta-caracteristica {
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 0.75rem 1.25rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  color: #cbd5e1;
+  font-weight: 500;
+  width: fit-content;
+}
+
+.pie-hero {
+  font-size: 0.875rem;
+  color: #94a3b8;
+}
+
+/* COLUMNA DERECHA - FORMULARIO REGISTRO */
+.seccion-formulario {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 4rem;
+  background-color: var(--blanco);
+  overflow-y: auto;
+}
+
+.navegacion-superior {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.enlace-volver {
+  color: var(--texto-atenuado);
+  text-decoration: none;
+  font-size: 0.875rem;
+}
+
+.envoltorio-formulario {
+  max-width: 440px;
+  width: 100%;
+  margin: auto;
+  padding: 1rem 0;
+}
+
+.cabecera-formulario h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--azul-oscuro);
+  margin-bottom: 0.3rem;
+}
+
+.cabecera-formulario p {
+  color: var(--texto-atenuado);
+  font-size: 0.85rem;
+  margin-bottom: 1.25rem;
+}
+
+/* Selector de Rol */
+.selector-rol {
+  display: flex;
+  background-color: var(--gris-claro);
+  padding: 4px;
+  border-radius: 12px;
+  margin-bottom: 1.25rem;
+  border: 1px solid var(--color-borde);
+}
+
+.boton-rol {
+  flex: 1;
+  background: none;
+  border: none;
+  padding: 0.65rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--texto-atenuado);
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.boton-rol.activo {
+  background-color: var(--blanco);
+  color: var(--purpura-principal);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.fila-formulario {
+  display: flex;
+  gap: 1rem;
+}
+
+.fila-formulario .grupo-formulario {
+  flex: 1;
+}
+
+.grupo-formulario {
+  margin-bottom: 1rem;
+}
+
+.grupo-formulario label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+  color: var(--azul-oscuro);
+}
+
+.grupo-formulario input {
+  width: 100%;
+  padding: 0.7rem 0.95rem;
+  background-color: var(--blanco);
+  border: 1px solid var(--color-borde);
+  border-radius: 8px;
+  font-size: 0.88rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.grupo-formulario input:focus {
+  border-color: var(--purpura-principal);
+  box-shadow: 0 0 0 3px var(--lavanda-claro);
+}
+
+/* Indicador de contraseña */
+.indicador-fortaleza {
+  display: flex;
+  gap: 6px;
+  margin-top: 0.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.barra-fortaleza {
+  flex: 1;
+  height: 4px;
+  background-color: var(--color-borde);
+  border-radius: 2px;
+}
+
+.barra-fortaleza.activa {
+  background-color: var(--purpura-principal);
+}
+
+.texto-ayuda {
+  font-size: 0.75rem;
+  color: var(--texto-atenuado);
+  margin-bottom: 0.8rem;
+}
+
+.opciones-formulario {
+  margin-bottom: 1.25rem;
+}
+
+.etiqueta-casilla {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--texto-atenuado);
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.etiqueta-casilla input {
+  accent-color: var(--purpura-principal);
+}
+
+.boton-enviar {
+  width: 100%;
+  padding: 0.8rem;
+  background-color: var(--purpura-principal);
+  color: var(--blanco);
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  box-shadow: 0 4px 12px rgba(91, 46, 255, 0.25);
+}
+
+.boton-enviar:hover {
+  background-color: var(--violeta-intenso);
+}
+
+.separador-social {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 1.25rem 0;
+  color: var(--texto-atenuado);
+  font-size: 0.8rem;
+}
+
+.separador-social::before,
+.separador-social::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid var(--color-borde);
+}
+
+.separador-social::before {
+  margin-right: .75em;
+}
+
+.separador-social::after {
+  margin-left: .75em;
+}
+
+.contenedor-sociales {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.boton-social {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.65rem;
+  background-color: var(--blanco);
+  border: 1px solid var(--color-borde);
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--azul-oscuro);
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+.boton-social:hover {
+  background-color: var(--gris-claro);
+}
+
+.enlace-cambio-auth {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  color: var(--texto-atenuado);
+}
+
+.enlace-cambio-auth a {
+  color: var(--purpura-principal);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.pie-pagina-legal {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.75rem;
+  color: var(--texto-atenuado);
+}
+
+@media (max-width: 900px) {
+  .contenedor-principal {
+    flex-direction: column;
+  }
+
+  .seccion-hero {
+    width: 100%;
+    padding: 2.5rem 2rem;
+  }
+
+  .seccion-formulario {
+    padding: 2.5rem 2rem;
+  }
+}

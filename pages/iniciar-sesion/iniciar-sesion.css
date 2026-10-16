@@ -1,0 +1,381 @@
+/* Importar fuente Montserrat */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
+
+/* Variables de color y diseño */
+:root {
+  --purpura-principal: #5B2EFF;
+  --violeta-intenso: #4A20E8;
+  --lavanda: #8B7CFF;
+  --lavanda-claro: #E9E5FF;
+  --blanco: #FFFFFF;
+  --azul-oscuro: #11142D;
+  --gris-claro: #F5F6FA;
+  --color-borde: #E2E8F0;
+  --texto-atenuado: #64748B;
+  --texto-secundario: #CBD5E1;
+  --texto-terciario: #94A3B8;
+}
+
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  color: var(--azul-oscuro);
+  background-color: var(--blanco);
+}
+
+/* Layout Principal: 2 Columnas */
+.contenedor-principal {
+  display: flex;
+  width: 100vw;
+  min-height: 100vh;
+}
+
+/* COLUMNA IZQUIERDA - SECCIÓN HERO */
+.seccion-hero {
+  width: 42%;
+  background-color: var(--azul-oscuro);
+  color: var(--blanco);
+  padding: 3rem 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--blanco);
+}
+
+.icono-logo {
+  width: 40px;
+  height: 40px;
+  background-color: var(--purpura-principal);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+#letras-logo {
+  width: 117px;
+  height: 60px;
+}
+
+.contenido-hero {
+  max-width: 440px;
+  margin: auto 0;
+}
+
+.etiqueta {
+  display: inline-block;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--color-borde);
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.titulo-hero {
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1.15;
+  margin-bottom: 1.5rem;
+}
+
+.titulo-hero .resaltado {
+  color: var(--lavanda);
+}
+
+.subtitulo-hero {
+  color: var(--texto-secundario);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.pie-hero {
+  font-size: 0.875rem;
+  color: var(--texto-terciario);
+}
+
+/* COLUMNA DERECHA - FORMULARIO SESIÓN */
+.seccion-formulario {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 2.5rem 4rem;
+  position: relative;
+  background-color: var(--blanco);
+}
+
+.navegacion-superior {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.enlace-volver {
+  color: var(--texto-atenuado);
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: color 0.2s ease;
+}
+
+.enlace-volver:hover {
+  color: var(--azul-oscuro);
+}
+
+.envoltorio-formulario {
+  max-width: 400px;
+  width: 100%;
+  margin: auto;
+  padding: 1rem 0;
+}
+
+.cabecera-formulario h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--azul-oscuro);
+  margin-bottom: 0.5rem;
+}
+
+.cabecera-formulario p {
+  color: var(--texto-atenuado);
+  font-size: 0.875rem;
+  margin-bottom: 2rem;
+}
+
+.grupo-formulario {
+  margin-bottom: 1.25rem;
+}
+
+.grupo-formulario label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  color: var(--azul-oscuro);
+}
+
+.grupo-formulario input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background-color: var(--gris-claro);
+  border: 1px solid var(--color-borde);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.grupo-formulario input:focus {
+  border-color: var(--purpura-principal);
+  background-color: var(--blanco);
+  box-shadow: 0 0 0 3px var(--lavanda-claro);
+}
+
+.opciones-formulario {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  font-size: 0.85rem;
+}
+
+.etiqueta-casilla {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--texto-atenuado);
+  cursor: pointer;
+}
+
+.etiqueta-casilla input {
+  accent-color: var(--purpura-principal);
+}
+
+.enlace-olvido {
+  color: var(--purpura-principal);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.enlace-olvido:hover {
+  text-decoration: underline;
+}
+
+.boton-enviar {
+  width: 100%;
+  padding: 0.85rem;
+  background-color: var(--purpura-principal);
+  color: var(--blanco);
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.boton-enviar:hover {
+  background-color: var(--violeta-intenso);
+}
+
+.enlace-cambio-auth {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.85rem;
+  color: var(--texto-atenuado);
+}
+
+.enlace-cambio-auth a {
+  color: var(--purpura-principal);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.enlace-cambio-auth a:hover {
+  text-decoration: underline;
+}
+
+.enlace-admin {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.enlace-admin a {
+  color: var(--texto-atenuado);
+  font-size: 0.85rem;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.enlace-admin a:hover {
+  color: var(--azul-oscuro);
+}
+
+/* Responsive Design */
+@media (max-width: 900px) {
+  .contenedor-principal {
+    flex-direction: column;
+  }
+
+  .seccion-hero {
+    width: 100%;
+    padding: 2.5rem 2rem;
+  }
+
+  .seccion-formulario {
+    padding: 2.5rem 2rem;
+  }
+
+  .titulo-hero {
+    font-size: 2.25rem;
+  }
+}
+
+/* ESTILOS PARA LA VENTANA MODAL DE RECUPERACIÓN */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(17, 20, 45, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.modal-overlay.activo {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-contenedor {
+  background-color: var(--blanco);
+  padding: 2.5rem;
+  border-radius: 16px;
+  max-width: 420px;
+  width: 90%;
+  position: relative;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  transform: translateY(20px);
+  transition: transform 0.3s ease;
+}
+
+.modal-overlay.activo .modal-contenedor {
+  transform: translateY(0);
+}
+
+.modal-cerrar {
+  position: absolute;
+  top: 1rem;
+  right: 1.25rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--texto-atenuado);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.modal-cerrar:hover {
+  color: var(--azul-oscuro);
+}
+
+.modal-icono {
+  font-size: 2.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.modal-contenedor h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--azul-oscuro);
+  margin-bottom: 0.5rem;
+}
+
+.modal-contenedor p {
+  color: var(--texto-atenuado);
+  font-size: 0.875rem;
+  margin-bottom: 1.5rem;
+}
+
+.modal-mensaje-exito {
+  background-color: #ECFDF5;
+  color: #065F46;
+  border: 1px solid #A7F3D0;
+  padding: 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  margin-top: 1rem;
+  line-height: 1.4;
+}
+
+.oculto {
+  display: none;
+}

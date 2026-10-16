@@ -1,1 +1,111 @@
-<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Iniciar sesión | SkillUp</title><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"><link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"><link rel="stylesheet" href="../../css/global.css"><link rel="stylesheet" href="../../css/components/footer.css"><link rel="stylesheet" href="../../css/pages/modules.css"></head><body><div id="site-header"></div><main class="module-page container py-5"><header class="module-heading text-center mb-5"><span class="badge text-bg-light">SKILLUP</span><h1 class="display-5 fw-bold mt-3">Qué bueno tenerte de vuelta</h1><p class="lead">Accede para continuar tu proceso de aprendizaje.</p></header><section class="module-panel"><form class="auth-form" id="login-form"><div class="mb-3"><label for="email-login" class="form-label">Correo electrónico</label><input class="form-control" type="email" id="email-login" required autocomplete="email"></div><div class="mb-3"><label for="password-login" class="form-label">Contraseña</label><input class="form-control" type="password" id="password-login" required autocomplete="current-password"></div><button class="btn btn-skillup w-100" type="submit">Iniciar sesión</button><p class="form-feedback mt-3" aria-live="polite"></p><p class="small text-secondary mt-3">La autenticación aún debe conectarse con el servicio de usuarios del proyecto.</p></form></section></main><div id="site-footer"></div><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script><script type="module" src="../../js/app.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkillUp - Iniciar Sesión</title>
+  <link rel="stylesheet" href="/pages/iniciar-sesion/iniciar-sesion.css">
+</head>
+<body>
+
+  <div class="contenedor-principal">
+    <!-- Columna Izquierda (Hero) -->
+    <section class="seccion-hero">
+      <div class="logo">
+        <img class="icono-logo" src="/assets/skillup_icono_sin fondo.png" alt="Icono de SkillUp">
+        <img id="letras-logo" src="/assets/skillup_logo_blanco.png" alt="Logo de SkillUp">
+      </div>
+
+      <div class="contenido-hero">
+        <span class="etiqueta">Tu futuro empieza aquí</span>
+        <h1 class="titulo-hero">
+          Aprende.<br>
+          Conecta.
+          <span class="resaltado">Crece.</span>
+        </h1>
+        <p class="subtitulo-hero">
+          Haz parte de una comunidad que comparte conocimiento para transformar oportunidades.
+        </p>
+      </div>
+
+      <div class="pie-hero">
+        Tu mejor inversión es la que haces en ti 
+      </div>
+    </section>
+
+    <!-- Columna Derecha (Formulario de Inicio de Sesión) -->
+    <section class="seccion-formulario">
+      <nav class="navegacion-superior">
+        <a href="/pages/nosotros/index.html" class="enlace-volver">&larr; Volver al inicio</a>
+      </nav>
+
+      <div class="envoltorio-formulario">
+        <div class="contenedor-formulario activo">
+          <div class="cabecera-formulario">
+            <h2>Qué bueno verte de nuevo</h2>
+            <p>Ingresa tus datos para continuar aprendiendo.</p>
+          </div>
+
+          <form onsubmit="manejarSesion(event)">
+            <div class="grupo-formulario">
+              <label for="correo-sesion">Correo electrónico</label>
+              <input type="email" id="correo-sesion" placeholder="nombre@correo.com" required>
+            </div>
+
+            <div class="grupo-formulario">
+              <label for="contrasena-sesion">Contraseña</label>
+              <input type="password" id="contrasena-sesion" placeholder="Mínimo 8 caracteres" required minlength="8">
+            </div>
+
+            <div class="opciones-formulario">
+              <label class="etiqueta-casilla">
+                <input type="checkbox"> Recuérdame
+              </label>
+              <a href="#" id="btn-olvido" class="enlace-olvido">¿Olvidaste tu contraseña?</a>
+            </div>
+
+            <button type="submit" class="boton-enviar">Iniciar sesión</button>
+          </form>
+
+          <div class="enlace-cambio-auth">
+            ¿No tienes una cuenta? <a href="/pages/registro/index.html">Crear cuenta</a>
+          </div>
+
+          <!--
+          <div class="enlace-admin">
+            <a href="#">Entrar con una cuenta admin &rarr;</a>
+          </div>
+          -->
+
+        </div>
+      </div>
+    </section>
+  </div>
+
+
+    <!-- Modal de Recuperación de Contraseña -->
+      <div id="modal-recuperacion" class="modal-overlay">
+        <div class="modal-contenedor">
+          <button id="cerrar-modal" class="modal-cerrar">&times;</button>
+          
+          <div class="modal-icono">🔑</div>
+          <h3>Recuperar contraseña</h3>
+          <p>Ingresa tu correo electrónico y te enviaremos las instrucciones.</p>
+          
+          <form id="form-recuperar" onsubmit="enviarRecuperacion(event)">
+            <div class="grupo-formulario">
+              <label for="correo-recuperar">Correo electrónico</label>
+              <input type="email" id="correo-recuperar" placeholder="nombre@correo.com" required>
+            </div>
+            <button type="submit" class="boton-enviar">Enviar instrucciones</button>
+          </form>
+          
+          <div id="mensaje-exito" class="modal-mensaje-exito oculto">
+            ✅ Hemos enviado a tu correo las instrucciones para recuperar tu contraseña.
+          </div>
+        </div>
+      </div>
+
+  <script src="/pages/iniciar-sesion/iniciar-sesion.js"></script>
+</body>
+</html>
