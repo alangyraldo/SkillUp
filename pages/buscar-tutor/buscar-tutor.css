@@ -79,7 +79,6 @@ body {
 .resultados {
   display: grid;
   grid-template-columns: 240px 1fr;  /* prueba 280px o 300px */
-
   gap: 32px;
   max-width: 1100px;
   margin: 0 auto;
@@ -122,47 +121,50 @@ body {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
 }
 
+/* ---------- Lista de tutores ---------- */
 .tutores {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 2fr));
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
   gap: 24px;
 }
 .tutores__vacio { grid-column: 1 / -1; color: var(--texto-suave); padding: 32px 0; }
 
-.card {
+/* ---------- Tarjeta de tutor (estilo del inicio) ---------- */
+.tutor-card {
   background: #fff;
-  border-radius: var(--radio);
-  border: none;
-  overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  max-width: 550px;
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.07);
 }
-.card__foto { position: relative; }
-.card__foto img { width: 100%; height: 180px; object-fit: cover; display: block; }
-.card__estado {
-  position: absolute;
-  left: 12px;
-  bottom: 12px;
-  background: #fff;
-  font-size: 11px;
-  padding: 2px 10px;
+.tutor-card__foto {
+  width: 100%;
+  height: 190px;
+  object-fit: cover;
+  border-radius: 16px;
+  display: block;
+}
+.tutor-card__rating { margin: 20px 0 0; font-size: 14px; color: var(--texto-suave); }
+.tutor-card__estrella { color: #f5b301; font-size: 18px; }
+.tutor-card__nombre { margin: 12px 0 14px; font-size: 22px; font-weight: 700; }
+
+.tutor-card__fila { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; }
+.tutor-card__materia { margin: 0 0 12px; font-size: 14px; font-weight: 600; color: var(--morado); }
+.tutor-card__desde { margin: 0; font-size: 14px; color: var(--texto-suave); }
+.tutor-card__precio { margin: 0; font-size: 24px; font-weight: 700; }
+
+.tutor-card__accion { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+.tutor-card__disponible { font-size: 14px; font-weight: 500; color: #1fb67a; }
+.tutor-card__boton {
+  background: var(--morado);
+  color: #fff;
   border-radius: 999px;
+  padding: 10px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
 }
-.card__cuerpo { padding: 14px 16px 16px; }
-.card__rating { font-size: 12px; color: var(--texto-suave); }
-.card__nombre { font-size: 16px; margin-top: 4px; }
-.card__materia { font-size: 13px; font-weight: 600; color: var(--morado); }
-.card__nivel { font-size: 12px; color: var(--texto-suave); }
-.card__pie {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px solid var(--borde);
-}
-.card__precio { font-weight: 600; font-size: 14px; }
-.card__pie .btn { padding: 8px 16px; font-size: 12px; text-decoration: none; }
+.tutor-card__boton:hover { background: #4720d6; color: #fff; }
+.tutor-card__boton:focus-visible { outline: 3px solid var(--morado); outline-offset: 2px; }
 
 /* ---------- Paginación ---------- */
 .paginacion {

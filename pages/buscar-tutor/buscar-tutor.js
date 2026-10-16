@@ -13,7 +13,7 @@ const filtros = {
   modalidad: document.getElementById("filtroModalidad")
 };
 
-const formatoCOP = (n) => "$" + n.toLocaleString("es-CO") + " Cop";
+const formatoCOP = (n) => "$ " + n.toLocaleString("es-CO");
 
 function filtrarTutores() {
   const texto = inputBuscar.value.trim().toLowerCase();
@@ -29,19 +29,19 @@ function filtrarTutores() {
 
 function crearCard(t) {
   return `
-    <article class="card">
-      <div class="card__foto">
-        <img src="${t.foto}" alt="Foto de ${t.nombre}">
-        <span class="card__estado">${t.modalidad}</span>
-      </div>
-      <div class="card__cuerpo">
-        <p class="card__rating">★ ${t.rating} (${t.resenas} reseñas)</p>
-        <h3 class="card__nombre">${t.nombre}</h3>
-        <p class="card__materia">${t.materia}</p>
-        <p class="card__nivel">${t.nivel}</p>
-        <div class="card__pie">
-          <span class="card__precio">${formatoCOP(t.precio)}</span>
-          <a class="btn btn--primary" href="../perfil-tutor/index.html?tutor=${t.id}">Ver Perfil</a>
+    <article class="tutor-card">
+      <img class="tutor-card__foto" src="${t.foto}" alt="Foto de ${t.nombre}">
+      <p class="tutor-card__rating"><span class="tutor-card__estrella">★</span> (${t.resenas} reseñas)</p>
+      <h3 class="tutor-card__nombre">${t.nombre}</h3>
+      <div class="tutor-card__fila">
+        <div>
+          <p class="tutor-card__materia">${t.materia}</p>
+          <p class="tutor-card__desde">Desde</p>
+          <p class="tutor-card__precio">${formatoCOP(t.precio)}</p>
+        </div>
+        <div class="tutor-card__accion">
+          <span class="tutor-card__disponible">Disponible hoy</span>
+          <a class="tutor-card__boton" href="../perfil-tutor/index.html?tutor=${t.id}">Ver perfil</a>
         </div>
       </div>
     </article>`;
