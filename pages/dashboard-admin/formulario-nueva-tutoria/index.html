@@ -1,0 +1,141 @@
+  
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administrar tutorías</title>
+  <link rel="stylesheet" href="/pages/dashboard-admin/formulario-nueva-tutoria/formulario-nueva-tutoria.css">
+</head>
+
+<body>
+  <main class="pagina">
+    <div class="encabezado">
+      <div>
+        <h1>Mis tutorías</h1>
+        <p>Administra y organiza tus tutorías.</p>
+      </div>
+
+      <button id="abrirModal" class="btn-agregar">
+        + Nueva tutoría
+      </button>
+    </div>
+
+    <div id="listaTutorias" class="lista-tutorias">
+      <!-- Las tutorías aparecerán aquí -->
+    </div>
+  </main>
+
+
+
+  <!-- Ventana emergente -->
+  <div id="modal" class="modal oculto">
+    <div class="modal-contenido">
+      <div class="modal-header">
+        <div>
+          <h2>Nueva tutoría</h2>
+          <p>Completa la información de la tutoría.</p>
+        </div>
+        <button id="cerrarModal" class="btn-cerrar" aria-label="Cerrar ventana">&times;</button>
+      </div>
+
+      <form id="formTutorias">
+        <div class="campo">
+          <label for="titulo">Título de la tutoría *</label>
+          <input type="text" id="titulo" placeholder="Ej. Matemáticas básicas" required>
+        </div>
+
+        <div class="fila">
+          <div class="campo">
+            <label for="materia">Materia *</label>
+            <select id="materia" required>
+              <option value="">Seleccionar materia</option>
+            </select>
+          </div>
+
+          <div class="campo">
+            <label for="tutor">Nombre del tutor *</label>
+            <select id="tutor" required disabled>
+              <option value="">Selecciona una materia primero</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="fila">
+          <div class="campo">
+            <label for="nivel">Nivel del tutor *</label>
+            <select id="nivel" required disabled>
+              <option value="">Selecciona un tutor primero</option>
+            </select>
+          </div>
+
+          <div class="campo">
+            <label for="dia">Día de la clase *</label>
+            <select id="dia" required disabled>
+              <option value="">Selecciona un tutor primero</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="fila">
+          <div class="campo">
+            <label for="hora">Hora de inicio *</label>
+            <select id="hora" required disabled>
+              <option value="">Selecciona un día primero</option>
+            </select>
+          </div>
+
+          <div class="campo">
+            <label for="modalidad">Modalidad *</label>
+            <select id="modalidad" required disabled>
+              <option value="">Selecciona un tutor primero</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="campo">
+          <label for="descripcion">Descripción *</label>
+          <textarea id="descripcion" rows="3" placeholder="Describe los temas de la tutoría..." required></textarea>
+        </div>
+
+        <div class="fila">
+          <div class="campo">
+            <label for="duracion">Duración *</label>
+            <select id="duracion" required>
+              <option value="30">30 minutos</option>
+              <option value="60" selected>1 hora</option>
+              <option value="120">2 horas</option>
+              <option value="180">3 horas</option>
+              <option value="240">4 horas</option>
+              <option value="300">5 horas</option>
+              <option value="360">6 horas</option>
+              <option value="420">7 horas</option>
+              <option value="480">8 horas</option>
+            </select>
+          </div>
+
+          <div class="campo">
+            <label for="precio">Precio por sesión (COP) *</label>
+            <input type="number" id="precio" min="0" step="100" placeholder="30000" required>
+          </div>
+        </div>
+
+        <div class="campo">
+          <label for="cupos">Cupos disponibles *</label>
+          <input type="number" id="cupos" min="1" step="1" value="1" required>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" id="cancelar" class="btn-cancelar">Cancelar</button>
+          <button type="submit" class="btn-guardar">
+            Guardar tutoría
+          </button>
+        </div>
+      </form>
+    </div>
+  </div> <!--cierre ventana emergente-->
+
+  <script src="/js/tutores.js"></script>
+  <script src="/pages/dashboard-admin/formulario-nueva-tutoria/formulario-nueva-tutoria.js"></script>
+</body>
+</html>
