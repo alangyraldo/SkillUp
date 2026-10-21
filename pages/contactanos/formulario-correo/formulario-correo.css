@@ -1,14 +1,18 @@
-/* Contenedor Principal de la Sección */
+/* Banda gris a todo el ancho (el div de afuera) */
+div#formulario-correo {
+  background-color: #f8f9fb;
+}
+
+/* Contenido centrado en 1100px, dos columnas */
 .fomulario-correo {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 40px;
-    max-width: 1100px;
-    margin: 60px auto;
-    padding: 0 20px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f8f9fa; 
+  display: flex;
+  align-items: flex-start;
+  gap: 48px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 60px 20px;
+  background-color: transparent;
+  font-family: var(--fuente);
 }
 
 /* --- BLOQUE IZQUIERDO: INFORMACIÓN --- */
