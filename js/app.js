@@ -75,6 +75,49 @@ document.querySelectorAll('[data-route]').forEach(link => { /*selecciona los ele
     }
 });
 
+// Resalta en el navbar el enlace de la página actual
+const normalizar = ruta => ruta.replace(/index\.html$/, '').replace(/\/+$/, '');
+const paginaActual = normalizar(location.pathname);
+
+document.querySelectorAll('#site-header [data-route]').forEach(link => {
+    const esActual = normalizar(link.pathname) === paginaActual;
+    link.classList.toggle('activo', esActual);
+    if (esActual) link.setAttribute('aria-current', 'page');
+});
+
+
+// Navbar: se oculta al bajar y reaparece con hover arriba, al subir o con Tab
+const nav = document.querySelector('#site-header .navbar-skillup');
+if (nav) {
+    let ultimoScroll = window.scrollY;
+
+    const mostrar = () => {
+        nav.classList.remove('nav-oculto');
+        document.body.classList.remove('nav-escondido');
+    };
+    const ocultar = () => {
+        nav.classList.add('nav-oculto');
+        document.body.classList.add('nav-escondido');
+    };
+
+    const zona = document.createElement('div');
+    zona.className = 'nav-zona-hover';
+    document.body.appendChild(zona);
+    zona.addEventListener('mouseenter', mostrar);
+
+    window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    if (Math.abs(y - ultimoScroll) < 8) return;
+    if (y > ultimoScroll && y > 120) ocultar();
+    else if (y < ultimoScroll) mostrar();
+    ultimoScroll = y;
+}, { passive: true });
+
+    nav.addEventListener('mouseleave', () => {
+        if (window.scrollY > 120) ocultar();
+    });
+    nav.addEventListener('focusin', mostrar);
+}
 /*aqui corregimos las rutas de las imagenes
 ej en lugar de
 <img data-asset="assets/images/logo.png" alt="Logo SkillUp">
@@ -166,3 +209,4 @@ if (exportButton) exportButton.addEventListener('click', () => {
     const feedback = document.getElementById('admin-feedback');
     if (feedback) feedback.textContent = 'La exportación estará disponible cuando el dashboard esté conectado a datos reales.';
 });*/
+

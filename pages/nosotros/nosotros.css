@@ -26,8 +26,7 @@
 
 * {
 
-    font-family: 'Montserrat', sans-serif !important;
-
+    font-family: var(--fuente);
 }
  
 .mi-boton-centro:hover {
@@ -418,7 +417,7 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Montserrat', sans-serif;
+  font-family: var(--fuente);
   background-color: #ffffff;
   color: #1a1d20;
   line-height: 1.6;

@@ -11,7 +11,7 @@
 
 /* Estilos generales del documento */
 body {
-    font-family: var(--fuente-principal);
+    font-family: var(--fuente);
     background-color: var(--color-fondo);
     color: var(--color-texto-principal);
     margin: 0;
