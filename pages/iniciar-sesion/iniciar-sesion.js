@@ -1,11 +1,32 @@
 /**
  * Maneja el evento de envío del formulario de inicio de sesión
  */
+/* COMENTARIE TU CODIGO DIANA, PARA PODER TOCAR EL FORMULARIO Y EL INGRESO DE SESION 
 function manejarSesion(evento) {
   evento.preventDefault();
   const correo = document.getElementById('correo-sesion').value;
   console.log(`Iniciando sesión con: ${correo}`);
   alert('¡Inicio de sesión exitoso!');
+}
+*/
+
+// Solo en la página de login: si ya hay sesión de admin, ir al dashboard
+if (document.getElementById('correo-sesion') && typeof esAdmin === 'function' && esAdmin()) {
+  window.location.replace('/pages/dashboard-admin/index.html');
+}
+function manejarSesion(evento) {
+  evento.preventDefault();
+
+  const correo = document.getElementById('correo-sesion').value;
+  const clave = document.getElementById('contrasena-sesion').value;
+  const mensajeError = document.getElementById('mensaje-error');
+
+  if (iniciarSesion(correo, clave)) {
+    window.location.href = '/pages/dashboard-admin/index.html';
+  } else {
+    mensajeError.textContent = 'Correo o contraseña incorrectos.';
+    document.getElementById('contrasena-sesion').value = '';
+  }
 }
 
 /**
