@@ -1,0 +1,205 @@
+:root {
+  --morado: #5b2eff;
+  --morado-claro: #ede8ff;
+  --texto: #1c1b29;
+  --texto-suave: #6b6b7b;
+  --borde: #e4e2ee;
+  --verde: #1f9d55;
+  --fondo: #ffffff;
+  --radio: 16px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: "Montserrat", sans-serif;
+  color: var(--texto);
+  background: var(--fondo);
+  line-height: 1.5;
+}
+
+/* ---------- Botones ---------- */
+.btn {
+  border: none;
+  border-radius: 8px;
+  padding: 10px 24px;
+  font: 600 14px "Montserrat", sans-serif;
+  cursor: pointer;
+}
+.btn--primary { background: var(--morado); color: #fff; }
+.btn--primary:hover { background: #4720d6; }
+:focus-visible { outline: 3px solid var(--morado); outline-offset: 2px; }
+
+/* ---------- Hero ---------- */
+.hero {
+  text-align: center;
+  padding: 56px 20px 40px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+.hero__badge {
+  display: inline-block;
+  background: var(--morado-claro);
+  color: var(--morado);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 14px;
+  border-radius: 999px;
+  margin-bottom: 16px;
+}
+.hero__title { font-size: clamp(26px, 4vw, 38px); font-weight: 700; }
+.hero__text { margin-top: 8px; color: var(--texto-suave); }
+
+.buscador {
+  display: flex;
+  max-width: 520px;
+  margin: 28px auto 0;
+  background-color: #fdf6f5;
+  border-radius: 12px;
+  overflow: hidden;
+  /* sombra interna (igual que el buscador del navbar) */
+  box-shadow:
+    inset 0 2px 6px rgba(0, 0, 0, 0.12),
+    0 1px 3px rgba(0, 0, 0, 0.06);
+}
+.buscador input {
+  flex: 1;
+  border: none;
+  background: transparent; /* el fondo y la sombra los pone .buscador */
+  box-shadow: none;
+  padding: 14px 18px;
+  font: 400 14px "Montserrat", sans-serif;
+}
+.buscador input::placeholder { color: #aaa5a8; }
+.buscador input:focus { outline: none; }
+.buscador:focus-within { box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.12), 0 0 0 2px var(--morado); }
+.buscador .btn { border-radius: 10px; padding: 0 32px; }
+
+/* ---------- Resultados: filtros + cards ---------- */
+.resultados {
+  display: grid;
+  grid-template-columns: 240px 1fr;  /* prueba 280px o 300px */
+  gap: 32px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+  align-items: start;
+}
+
+.filtros {
+  background: #fbfafc;
+  border-radius: var(--radio);
+  padding: 20px;
+  /* sombra interna del panel */
+  box-shadow: inset 0 8px 12px rgba(0, 0, 0, 0.10);
+  position: sticky;
+  top: 16px;
+}
+.filtros__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 8px;
+}
+.filtros__header h2 { font-size: 16px; }
+.filtros__limpiar {
+  background: none;
+  border: none;
+  color: var(--morado);
+  font: 500 13px "Montserrat", sans-serif;
+  cursor: pointer;
+}
+.filtros label { display: block; font-size: 14px; font-weight: 600; margin: 16px 0 6px; }
+.filtros select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  font: 400 13px "Montserrat", sans-serif;
+  background: #fff;
+  /* sombra externa en los desplegables */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+/* ---------- Lista de tutores ---------- */
+.tutores {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 24px;
+}
+.tutores__vacio { grid-column: 1 / -1; color: var(--texto-suave); padding: 32px 0; }
+
+/* ---------- Tarjeta de tutor (estilo del inicio) ---------- */
+.tutor-card {
+  background: #fff;
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.07);
+}
+.tutor-card__foto {
+  width: 100%;
+  height: 190px;
+  object-fit: cover;
+  border-radius: 16px;
+  display: block;
+}
+.tutor-card__rating { margin: 20px 0 0; font-size: 14px; color: var(--texto-suave); }
+.tutor-card__estrella { color: #f5b301; font-size: 18px; }
+.tutor-card__nombre { margin: 12px 0 14px; font-size: 22px; font-weight: 700; }
+
+.tutor-card__fila { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; }
+.tutor-card__materia { margin: 0 0 12px; font-size: 14px; font-weight: 600; color: var(--morado); }
+.tutor-card__desde { margin: 0; font-size: 14px; color: var(--texto-suave); }
+.tutor-card__precio { margin: 0; font-size: 24px; font-weight: 700; }
+
+.tutor-card__accion { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+.tutor-card__disponible { font-size: 14px; font-weight: 500; color: #1fb67a; }
+.tutor-card__boton {
+  background: var(--morado);
+  color: #fff;
+  border-radius: 999px;
+  padding: 10px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.tutor-card__boton:hover { background: #4720d6; color: #fff; }
+.tutor-card__boton:focus-visible { outline: 3px solid var(--morado); outline-offset: 2px; }
+
+/* ---------- Paginación ---------- */
+.paginacion {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 40px 0;
+}
+.paginacion button {
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  font: 600 14px "Montserrat", sans-serif;
+  cursor: pointer;
+}
+.paginacion button.activo { background: var(--morado); color: #fff; }
+.paginacion button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ---------- Recursos ---------- */
+.recursos { max-width: 1100px; margin: 0 auto; padding: 24px 20px 64px; text-align: center; }
+.recursos h2 { font-size: 24px; margin-bottom: 28px; }
+.recursos__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; }
+.recurso { text-align: left; padding: 20px; border-radius: var(--radio); }
+.recurso--lila { background: #ece8ff; }
+.recurso--azul { background: #e3f0ff; }
+.recurso--durazno { background: #ffeedd; }
+.recurso__tipo { font-size: 12px; font-weight: 600; color: var(--morado); }
+.recurso h3 { font-size: 15px; margin: 8px 0 6px; }
+.recurso p { font-size: 12px; color: var(--texto-suave); }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 800px) {
+  .resultados { grid-template-columns: 1fr; }
+  .filtros { position: static; }
+}

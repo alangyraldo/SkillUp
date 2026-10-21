@@ -1,1 +1,122 @@
-<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Crear cuenta | SkillUp</title><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"><link rel="stylesheet" href="../../css/global.css"><link rel="stylesheet" href="../../css/pages/modules.css"></head><body><div id="site-header"></div><main class="container py-5"><div class="row justify-content-center"><div class="col-lg-8"><section class="module-panel"><span class="badge text-bg-light">ÚNETE A SKILLUP</span><h1 class="display-6 fw-bold mt-3">Crea tu cuenta</h1><p>Regístrate para encontrar tutores, guardar recursos y gestionar tus tutorías.</p><form id="register-form" class="row g-3"><div class="col-md-6"><label class="form-label" for="nombre-registro">Nombre</label><input class="form-control" id="nombre-registro" autocomplete="given-name" required></div><div class="col-md-6"><label class="form-label" for="apellido-registro">Apellido</label><input class="form-control" id="apellido-registro" autocomplete="family-name" required></div><div class="col-12"><label class="form-label" for="email-registro">Correo electrónico</label><input class="form-control" type="email" id="email-registro" autocomplete="email" required></div><div class="col-md-6"><label class="form-label" for="password-registro">Contraseña</label><input class="form-control" type="password" id="password-registro" minlength="8" autocomplete="new-password" required></div><div class="col-md-6"><label class="form-label" for="confirmar-password">Confirmar contraseña</label><input class="form-control" type="password" id="confirmar-password" minlength="8" autocomplete="new-password" required></div><div class="col-12"><label class="form-label" for="tipo-usuario">Quiero registrarme como</label><select class="form-select" id="tipo-usuario" required><option value="estudiante">Estudiante</option><option value="tutor">Tutor</option></select></div><div class="col-12"><button class="btn btn-skillup w-100" type="submit">Crear cuenta</button><p class="form-feedback mt-3" aria-live="polite"></p><p class="small text-secondary">Prototipo de interfaz: la creación de cuentas requiere conectar autenticación y backend.</p></div></form><p class="mt-3">¿Ya tienes cuenta? <a data-route="iniciar-sesion" href="#">Inicia sesión</a></p></section></div></div></main><div id="site-footer"></div><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script><script type="module" src="../../js/app.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkillUp - Crear Cuenta</title>
+  <link rel="stylesheet" href="/pages/registro/registro.css">
+</head>
+<body>
+
+  <div class="contenedor-principal">
+    <!-- Columna Izquierda (Hero de Registro) -->
+    <section class="seccion-hero">
+      <div class="logo">
+        <img class="icono-logo" src="/assets/skillup_icono_sin fondo.png">
+        <img id="letras-logo" src="/assets/skillup_logo_blanco.png">
+      </div>
+
+      <div class="contenido-hero">
+        <span class="etiqueta">Registro</span>
+        <h1 class="titulo-hero" style="font-size: 2.2rem;">
+          TU PROXIMO NIVEL <br><span class="resaltado">EMPIEZA AQUI</span>
+        </h1>
+        <p class="subtitulo-hero">
+          Crea tu cuenta gratis y conecta con tutores o comparte lo que sabes con nuevos estudiantes.
+        </p>
+
+        <div class="caracteristicas-hero">
+          <div class="tarjeta-caracteristica">✔ Tutores con reseñas reales</div>
+          <div class="tarjeta-caracteristica">✔ Reserva tu clase en pocos clics</div>
+          <div class="tarjeta-caracteristica">✔ Aprende desde donde estés</div>
+        </div>
+      </div>
+
+      <div class="pie-hero">
+        Tu mejor inversión es la que haces en ti 
+      </div>
+    </section>
+
+    <!-- Columna Derecha (Formulario de Registro) -->
+    <section class="seccion-formulario">
+      <nav class="navegacion-superior">
+        <a href="/pages/incio/index.html" class="enlace-volver">&larr; Volver al inicio</a>
+      </nav>
+
+      <div class="envoltorio-formulario">
+        <div class="cabecera-formulario">
+          <h2>Crea tu cuenta</h2>
+          <p>Únete a SkillUp y empieza a aprender o a enseñar</p>
+        </div>
+
+        <!-- Selector de Rol Interactivo -->
+        <div class="selector-rol">
+          <button type="button" class="boton-rol activo" onclick="seleccionarRol('aprender', this)">Quiero aprender</button>
+          <button type="button" class="boton-rol" onclick="seleccionarRol('ensenar', this)">Quiero enseñar</button>
+        </div>
+
+        <form onsubmit="manejarRegistro(event)">
+          <div class="fila-formulario">
+            <div class="grupo-formulario">
+              <label for="nombre-registro">Nombre</label>
+              <input type="text" id="nombre-registro" placeholder="Tu nombre" required>
+            </div>
+            <div class="grupo-formulario">
+              <label for="apellido-registro">Apellido</label>
+              <input type="text" id="apellido-registro" placeholder="Tu apellido" required>
+            </div>
+          </div>
+
+          <div class="grupo-formulario">
+            <label for="correo-registro">Correo electrónico</label>
+            <input type="email" id="correo-registro" placeholder="tucorreo@ejemplo.com" required>
+          </div>
+
+          <div class="grupo-formulario">
+            <label for="contrasena-registro">Contraseña</label>
+            <!-- Agregamos el evento oninput="verificarFortaleza(this.value)" -->
+            <input type="password" id="contrasena-registro" placeholder="Crea una contraseña" required minlength="8" oninput="verificarFortaleza(this.value)">
+            
+            <div class="indicador-fortaleza">
+              <div class="barra-fortaleza" id="barra-1"></div>
+              <div class="barra-fortaleza" id="barra-2"></div>
+              <div class="barra-fortaleza" id="barra-3"></div>
+              <div class="barra-fortaleza" id="barra-4"></div>
+            </div>
+            <p class="texto-ayuda" id="texto-ayuda-password">Mínimo 8 caracteres con letras y números</p>
+          </div>
+
+          <div class="opciones-formulario">
+            <label class="etiqueta-casilla">
+              <input type="checkbox" required checked> Acepta los términos y las políticas de privacidad
+            </label>
+          </div>
+
+          <button type="submit" class="boton-enviar">Crear cuenta</button>
+        </form>
+
+        <div class="separador-social">o regístrate con</div>
+
+        <div class="contenedor-sociales">
+          <a href="#" class="boton-social">
+            <span>Google</span>
+          </a>
+          <a href="#" class="boton-social">
+            <span>LinkedIn</span>
+          </a>
+        </div>
+
+        <div class="enlace-cambio-auth">
+          ¿Ya tienes cuenta? <a href="/pages/iniciar-sesion/index.html">Inicia sesión</a>
+        </div>
+
+        <div class="pie-pagina-legal">
+          2026 SkillUp - Términos - Privacidad
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="/pages/iniciar-sesion/iniciar-sesion.js"></script>
+</body>
+</html>

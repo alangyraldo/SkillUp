@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataforma de Tutorías</title>
+    <!-- Importación de iconos modernos Lucide -->
+    <script src="https://unpkg.com"></script>
+    <!-- Vinculación del archivo CSS externo -->
+    <link rel="stylesheet" href="./inicio.css">
+</head>
+<body>
+
+    <!-- SECCIÓN 1: HERO -->
+    <section class="hero-section container">
+        <div class="hero-content">
+            <h1 class="hero-title">
+                Conecta con el <br>conocimiento que <br><span class="highlight-text">necesitas</span>
+            </h1>
+            <p class="hero-subtitle">
+                Conectamos personas que quieren aprender con tutores y profesionales que pueden compartir sus conocimientos.
+            </p>
+            <div class="button-group">
+                <button class="btn btn-primary">Agendar tutorías</button>
+                <button class="btn btn-secondary">Explorar recursos</button>
+            </div>
+            
+            <!-- Estudiantes registrados -->
+            <div class="registered-students">
+                <div class="avatar-group">
+                    <div class="avatar">
+                        <img src="./img/incio.jpg" alt="Estudiante 1">
+                    </div>
+                    <div class="avatar">
+                        <img src="./img/persona(2).jpg" alt="Estudiante 2">
+                    </div>
+                    <div class="avatar">
+                        <img src="./img/persona(3).jpg" alt="Estudiante 3">
+                    </div>
+                </div>
+                <div>
+                    <p class="student-count">+ 2.500 estudiantes registrados</p>
+                    <p class="student-sub">Aprende con nosotros</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Composición Visual Derecha -->
+        <div class="hero-visual">
+            <div class="main-image-wrapper">
+                <img src="./img/inicio.jpg" alt="Estudiante aprendiendo en línea">
+            </div>
+            <!-- Badge Calificación -->
+            <div class="badge badge-rating">
+                <span class="star-icon">★</span>
+                <div>
+                    <p class="badge-title">49.5</p>
+                    <p class="badge-desc">Calificación promedio</p>
+                </div>
+            </div>
+            <!-- Badge Próxima Tutoría -->
+            <div class="badge badge-status">
+                <div class="status-dot"></div>
+                <div>
+                    <p class="badge-title">Próxima tutoría</p>
+                    <p class="badge-desc">Hoy 4:00 pm</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 2: TRES SIMPLES PASOS -->
+    <section class="steps-section text-center">
+        <div class="container">
+            <h2 class="section-title">Aprende en tres simples pasos</h2>
+            <p class="section-subtitle">Encuentra el acompañamiento que necesitas, cuando lo necesitas</p>
+            
+            <div class="steps-grid">
+                <!-- Paso 1 -->
+                <div class="step-card">
+                    <div class="icon-box">
+                        <i data-lucide="search"></i>
+                    </div>
+                    <button class="btn-step">Elige tu tema</button>
+                    <p class="step-text">Busca entre cientos de temas y encuentra justo lo que quieras aprender</p>
+                </div>
+                <!-- Paso 2 -->
+                <div class="step-card">
+                    <div class="icon-box">
+                        <i data-lucide="calendar"></i>
+                    </div>
+                    <button class="btn-step">Agenda una tutoría</button>
+                    <p class="step-text">Selecciona el tutor, la fecha y el horario que mejor se adapten a ti</p>
+                </div>
+                <!-- Paso 3 -->
+                <div class="step-card">
+                    <div class="icon-box">
+                        <i data-lucide="video"></i>
+                    </div>
+                    <button class="btn-step">Conéctate y aprende</button>
+                    <p class="step-text">Únete a tu sesión y alcanza tus metas con acompañamiento experto</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 3: TUTORES DESTACADOS -->
+    <section class="tutors-section container">
+        <h2 class="section-title text-center">Tutores destacados</h2>
+        
+        <div class="tutors-grid">
+            <!-- Tarjeta Tutor 1 -->
+            <div class="tutor-card">
+                <img src="./img/persona.jpg" alt="Andres Torres" class="tutor-img">
+                <div class="tutor-rating">
+                    <span class="star-icon">★</span> <span>(40 reseñas)</span>
+                </div>
+                <h3 class="tutor-name">Andres Torres</h3>
+                <div class="tutor-footer">
+                    <div>
+                        <p class="tutor-specialty">Marketing digital</p>
+                        <p class="price-label">Desde</p>
+                        <p class="price-value">$ 50.000</p>
+                    </div>
+                    <div class="tutor-action">
+                        <p class="availability-status">Disponible hoy</p>
+                        <button class="btn btn-sm">Ver perfil</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tarjeta Tutor 2 -->
+            <div class="tutor-card">
+                <img src="./img/incio.jpg" alt="Sofia Veléz" class="tutor-img">
+                <div class="tutor-rating">
+                    <span class="star-icon">★</span> <span>(42 reseñas)</span>
+                </div>
+                <h3 class="tutor-name">Sofia Veléz</h3>
+                <div class="tutor-footer">
+                    <div>
+                        <p class="tutor-specialty">Inglés</p>
+                        <p class="price-label">Desde</p>
+                        <p class="price-value">$ 55.000</p>
+                    </div>
+                    <div class="tutor-action">
+                        <p class="availability-status">Disponible hoy</p>
+                        <button class="btn btn-sm">Ver perfil</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tarjeta Tutor 3 -->
+            <div class="tutor-card">
+                <img src="./img/persona(4).jpg" alt="Sara Giraldo" class="tutor-img">
+                <div class="tutor-rating">
+                    <span class="star-icon">★</span> <span>(48 reseñas)</span>
+                </div>
+                <h3 class="tutor-name">Sara Giraldo</h3>
+                <div class="tutor-footer">
+                    <div>
+                        <p class="tutor-specialty">Fotografía</p>
+                        <p class="price-label">Desde</p>
+                        <p class="price-value">$ 50.000</p>
+                    </div>
+                    <div class="tutor-action">
+                        <p class="availability-status">Disponible hoy</p>
+                        <button class="btn btn-sm">Ver perfil</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 4: RECURSOS -->
+    <section class="resources-section container">
+        <h2 class="section-title text-center">Recursos para impulsar tu crecimiento</h2>
+        
+        <div class="resources-grid">
+            <!-- Recurso 1 -->
+            <div class="resource-card">
+                <div>
+                    <span class="resource-type">Libro</span>
+                    <h3 class="resource-title">Fundamentos de programación</h3>
+                    <p class="resource-desc">Una guía práctica para dar tus primeros pasos en tecnología.</p>
+                </div>
+                <div class="resource-arrow">
+                    <i data-lucide="arrow-right"></i>
+                </div>
+            </div>
+
+            <!-- Recurso 2 -->
+            <div class="resource-card">
+                <div>
+                    <span class="resource-type">Video</span>
+                    <h3 class="resource-title">Inglés para entrevistas</h3>
+                    <p class="resource-desc">Claves para comunicarte con confianza en tu próximo proceso.</p>
+                </div>
+                <div class="resource-arrow">
+                    <i data-lucide="arrow-right"></i>
+                </div>
+            </div>
+
+            <!-- Recurso 3 -->
+            <div class="resource-card">
+                <div>
+                    <span class="resource-type">Curso</span>
+                    <h3 class="resource-title">Estrategia de marca personal</h3>
+                    <p class="resource-desc">Construye una presencia profesional memorable.</p>
+                </div>
+                <div class="resource-arrow">
+                    <i data-lucide="arrow-right"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 5: CALL TO ACTION -->
+    <section class="cta-section container">
+        <div class="cta-box">
+            <p class="cta-tagline">Tu próxima habilidad está más cerca de lo que imaginas</p>
+            <h2 class="cta-title">¿Listo para aprender algo nuevo?</h2>
+            <p class="cta-desc">Únete a miles de personas que están aprendiendo con nosotros.</p>
+            <button class="btn btn-cta">Encontrar un tutor</button>
+        </div>
+    </section>
+
+    <script>
+        // Renderizado automático de iconos
+        lucide.createIcons();
+    </script>
+</body>
+</html>
