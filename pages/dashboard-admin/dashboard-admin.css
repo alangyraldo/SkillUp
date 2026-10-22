@@ -51,7 +51,7 @@ body {
 
 
 .imagen-logo {
-    width: 100px; 
+    width: px; 
     height: 100px;
     object-fit: contain;
 }
@@ -264,13 +264,13 @@ body {
 
 .fila-tabla {
     display: grid;
-    /* Forzamos exactamente 6 columnas horizontales */
-    grid-template-columns: 2.5fr 2fr 1.5fr 1.2fr 1fr 1fr ; 
-    gap: 15px; /* Espacio mínimo garantizado entre columnas */
-    padding: 16px 20px ;
+    /* Sincronizado: 2.5fr (0.5 + 2) une visualmente el icono y el texto bajo 'TÍTULO' */
+    grid-template-columns: 2.5fr 2fr 1.3fr 1.4fr 1fr 1fr; 
+    gap: 15px;
+    padding: 16px 20px;
     align-items: center;
     width: 100%;
-    border-bottom: 1px solid var(--gris-claro);
+    box-sizing: border-box;
 }
 
 /* Encabezado gris de títulos */

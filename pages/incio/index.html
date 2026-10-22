@@ -7,6 +7,8 @@
     <!-- Importación de iconos modernos Lucide -->
     <script src="https://unpkg.com"></script>
     <!-- Vinculación del archivo CSS externo -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="../../css/global.css">
     <link rel="stylesheet" href="./inicio.css">
     <link rel="stylesheet" href="../../css/components/navbar.css">
@@ -26,8 +28,8 @@
                 Conectamos personas que quieren aprender con tutores y profesionales que pueden compartir sus conocimientos.
             </p>
             <div class="button-group">
-                <button class="btn btn-primary">Agendar tutorías</button>
-                <button class="btn btn-secondary">Explorar recursos</button>
+                <button class="btn btn-primary" onclick="window.location.href='/pages/contactanos/index.html'">Agendar tutorías</button>
+                <button class="btn btn-secondary" onclick="window.location.href='/pages/biblioteca/index.html'">Explorar recursos</button>
             </div>
             
             <!-- Estudiantes registrados -->
@@ -86,7 +88,7 @@
                     <div class="icon-box">
                         <i data-lucide="search"></i>
                     </div>
-                    <button class="btn-step">Elige tu tema</button>
+                    <button class="btn-step" onclick="window.location.href='/pages/biblioteca/index.html'">Elige tu tema</button>
                     <p class="step-text">Busca entre cientos de temas y encuentra justo lo que quieras aprender</p>
                 </div>
                 <!-- Paso 2 -->
@@ -94,7 +96,7 @@
                     <div class="icon-box">
                         <i data-lucide="calendar"></i>
                     </div>
-                    <button class="btn-step">Agenda una tutoría</button>
+                    <button class="btn-step" onclick="window.location.href='/pages/biblioteca/index.html'">Agenda una tutoría</button>
                     <p class="step-text">Selecciona el tutor, la fecha y el horario que mejor se adapten a ti</p>
                 </div>
                 <!-- Paso 3 -->
@@ -102,7 +104,7 @@
                     <div class="icon-box">
                         <i data-lucide="video"></i>
                     </div>
-                    <button class="btn-step">Conéctate y aprende</button>
+                    <button class="btn-step" onclick="window.location.href='/pages/iniciar-sesion/index.html'">Conéctate y aprende</button>
                     <p class="step-text">Únete a tu sesión y alcanza tus metas con acompañamiento experto</p>
                 </div>
             </div>
@@ -129,7 +131,7 @@
                     </div>
                     <div class="tutor-action">
                         <p class="availability-status">Disponible hoy</p>
-                        <button class="btn btn-sm">Ver perfil</button>
+                        <button class="btn btn-sm" onclick="window.location.href='/pages/buscar-tutor/index.html'">Ver perfil</button>
                     </div>
                 </div>
             </div>
@@ -149,7 +151,7 @@
                     </div>
                     <div class="tutor-action">
                         <p class="availability-status">Disponible hoy</p>
-                        <button class="btn btn-sm">Ver perfil</button>
+                        <button class="btn btn-sm" onclick="window.location.href='/pages/buscar-tutor/index.html'">Ver perfil</button>
                     </div>
                 </div>
             </div>
@@ -169,7 +171,7 @@
                     </div>
                     <div class="tutor-action">
                         <p class="availability-status">Disponible hoy</p>
-                        <button class="btn btn-sm">Ver perfil</button>
+                        <button class="btn btn-sm" onclick="window.location.href='/pages/buscar-tutor/index.html'">Ver perfil</button>
                     </div>
                 </div>
             </div>
@@ -182,7 +184,7 @@
         
         <div class="resources-grid">
             <!-- Recurso 1 -->
-            <div class="resource-card">
+            <div class="resource-card" onclick="window.location.href='/pages/biblioteca/index.html'">
                 <div>
                     <span class="resource-type">Libro</span>
                     <h3 class="resource-title">Fundamentos de programación</h3>
@@ -194,7 +196,7 @@
             </div>
 
             <!-- Recurso 2 -->
-            <div class="resource-card">
+            <div class="resource-card" onclick="window.location.href='/pages/biblioteca/index.html'">
                 <div>
                     <span class="resource-type">Video</span>
                     <h3 class="resource-title">Inglés para entrevistas</h3>
@@ -206,7 +208,7 @@
             </div>
 
             <!-- Recurso 3 -->
-            <div class="resource-card">
+            <div class="resource-card"  onclick="window.location.href='/pages/biblioteca/index.html'">
                 <div>
                     <span class="resource-type">Curso</span>
                     <h3 class="resource-title">Estrategia de marca personal</h3>
@@ -225,7 +227,7 @@
             <p class="cta-tagline">Tu próxima habilidad está más cerca de lo que imaginas</p>
             <h2 class="cta-title">¿Listo para aprender algo nuevo?</h2>
             <p class="cta-desc">Únete a miles de personas que están aprendiendo con nosotros.</p>
-            <button class="btn btn-cta">Encontrar un tutor</button>
+            <button class="btn btn-cta" onclick="window.location.href='/pages/buscar-tutor/index.html'">Encontrar un tutor</button>
         </div>
     </section>
     <div id="site-footer"></div>
