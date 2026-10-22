@@ -204,16 +204,16 @@ button {
 }
 
 .tutoria-card {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: white;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  padding: 14px 20px;
-  gap: 20px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
-  transition: box-shadow 0.2s;
+    display: grid; /* CORREGIDO: De flex a grid */
+    grid-template-columns: 0.5fr 1.7fr 2fr 1fr 1.5fr 1.2fr 1.1fr; /* 7 columnas para los 7 elementos sueltos */
+    gap: 15px; /* Mismo gap que tiene tu .fila-tabla */
+    align-items: center;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 16px 20px; /* Cambiado a 16px para igualar el alto interno de .fila-tabla */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+    transition: box-shadow 0.2s;
 }
 
 .tutoria-card:hover {
@@ -266,7 +266,7 @@ button {
   color: #0f172a;
   font-size: 14px;
   flex: 0.8;
-  text-align: right;
+  text-align: center;
 }
 
 .badge-estado {

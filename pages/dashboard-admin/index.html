@@ -46,7 +46,7 @@
             </div>
 
             <!-- Botón para salir -->
-            <button class="boton-salir">
+            <button class="boton-salir" id="btn-cerrar-sesion">
                 <i data-lucide="log-out"></i> Cerrar Sesión
             </button>
         </aside>
@@ -58,7 +58,7 @@
             <header class="barra-perfil">
                 <h1 class="titulo-pagina">Panel de Control</h1>
                 <div class="bloque-usuario">
-                    <span class="nombre-usuario">Bienvenido, Usuario</span>
+                    <span class="nombre-usuario">Bienvenido, Administrador</span>
                     <div class="avatar-usuario">U</div>
                 </div>
             </header>
@@ -271,9 +271,13 @@
   <script src="/js/tutores.js"></script>
   <script src="/pages/dashboard-admin/formulario-nueva-tutoria/formulario-nueva-tutoria.js"></script>
     <!-- Inicializador de Iconos -->
-    <script>
+    
+    <script src="https://unpkg.com">
         lucide.createIcons();
     </script>
+    <script src="../../js/auth.js"></script> 
+    <script src="./dashboard-admin.js"></script>
+
 </body>
 
 </html>
