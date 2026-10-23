@@ -249,7 +249,8 @@ function capturarTutoria(evento) {
     tutorias = tutorias.map(t => t.id === idTutoriaEnEdicion ? { ...t, ...datosFormulario } : t);
   } else {
     const nuevaTutoria = {
-      id: tutorSeleccionadoActual ? tutorSeleccionadoActual.id : (tutorias.length > 0 ? Math.max(...tutorias.map(t => t.id)) + 1 : 1),
+      //id: tutorSeleccionadoActual ? tutorSeleccionadoActual.id : (tutorias.length > 0 ? Math.max(...tutorias.map(t => t.id)) + 1 : 1),
+      id: tutorias.length > 0 ? Math.max(...tutorias.map(t => t.id)) + 1 : 1,
       ...datosFormulario
     };
     tutorias.push(nuevaTutoria);
