@@ -528,3 +528,45 @@ width: 32px;
     opacity: 0.9;
     margin-bottom: 32px;
 }
+
+.tutor-card__disponible.sin-cupos { color: #c62828; }
+/* Cards del mismo alto, con el pie siempre abajo */
+.tutors-grid { align-items: stretch; }
+.tutor-card { display: flex; flex-direction: column; }
+.tutor-footer {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+/* Que el precio no se parta en dos líneas */
+.price-value { white-space: nowrap; }
+
+/* Acción a la derecha: etiqueta arriba, botón abajo, alineados */
+.tutor-action {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* Cupos como etiqueta pequeña tipo "pill" */
+.tutor-card__disponible {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #e6f7ee;
+  color: #1b8a4b;
+  white-space: nowrap;
+}
+
+.tutor-card__disponible.sin-cupos {
+  background: #fde8e8;
+  color: #c62828;
+}

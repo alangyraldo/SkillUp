@@ -10,7 +10,7 @@ function manejarSesion(evento) {
 }
 */
 
-// Solo en la página de login: si ya hay sesión de admin, ir al dashboard
+// Solo en la pagina de login si ya hay sesion de admin ir al dashboard
 if (document.getElementById('correo-sesion') && typeof esAdmin === 'function' && esAdmin()) {
   window.location.replace('/pages/dashboard-admin/index.html');
 }

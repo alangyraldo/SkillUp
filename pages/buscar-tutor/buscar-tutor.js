@@ -26,7 +26,7 @@ function filtrarTutores() {
     return coincideTexto && coincideMateria && coincideNivel && coincidePrecio && coincideModalidad;
   });
 }
-
+/*
 function crearCard(t) {
   return `
     <article class="tutor-card">
@@ -46,6 +46,46 @@ function crearCard(t) {
       </div>
     </article>`;
 }
+*/
+
+
+function crearCupos(t) {
+  const sesiones = Cupos.porTutor(t.nombre);
+  if (!sesiones.length) {
+    return `<p class="cupos-vacio">Sin tutorías programadas</p>`;
+  }
+  return `<ul class="cupos-lista">` + sesiones.map((s) => {
+    const agotado = s.cupos <= 0;
+    return `
+      <li class="cupos-item ${agotado ? "cupos-item--agotado" : ""}">
+        <span>${s.fecha} ${s.hora}</span>
+        <strong>${agotado ? "Sin cupos" : s.cupos + " cupos"}</strong>
+        <button type="button" class="cupos-item__btn" data-reservar="${s.id}">Reservar</button>
+      </li>`;
+  }).join("") + `</ul>`;
+}
+
+function crearCard(t) {
+  return `
+    <article class="tutor-card">
+      <img class="tutor-card__foto" src="${t.foto}" alt="Foto de ${t.nombre}">
+      <p class="tutor-card__rating"><span class="tutor-card__estrella">★</span> (${t.resenas} reseñas)</p>
+      <h3 class="tutor-card__nombre">${t.nombre}</h3>
+      <div class="tutor-card__fila">
+        <div>
+          <p class="tutor-card__materia">${t.materia}</p>
+          <p class="tutor-card__desde">Desde</p>
+          <p class="tutor-card__precio">${formatoCOP(t.precio)}</p>
+        </div>
+        <div class="tutor-card__accion">
+          <span class="tutor-card__disponible">Disponible hoy</span>
+          <a class="tutor-card__boton" href="../perfil-tutor/index.html?tutor=${t.id}">Ver perfil</a>
+        </div>
+      </div>
+      ${crearCupos(t)}
+    </article>`;
+}
+
 
 function crearPaginacion(totalPaginas) {
   paginacion.innerHTML = "";
@@ -66,6 +106,22 @@ function crearPaginacion(totalPaginas) {
   }
   paginacion.appendChild(boton("›", paginaActual + 1, { deshabilitado: paginaActual === totalPaginas }));
 }
+
+function mostrarModalSinCupos() {
+  bootstrap.Modal.getOrCreateInstance(document.getElementById("modalSinCupos")).show();
+}
+
+// Clic en "Reservar": descuenta un cupo o avisa que ya no hay.
+lista.addEventListener("click", (e) => {
+  const boton = e.target.closest("[data-reservar]");
+  if (!boton) return;
+  const descontado = Cupos.descontar(Number(boton.dataset.reservar));
+  if (!descontado) mostrarModalSinCupos();
+});
+
+// Si el admin cambia un cupo, la vista se actualiza sola.
+window.addEventListener("cupos:cambio", render);
+
 
 function render() {
   const resultado = filtrarTutores();

@@ -1,0 +1,130 @@
+
+<button type="button" id="boton-nuevo-tutor" class="boton-accion-primario">+ Nuevo tutor</button>
+
+<div id="modal-superposicion-nuevo-tutor" class="modal-superposicion modal-oculto">
+    
+  <div class="modal-contenedor-nuevo-tutor">
+   
+    <div class="modal-encabezado-nuevo-tutor">
+      <div>
+        <h2 class="modal-titulo-nuevo-tutor">Nuevo tutor</h2>
+        <p class="modal-subtitulo-nuevo-tutor">Completa la información para registrar un nuevo tutor en la plataforma.</p>
+      </div>
+      <button type="button" id="boton-cerrar-modal-encabezado" class="boton-cerrar-modal">&times;</button>
+    </div>
+    
+    <form id="formulario-registro-nuevo-tutor" class="modal-cuerpo-nuevo-tutor">
+        
+      <div class="fila-formulario flex-horizontal alineacion-centrada">
+        <div class="contenedor-foto-perfil-tutor">
+          <div class="vista-previa-foto-tutor" id="vista-previa-foto-tutor">
+            <svg class="icono-marcador-posicion-foto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+          </div>
+          <label for="campo-subida-foto-tutor" class="etiqueta-subida-foto-tutor">
+            <svg style="width:14px;height:14px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h0.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+          </label>
+          <input type="file" id="campo-subida-foto-tutor" accept="image/*" class="entrada-archivo-oculta">
+        </div>
+        
+        <div class="grupo-campo-formulario flex-expandir">
+          <label for="campo-entrada-nombre-tutor" class="etiqueta-formulario">Nombre completo *</label>
+          <input type="text" id="campo-entrada-nombre-tutor" class="entrada-texto-formulario" required placeholder="Ej. Carlos Mendoza">
+        </div>
+      </div>
+      
+      <div class="cuadricula-formulario-dos-columnas">
+        <div class="grupo-campo-formulario">
+          <label for="campo-seleccion-materia-tutor" class="etiqueta-formulario">Materia *</label>
+          <select id="campo-seleccion-materia-tutor" class="menu-desplegable-formulario" required>
+            <option value="" disabled selected>Selecciona materia</option>
+            <option value="Matemáticas">Matemáticas</option>
+            <option value="Física">Física</option>
+            <option value="Química">Química</option>
+            <option value="Programación">Programación</option>
+            <option value="Inglés">Inglés</option>
+          </select>
+        </div>
+        <div class="grupo-campo-formulario">
+          <label for="campo-seleccion-nivel-tutor" class="etiqueta-formulario">Nivel de conocimiento *</label>
+          <select id="campo-seleccion-nivel-tutor" class="menu-desplegable-formulario" required>
+            <option value="" disabled selected>Selecciona nivel</option>
+            <option value="Básico">Básico</option>
+            <option value="Intermedio">Intermedio</option>
+            <option value="Avanzado">Avanzado</option>
+            <option value="Universitario">Universitario</option>
+          </select>
+        </div>
+      </div>
+ 
+      <div class="cuadricula-formulario-tres-columnas">
+        <div class="grupo-campo-formulario">
+          <label for="campo-entrada-precio-tutor" class="etiqueta-formulario">Precio por clase (COP) *</label>
+          <input type="number" id="campo-entrada-precio-tutor" class="entrada-texto-formulario" required min="0" placeholder="Ej. 35000">
+        </div>
+        <div class="grupo-campo-formulario">
+          <label for="campo-entrada-experiencia-tutor" class="etiqueta-formulario">Experiencia (Años) *</label>
+          <input type="number" id="campo-entrada-experiencia-tutor" class="entrada-texto-formulario" required min="0" value="1">
+        </div>
+        <div class="grupo-campo-formulario">
+          <label for="campo-seleccion-modalidad-tutor" class="etiqueta-formulario">Modalidad *</label>
+          <select id="campo-seleccion-modalidad-tutor" class="menu-desplegable-formulario" required>
+            <option value="Virtual">Virtual</option>
+            <option value="Presencial">Presencial</option>
+            <option value="Híbrida">Híbrida</option>
+          </select>
+        </div>
+      </div>
+
+      
+      <div class="cuadricula-formulario-dos-columnas">
+        <div class="grupo-campo-formulario">
+          <label for="campo-entrada-idiomas-tutor" class="etiqueta-formulario">Idiomas (separados por coma)</label>
+          <input type="text" id="campo-entrada-idiomas-tutor" class="entrada-texto-formulario" value="Español" placeholder="Ej. Español, Inglés">
+        </div>
+        <div class="grupo-campo-formulario">
+          <label for="campo-entrada-habilidades-tutor" class="etiqueta-formulario">Habilidades (separadas por coma)</label>
+          <input type="text" id="campo-entrada-habilidades-tutor" class="entrada-texto-formulario" placeholder="Ej. Cálculo, Python, Algoritmos">
+        </div>
+      </div>
+
+      <!-- Descripción -->
+      <div class="grupo-campo-formulario">
+        <label for="campo-textarea-descripcion-tutor" class="etiqueta-formulario">Descripción</label>
+        <textarea id="campo-textarea-descripcion-tutor" class="area-texto-formulario" rows="2" placeholder="Si se deja vacío, se generará una descripción por defecto."></textarea>
+      </div>
+
+      <!-- Gestión de Horarios -->
+      <div class="grupo-campo-formulario">
+        <label class="etiqueta-formulario">Horarios de atención</label>
+        <div id="contenedor-lista-horarios-tutor" class="contenedor-lista-horarios-tutor">
+          <div class="fila-horario-atencion-tutor">
+            <select class="seleccion-dia-semana-horario menu-desplegable-formulario">
+              <option value="Lunes">Lunes</option>
+              <option value="Martes">Martes</option>
+              <option value="Miércoles">Miércoles</option>
+              <option value="Jueves">Jueves</option>
+              <option value="Viernes">Viernes</option>
+              <option value="Sábado">Sábado</option>
+              <option value="Domingo">Domingo</option>
+            </select>
+            <input type="time" class="entrada-hora-inicio-horario entrada-texto-formulario" value="08:00">
+            <button type="button" class="boton-eliminar-fila-horario" title="Eliminar horario">&times;</button>
+          </div>
+        </div>
+        <button type="button" id="boton-agregar-nuevo-horario-tutor" class="boton-secundario-pequeno">+ Agregar otro horario</button>
+      </div>
+
+      
+      <div class="modal-pie-nuevo-tutor">
+        <button type="button" id="boton-cancelar-modal-tutor" class="boton-accion-secundario">Cancelar</button>
+        <button type="submit" id="boton-guardar-nuevo-tutor" class="boton-accion-primario">Guardar tutor</button>
+      </div>
+    </form>
+    
+  </div>
+</div>
