@@ -227,6 +227,12 @@ body {
     margin-bottom: 20px;
 }
 
+.contenedor-botones{
+    display:flex;
+    flex-direction: row;
+    column-gap: 10px;
+}
+
 .encabezado-seccion h2 {
     font-size: 1.2rem;
     color: var(--azul-oscuro);
@@ -250,8 +256,12 @@ body {
     transition: all 0.2s ease;
 }
 
-.boton-nueva-tutoria:hover {
+.btn-nueva-tutoria:hover {
     background-color: var(--violeta-intenso); /* Cambia al violeta intenso en hover */
+}
+
+.btn-nueva-tutoria:active {
+    scale:0.98;
 }
 
 /* Estilos de la tabla falsa */
