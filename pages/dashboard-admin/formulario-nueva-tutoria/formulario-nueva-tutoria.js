@@ -303,7 +303,9 @@ function mostrarTutorias() {
 
     const badgeEstado = document.createElement("span");
     badgeEstado.className = "badge-estado";
-    badgeEstado.textContent = "Activa";
+    const sinCupos = tutoria.cupos <= 0;
+    badgeEstado.textContent = sinCupos ? "Sin cupos" : `Activa · ${tutoria.cupos} cupos`;
+    badgeEstado.classList.toggle("badge-agotado", sinCupos);
 
     const acciones = document.createElement("div");
     acciones.className = "tutoria-acciones";
@@ -339,4 +341,11 @@ formulario.addEventListener("submit", capturarTutoria);
 document.addEventListener("DOMContentLoaded", () => {
   cargarSelectMaterias();
   mostrarTutorias();
+});
+
+window.addEventListener("storage", (e) => {
+  if (e.key === "tutorias") {
+    tutorias = JSON.parse(e.newValue) || [];
+    mostrarTutorias();
+  }
 });
