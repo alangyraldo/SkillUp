@@ -86,7 +86,7 @@ document.querySelectorAll('#site-header [data-route]').forEach(link => {
 });
 
 
-// Navbar: se oculta al bajar y reaparece con hover arriba, al subir o con Tab
+// el navbarse oculta al bajar y reaparece con hover arriba al subir o con tab
 const nav = document.querySelector('#site-header .navbar-skillup');
 if (nav) {
     let ultimoScroll = window.scrollY;
