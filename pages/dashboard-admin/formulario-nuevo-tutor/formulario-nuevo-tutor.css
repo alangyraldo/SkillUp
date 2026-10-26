@@ -1,0 +1,232 @@
+
+   
+    .modal-superposicion {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 16px;
+      opacity: 1;
+      transition: opacity 0.2s ease-in-out;
+    }
+
+    .modal-superposicion.modal-oculto {
+      display: none !important;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .modal-contenedor-nuevo-tutor {
+      background-color: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      width: 100%;
+      max-width: 580px;
+      max-height: 90vh;
+      overflow-y: auto;
+      border: 1px solid #e2e8f0;
+      box-sizing: border-box;
+    }
+
+    .modal-encabezado-nuevo-tutor {
+      padding: 20px 24px;
+      border-bottom: 1px solid #f1f5f9;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .modal-titulo-nuevo-tutor {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #0f172a;
+      margin: 0;
+    }
+
+    .modal-subtitulo-nuevo-tutor {
+      font-size: 0.85rem;
+      color: #64748b;
+      margin: 2px 0 0 0;
+    }
+
+    .boton-cerrar-modal {
+      background: transparent;
+      border: none;
+      font-size: 1.5rem;
+      color: #94a3b8;
+      cursor: pointer;
+      line-height: 1;
+      padding: 4px;
+      border-radius: 4px;
+    }
+
+    .boton-cerrar-modal:hover { color: #334155; }
+
+    .modal-cuerpo-nuevo-tutor {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .grupo-campo-formulario {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .etiqueta-formulario {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #334155;
+    }
+
+    .entrada-texto-formulario,
+    .menu-desplegable-formulario,
+    .area-texto-formulario {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      color: #0f172a;
+      outline: none;
+      transition: all 0.2s;
+      background-color: #ffffff;
+      box-sizing: border-box;
+    }
+
+    .entrada-texto-formulario:focus,
+    .menu-desplegable-formulario:focus,
+    .area-texto-formulario:focus {
+      border-color: #4f46e5;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+    }
+
+    .fila-formulario { display: flex; gap: 16px; }
+    .flex-horizontal { flex-direction: row; }
+    .alineacion-centrada { align-items: center; }
+    .flex-expandir { flex: 1; }
+
+    .cuadricula-formulario-dos-columnas { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .cuadricula-formulario-tres-columnas { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+    .contenedor-foto-perfil-tutor {
+      position: relative;
+      width: 64px;
+      height: 64px;
+      flex-shrink: 0;
+    }
+
+    .vista-previa-foto-tutor {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background-color: #f1f5f9;
+      border: 2px dashed #cbd5e1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .icono-marcador-posicion-foto { width: 28px; height: 28px; color: #94a3b8; }
+
+    .etiqueta-subida-foto-tutor {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      background-color: #4f46e5;
+      color: white;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .entrada-archivo-oculta { display: none; }
+
+    .contenedor-lista-horarios-tutor {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .fila-horario-atencion-tutor { display: flex; gap: 8px; align-items: center; }
+
+    .boton-eliminar-fila-horario {
+      background: #fee2e2;
+      color: #ef4444;
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .boton-eliminar-fila-horario:hover { background: #fca5a5; }
+
+    .boton-secundario-pequeno {
+      background: #f8fafc;
+      border: 1px dashed #cbd5e1;
+      color: #475569;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .boton-secundario-pequeno:hover { background: #f1f5f9; color: #0f172a; }
+
+    .modal-pie-nuevo-tutor {
+      margin-top: 8px;
+      padding-top: 16px;
+      border-top: 1px solid #f1f5f9;
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+    }
+
+    .boton-accion-primario {
+      background-color: #4f46e5;
+      color: #ffffff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .boton-accion-primario:hover { background-color: #4338ca; }
+
+    .boton-accion-secundario {
+      background-color: #ffffff;
+      color: #475569;
+      border: 1px solid #cbd5e1;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    .boton-accion-secundario:hover { background-color: #f8fafc; }
