@@ -203,3 +203,11 @@ body {
   .resultados { grid-template-columns: 1fr; }
   .filtros { position: static; }
 }
+
+.cupos-lista { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 6px; }
+.cupos-item { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 13px; }
+.cupos-item strong { color: #2e7d32; }
+.cupos-item--agotado strong { color: #c62828; }
+.cupos-item__btn { border: 0; border-radius: 6px; padding: 4px 10px; cursor: pointer; }
+.cupos-item--agotado .cupos-item__btn { opacity: .5; }
+.cupos-vacio { margin: 12px 0 0; font-size: 13px; color: #777; }

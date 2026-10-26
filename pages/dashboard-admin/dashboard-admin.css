@@ -337,3 +337,4 @@ body {
 
 .estado-activo { background-color: #dcfce7; color: #15803d; }
 .estado-pendiente { background-color: #fef3c7; color: #b45309; }
+.badge-estado.badge-agotado { background: #fde8e8; color: #c62828; }
