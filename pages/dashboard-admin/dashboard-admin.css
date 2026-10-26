@@ -1,0 +1,329 @@
+:root {
+    --purpura-principal: #5B2EFF;
+    --violeta-intenso: #4A20E8;
+    --lavanda: #8B7CFF;
+    --lavanda-claro: #E9E5FF;
+    --blanco: #FFFFFF;
+    --azul-oscuro: #11142D;
+    --gris-claro: #F5F6FA;
+}
+
+/* --- CONFIGURACIÓN GENERAL --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--gris-claro);
+    color: var(--azul-oscuro);
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+/* Contenedor Raíz */
+.pantalla-dashboard {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+}
+
+/* --- BARRA LATERAL (SIDEBAR) --- */
+.barra-lateral {
+    width: 260px;
+    background-color: var(--azul-oscuro);
+    color: var(--blanco);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.bloque-logo {
+    display: flex;
+    align-items: center; 
+    gap: 12px; 
+    padding: 15px 5px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+
+.imagen-logo {
+    width: px; 
+    height: 100px;
+    object-fit: contain;
+}
+
+.icono-logo {
+    color: var(--lavanda);
+    width: 24px;
+    height: 24px;
+}
+
+.nombre-marca {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--blanco);
+}
+
+.menu-navegacion {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.enlace-menu {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    color: var(--lavanda-claro);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.enlace-menu:hover {
+    background-color: rgba(139, 124, 255, 0.15);
+    color: var(--blanco);
+}
+
+.enlace-menu.activo {
+    background-color: var(--purpura-principal);
+    color: var(--blanco);
+}
+
+.boton-salir {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: none;
+    border: none;
+    color: #ff4d4d;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.boton-salir:hover {
+    background-color: rgba(255, 77, 77, 0.1);
+}
+
+/* --- CUERPO PRINCIPAL --- */
+.contenido-principal {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+/* Barra Superior Perfil */
+.barra-perfil {
+    background-color: var(--blanco);
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 30px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.titulo-pagina {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--azul-oscuro);
+}
+
+.bloque-usuario {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.nombre-usuario {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--azul-oscuro);
+}
+
+.avatar-usuario {
+    width: 36px;
+    height: 36px;
+    background-color: var(--purpura-principal);
+    color: var(--blanco);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+.zona-paneles {
+    padding: 30px;
+}
+
+/* --- GRID DE TARJETAS --- */
+.contenedor-tarjetas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+    margin-bottom: 30px;
+}
+
+.tarjeta-metrica {
+    background-color: var(--blanco);
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.etiqueta-tarjeta {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--lavanda);
+    text-transform: uppercase;
+}
+
+.valor-tarjeta {
+    font-size: 1.85rem;
+    font-weight: 700;
+    color: var(--azul-oscuro);
+    margin-top: 4px;
+}
+
+.circulo-icono {
+    padding: 12px;
+    background-color: var(--lavanda-claro);
+    color: var(--purpura-principal);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* --- TABLA MAQUETADA CON DIVS --- */
+.contenedor-lista-tutores {
+    background-color: var(--blanco);
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+    padding: 24px;
+}
+
+.encabezado-seccion {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.encabezado-seccion h2 {
+    font-size: 1.2rem;
+    color: var(--azul-oscuro);
+    font-weight: 700;
+}
+
+/* DISEÑO DE BOTÓN PRINCIPAL */
+.btn-nueva-tutoria {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: var(--purpura-principal);
+    color: var(--blanco);
+    border: none;
+    padding: 12px 24px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(91, 46, 255, 0.2);
+    transition: all 0.2s ease;
+}
+
+.boton-nueva-tutoria:hover {
+    background-color: var(--violeta-intenso); /* Cambia al violeta intenso en hover */
+}
+
+/* Estilos de la tabla falsa */
+.tabla-falsa {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    overflow-x: auto; /* Permite scroll horizontal si la pantalla es muy chica */
+}
+
+.fila-tabla {
+    display: grid;
+    /* Sincronizado: 2.5fr (0.5 + 2) une visualmente el icono y el texto bajo 'TÍTULO' */
+    grid-template-columns: 2.5fr 2fr 1.3fr 1.4fr 1fr 1fr; 
+    gap: 15px;
+    padding: 16px 20px;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Encabezado gris de títulos */
+.encabezado-tabla {
+    background-color: var(--gris-claro);
+    color: var(--lavanda);
+    font-weight: 600;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+/* Forzar que cada dato se quede en su celda y no salte hacia abajo */
+.columna {
+    display: block;
+    white-space: nowrap; /* Prohíbe romper la línea */
+    overflow: hidden;
+    text-overflow: ellipsis; /* Agrega puntos suspensivos si el texto es gigante */
+}
+
+/* Encabezados de columnas */
+.encabezado-tabla {
+    background-color: var(--gris-claro);
+    color: var(--lavanda);
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    border-radius: 6px;
+    margin-bottom: 8px;
+}
+
+/* Filas con los datos de los tutores */
+.cuerpo-tabla {
+    border-bottom: 1px solid var(--gris-claro);
+    font-size: 0.875rem;
+    color: var(--azul-oscuro);
+}
+
+.cuerpo-tabla:hover {
+    background-color: var(--lavanda-claro); /* Fondo sutil al posar el mouse */
+}
+
+.texto-resaltado {
+    font-weight: 700;
+    color: var(--violeta-intenso);
+}
+
+/* Etiquetas (Badges) */
+.etiqueta-estado {
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 6px;
+}
+
+.estado-activo { background-color: #dcfce7; color: #15803d; }
+.estado-pendiente { background-color: #fef3c7; color: #b45309; }
