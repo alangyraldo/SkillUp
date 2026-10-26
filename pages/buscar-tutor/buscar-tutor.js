@@ -101,3 +101,41 @@ document.getElementById("btnLimpiar").addEventListener("click", () => {
 });
 
 render();
+
+
+// =========================================================================
+// EVENTO SUBMIT: GUARDAR LA NUEVA TUTORÍA AL PRESIONAR EL BOTÓN DEL FORMULARIO
+// =========================================================================
+
+(() => {
+  if (window.__tutoriasAdminCargadas) return;   
+  window.__tutoriasAdminCargadas = true;
+
+  const TOTAL_BASE = 10;       
+  const SOLO_ULTIMA = false;    
+
+  const tutoriasAdmin = JSON.parse(localStorage.getItem("tutorias")) || [];
+  if (typeof tutores === "undefined") return;
+
+  let nuevas = tutoriasAdmin.filter((t) => Number(t.id) > TOTAL_BASE);
+  if (SOLO_ULTIMA) nuevas = nuevas.slice(-1);
+  if (!nuevas.length) return;
+
+  nuevas.forEach((nueva) => {
+    const nombre = nueva.tutor || "Tutor";
+    tutores.push({
+      id: "admin-" + nueva.id,   
+      nombre,
+      materia: nueva.materia,
+      nivel: nueva.nivel || "Principiante",
+      precio: Number(nueva.precio || 45000),
+      modalidad: nueva.modalidad || "En línea",
+      foto: nueva.foto || `https://ui-avatars.com/api/?name=${encodeURIComponent(nombre)}&size=400&background=5b2bff&color=fff`,
+      resenas: 0,
+      calificacion: 5
+    });
+  });
+
+  render();
+})();
+
