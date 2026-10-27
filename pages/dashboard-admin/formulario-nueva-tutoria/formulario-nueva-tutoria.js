@@ -21,7 +21,7 @@ function cerrarVentana() {
   formulario.reset();
   idTutoriaEnEdicion = null;
   tutorSeleccionadoActual = null;
-  
+
   // Restablecer estados bloqueados de los selects dependientes
   document.getElementById("tutor").innerHTML = '<option value="">Selecciona una materia primero</option>';
   document.getElementById("tutor").disabled = true;
@@ -85,7 +85,7 @@ document.getElementById("materia").addEventListener("change", (e) => {
   // Resetear dependientes
   selectTutor.innerHTML = '<option value="">Seleccionar tutor</option>';
   selectTutor.disabled = !materiaSeleccionada;
-  
+
   selectNivel.innerHTML = '<option value="">Selecciona un tutor primero</option>';
   selectNivel.disabled = true;
 
@@ -172,14 +172,14 @@ document.getElementById("dia").addEventListener("change", (e) => {
   const selectHora = document.getElementById("hora");
 
   selectHora.innerHTML = '<option value="">Seleccionar hora</option>';
-  
+
   if (!diaSeleccionado || !tutorSeleccionadoActual) {
     selectHora.disabled = true;
     return;
   }
 
   const horasDelDia = tutorSeleccionadoActual.horarios.filter(h => h.dia === diaSeleccionado);
-  
+
   horasDelDia.forEach(h => {
     const optionHora = document.createElement("option");
     optionHora.value = h.hora;
@@ -315,11 +315,17 @@ function mostrarTutorias() {
     btnVer.className = "btn-accion btn-ver";
     btnVer.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>`;
 
+    // funcionalidad del btnVer para redirigir a la página de búsqueda de tutor con el nombre del tutor como parámetro
+    btnVer.addEventListener("click", () => {
+      const url = `/pages/buscar-tutor/index.html?tutor=${encodeURIComponent(tutoria.tutor)}`;
+      window.location.href = url;
+    });
+
     const btnEditar = document.createElement("button");
     btnEditar.type = "button";
     btnEditar.className = "btn-accion btn-editar";
     btnEditar.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>`;
-    
+
     // Conectar correctamente el botón de editar
     btnEditar.addEventListener("click", () => prepararEdicion(tutoria));
 
@@ -327,7 +333,7 @@ function mostrarTutorias() {
     btnEliminar.type = "button";
     btnEliminar.className = "btn-accion btn-eliminar";
     btnEliminar.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>`;
-    
+
     btnEliminar.addEventListener("click", () => eliminarTutoria(tutoria.id));
 
     acciones.append(btnVer, btnEditar, btnEliminar);

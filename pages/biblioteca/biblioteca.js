@@ -409,12 +409,12 @@ function toggleFavorite(id) {
     }
 }
 // Declara la función que construye la tarjeta HTML de un recurso.
-function createResourceCard(resource) {
+/*function createResourceCard(resource) {
     // Comprueba si el recurso debe mostrarse marcado como favorito.
     const favorite = isFavorite(resource.id);
     // Devuelve una plantilla HTML con los datos del recurso.
     return `
-        <!-- Define una columna adaptable según el tamaño de la pantalla. -->
+        /*Define una columna adaptable según el tamaño de la pantalla.
         <div class="col-12 col-sm-6 col-lg-4">
             <!-- Agrupa el contenido visual de una tarjeta de recurso. -->
             <article class="resource-card">
@@ -533,7 +533,83 @@ function createResourceCard(resource) {
         <!-- Cierra la columna adaptable. -->
         </div>
     `;
+}*/
+
+function createResourceCard(resource) {
+    const favorite = isFavorite(resource.id);
+
+    return `
+        <div class="col-12 col-sm-6 col-lg-4">
+            <article class="resource-card">
+                <div class="resource-cover">
+                    <img
+                        src="${escapeHTML(resource.image)}"
+                        alt="Portada de ${escapeHTML(resource.title)}"
+                        loading="lazy"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';">
+
+                    <div class="resource-cover-fallback" style="display:none">
+                        <i class="bi ${getTypeIcon(resource.type)}"></i>
+                    </div>
+
+                    <span class="resource-type-badge">
+                        <i class="bi ${getTypeIcon(resource.type)} me-1"></i>
+                        ${getTypeLabel(resource.type)}
+                    </span>
+
+                    <button
+                        type="button"
+                        class="favorite-button ${favorite ? "is-favorite" : ""}"
+                        data-action="favorite"
+                        data-id="${resource.id}"
+                        aria-label="${favorite ? "Quitar de favoritos" : "Agregar a favoritos"}"
+                        aria-pressed="${favorite}">
+                        <i class="bi ${favorite ? "bi-heart-fill" : "bi-heart"}"></i>
+                    </button>
+                </div>
+
+                <div class="resource-body">
+                    <span class="resource-category">
+                        ${getCategoryLabel(resource.category)}
+                    </span>
+
+                    <h4 class="resource-title">
+                        ${escapeHTML(resource.title)}
+                    </h4>
+
+                    <p class="resource-description">
+                        ${escapeHTML(resource.description)}
+                    </p>
+
+                    <div class="resource-meta">
+                        <i class="bi bi-person"></i>
+                        <span>${escapeHTML(resource.author)}</span>
+                        <span>·</span>
+                        <i class="bi bi-clock"></i>
+                        <span>${escapeHTML(resource.duration)}</span>
+                    </div>
+
+                    <div class="resource-footer">
+                        <span class="resource-format">
+                            <i class="bi bi-collection me-1"></i>
+                            ${getTypeLabel(resource.type)}
+                        </span>
+
+                        <button
+                            type="button"
+                            class="btn btn-details"
+                            data-action="details"
+                            data-id="${resource.id}">
+                            Ver detalles
+                            <i class="bi bi-arrow-right ms-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </article>
+        </div>
+    `;
 }
+
 // Declara la función que filtra los recursos según los criterios seleccionados.
 function getFilteredResources() {
     // Lee la búsqueda, elimina espacios externos y normaliza el texto a minúsculas.
@@ -616,7 +692,7 @@ function resetFilters() {
     renderResources();
 }
 // Declara la función que abre los detalles de un recurso específico.
-function openResourceDetails(id) {
+/*function openResourceDetails(id) {
     // Busca el recurso cuyo identificador coincide con el recibido.
     const resource = resources.find(item => Number(item.id) === Number(id));
     // Termina la función si no se encontró el recurso solicitado.
@@ -702,7 +778,63 @@ function openResourceDetails(id) {
     resourceLink.classList.toggle("d-none", !resource.url);
     // Abre la ventana modal de Bootstrap.
     resourceModal.show();
+}*/
+function openResourceDetails(id) {
+    // Busca el recurso cuyo identificador coincide con el recibido.
+    const resource = resources.find(item => Number(item.id) === Number(id));
+    // Termina la función si no se encontró el recurso solicitado.
+    if (!resource) return;
+    // Actualiza el título de la ventana modal con el nombre del recurso.
+    document.getElementById("modal-title").textContent = resource.title;
+    // Busca el contenedor donde se insertará el contenido de la ventana modal.
+    const modalContent = document.getElementById("modal-resource-content");
+    // Construye el contenido HTML que se mostrará dentro de la ventana modal.
+    modalContent.innerHTML = `
+        <img
+            class="modal-resource-cover"
+            src="${escapeHTML(resource.image)}"
+            alt="Portada de ${escapeHTML(resource.title)}"
+            onerror="this.style.display='none'">
+        <span class="resource-category">
+            ${getCategoryLabel(resource.category)}
+        </span>
+        <p class="modal-resource-description">
+            ${escapeHTML(resource.description)}
+        </p>
+        <div class="modal-resource-details">
+            <span>
+                <i class="bi ${getTypeIcon(resource.type)} me-1"></i>
+                ${getTypeLabel(resource.type)}
+            </span>
+            <span>
+                <i class="bi bi-person me-1"></i>
+                ${escapeHTML(resource.author)}
+            </span>
+            <span>
+                <i class="bi bi-clock me-1"></i>
+                ${escapeHTML(resource.duration)}
+            </span>
+        </div>
+        <button
+            type="button"
+            class="btn btn-favorites"
+            data-action="favorite"
+            data-id="${resource.id}">
+            <i class="bi ${isFavorite(resource.id) ? "bi-heart-fill" : "bi-heart"}"></i>
+            ${isFavorite(resource.id) ? "Quitar de favoritos" : "Agregar a favoritos"}
+        </button>
+    `;
+    // Busca el enlace que permite abrir el recurso externo.
+    const resourceLink = document.getElementById("modal-resource-link");
+    // Asigna la URL del recurso o un enlace vacío como alternativa.
+    resourceLink.href = resource.url || "#";
+    // Oculta el enlace externo si el recurso no tiene una URL.
+    resourceLink.classList.toggle("d-none", !resource.url);
+    // Abre la ventana modal de Bootstrap.
+    resourceModal.show();
 }
+
+
 // Registra el evento que vuelve a dibujar los recursos cuando cambia la búsqueda.
 searchInput.addEventListener("input", renderResources);
 

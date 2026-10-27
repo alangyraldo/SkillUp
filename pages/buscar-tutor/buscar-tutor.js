@@ -5,6 +5,8 @@ let paginaActual = 1;
 
 const lista = document.getElementById("listaTutores");
 const paginacion = document.getElementById("paginacion");
+const parametrosURL = new URLSearchParams(window.location.search);
+const nombreTutorSeleccionado = parametrosURL.get("tutor");
 const inputBuscar = document.getElementById("inputBuscar");
 const filtros = {
   materia: document.getElementById("filtroMateria"),
@@ -122,7 +124,7 @@ lista.addEventListener("click", (e) => {
 // Si el admin cambia un cupo, la vista se actualiza sola.
 window.addEventListener("cupos:cambio", render);
 
-
+/*
 function render() {
   const resultado = filtrarTutores();
   const totalPaginas = Math.ceil(resultado.length / POR_PAGINA);
@@ -136,7 +138,43 @@ function render() {
     : `<p class="tutores__vacio">No encontramos tutores con esos filtros. Prueba quitando alguno.</p>`;
 
   crearPaginacion(totalPaginas);
+}*/
+
+function render() {
+  // Si venimos desde el dashboard, buscamos únicamente el tutor seleccionado.
+  if (nombreTutorSeleccionado) {
+    const tutorSeleccionado = tutores.find(
+      tutor =>
+        tutor.nombre.toLowerCase() === nombreTutorSeleccionado.toLowerCase()
+    );
+    // Si existe el tutor, mostramos su tarjeta.
+    if (tutorSeleccionado) {
+      lista.innerHTML = crearCard(tutorSeleccionado);
+      // Resaltamos la tarjeta seleccionada.
+      const tarjeta = lista.querySelector(".tutor-card");
+      tarjeta.classList.add("tutor-card--seleccionado");
+      // Ocultamos la paginación porque solo mostramos una tarjeta.
+      paginacion.innerHTML = "";
+      // Terminamos aquí para no aplicar los filtros habituales.
+      return;
+    }
+  }
+  // Comportamiento habitual cuando se entra a buscar tutores.
+  const resultado = filtrarTutores();
+  const totalPaginas = Math.ceil(resultado.length / POR_PAGINA);
+  if (paginaActual > totalPaginas) {
+    paginaActual = 1;
+  }
+  const inicio = (paginaActual - 1) * POR_PAGINA;
+  const pagina = resultado.slice(inicio, inicio + POR_PAGINA);
+  lista.innerHTML = pagina.length
+    ? pagina.map(crearCard).join("")
+    : `<p class="tutores__vacio">
+         No encontramos tutores con esos filtros. Prueba quitando alguno.
+       </p>`;
+  crearPaginacion(totalPaginas);
 }
+
 
 // Eventos
 document.getElementById("formBuscador").addEventListener("submit", (e) => {
@@ -164,11 +202,11 @@ render();
 // =========================================================================
 
 (() => {
-  if (window.__tutoriasAdminCargadas) return;   
+  if (window.__tutoriasAdminCargadas) return;
   window.__tutoriasAdminCargadas = true;
 
-  const TOTAL_BASE = 10;       
-  const SOLO_ULTIMA = false;    
+  const TOTAL_BASE = 10;
+  const SOLO_ULTIMA = false;
 
   const tutoriasAdmin = JSON.parse(localStorage.getItem("tutorias")) || [];
   if (typeof tutores === "undefined") return;
@@ -180,7 +218,7 @@ render();
   nuevas.forEach((nueva) => {
     const nombre = nueva.tutor || "Tutor";
     tutores.push({
-      id: "admin-" + nueva.id,   
+      id: "admin-" + nueva.id,
       nombre,
       materia: nueva.materia,
       nivel: nueva.nivel || "Principiante",
