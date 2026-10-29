@@ -210,3 +210,11 @@ if (exportButton) exportButton.addEventListener('click', () => {
     if (feedback) feedback.textContent = 'La exportación estará disponible cuando el dashboard esté conectado a datos reales.';
 });*/
 
+// Logica que importa el boton del carrito en todas las páginas 
+
+import("../pages/carrito/carrito.js").catch((error) => console.error("No se pudo cargar el carrito:", error));
+
+const css = document.createElement("link");
+css.rel = "stylesheet";
+css.href = new URL("../pages/carrito/carrito.css", import.meta.url).href;
+document.head.append(css);
