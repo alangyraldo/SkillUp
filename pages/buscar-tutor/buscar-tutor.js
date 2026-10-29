@@ -88,19 +88,33 @@ function filtrarElementos() {
 
 function crearCardTutoria(t) {
   return `
-    <article class="tutor-card">
-      <h3 class="tutor-card__nombre">${t.titulo || 'General'}</h3>
-      <div class="tutor-card__fila">
-        <div>
-          <p class="tutor-card__materia">Tutor: ${t.tutor || t.nombre || 'No especificado'}</p>
-          <img class="tutor-card__foto "src=${t.foto} alt="${t.nombre}}" >
-          <p class="tutor-card__desde">Precio</p>
-          <p class="tutor-card__precio">${t.precio ? formatoCOP(Number(t.precio)) : '$ 0'}</p>
-          <p>Modalidad: ${t.modalidad || 'N/A'}</p>
-          <p>Nivel: ${t.nivel || 'N/A'}</p>
-        </div>
-      </div>
-    </article>`;
+  <article class="tutor-card">
+  <img class="tutor-card__foto" src="${t.foto}" alt="Foto de ${t.tutor}">
+  <h3 class="tutor-card__nombre">${t.titulo}</h3>
+  <div class="tutor-card__fila">
+    <div>
+      <p class="tutor-card__materia">${t.materia}</p>
+      <p class="tutor-card__desde">Tutor</p>
+      <p class="tutor-card__tutor">${t.tutor}</p>
+      <p class="tutor-card__desde">Precio</p>
+      <p class="tutor-card__precio">
+        ${t.precio ? formatoCOP(Number(t.precio)) : '$ 0'}
+      </p>
+    </div>
+
+    <div class="tutor-card__accion">
+        <span class="tutor-card__disponible">
+        ${Number(t.cupos) > 0 ? 'Disponible' : 'Sin cupos'}
+        </span>
+        <button id="btn_reservar" class="tutor-card__boton"
+        href="#">
+        Reservar
+        </button>
+    </div>
+  </div>
+</article>`
+
+;
 }
 
 // 2. Función para renderizar específicamente las tutorías del localStorage
