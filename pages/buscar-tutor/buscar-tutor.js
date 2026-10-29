@@ -9,6 +9,7 @@ const parametrosURL = new URLSearchParams(window.location.search);
 const nombreTutorSeleccionado = parametrosURL.get("tutor");
 const inputBuscar = document.getElementById("inputBuscar");
 const filtros = {
+  busqueda: document.getElementById("filtroBusqueda"), // se añade busqueda en el filtro
   materia: document.getElementById("filtroMateria"),
   nivel: document.getElementById("filtroNivel"),
   precio: document.getElementById("filtroPrecio"),
@@ -17,7 +18,7 @@ const filtros = {
 
 const formatoCOP = (n) => "$ " + n.toLocaleString("es-CO");
 
-function filtrarTutores() {
+/*function filtrarTutores() {
   const texto = inputBuscar.value.trim().toLowerCase();
   return tutores.filter((t) => {
     const coincideTexto = !texto || t.nombre.toLowerCase().includes(texto) || t.materia.toLowerCase().includes(texto);
@@ -27,9 +28,42 @@ function filtrarTutores() {
     const coincideModalidad = !filtros.modalidad.value || t.modalidad === filtros.modalidad.value;
     return coincideTexto && coincideMateria && coincideNivel && coincidePrecio && coincideModalidad;
   });
+}*/
+
+function filtrarElementos() {
+  const texto = inputBuscar.value.trim().toLowerCase();
+  const tipoFiltro = filtros.busqueda ? filtros.busqueda.value : "tutor";
+
+  if (tipoFiltro === "tutoria") {
+    const tutoriasGuardadas = JSON.parse(localStorage.getItem("tutorias")) || [];
+    return tutoriasGuardadas.filter((t) => {
+      const nombreTutor = t.tutor || t.nombre || "";
+      const materiaTutoria = t.materia || "";
+      const nivelTutoria = t.nivel || "";
+      const precioTutoria = Number(t.precio || 0);
+      const modalidadTutoria = t.modalidad || "";
+
+      const coincideTexto = !texto || nombreTutor.toLowerCase().includes(texto) || materiaTutoria.toLowerCase().includes(texto);
+      const coincideMateria = !filtros.materia.value || materiaTutoria.trim().toLowerCase() === filtros.materia.value.trim().toLowerCase();
+      const coincideNivel = !filtros.nivel.value || nivelTutoria === filtros.nivel.value;
+      const coincidePrecio = !filtros.precio.value || precioTutoria <= Number(filtros.precio.value);
+      const coincideModalidad = !filtros.modalidad.value || modalidadTutoria === filtros.modalidad.value;
+
+      return coincideTexto && coincideMateria && coincideNivel && coincidePrecio && coincideModalidad;
+    });
+  } else {
+    return tutores.filter((t) => {
+      const coincideTexto = !texto || t.nombre.toLowerCase().includes(texto) || t.materia.toLowerCase().includes(texto);
+      const coincideMateria = !filtros.materia.value || t.materia === filtros.materia.value;
+      const coincideNivel = !filtros.nivel.value || t.nivel === filtros.nivel.value;
+      const coincidePrecio = !filtros.precio.value || t.precio <= Number(filtros.precio.value);
+      const coincideModalidad = !filtros.modalidad.value || t.modalidad === filtros.modalidad.value;
+      return coincideTexto && coincideMateria && coincideNivel && coincidePrecio && coincideModalidad;
+    });
+  }
 }
-/*
-function crearCard(t) {
+
+/*function crearCard(t) {
   return `
     <article class="tutor-card">
       <img class="tutor-card__foto" src="${t.foto}" alt="Foto de ${t.nombre}">
@@ -50,7 +84,41 @@ function crearCard(t) {
 }
 */
 
+// 1. Función para crear la tarjeta visual de una Tutoría guardada en LocalStorage
 
+function crearCardTutoria(t) {
+  return `
+    <article class="tutor-card">
+      <h3 class="tutor-card__nombre">${t.titulo || 'General'}</h3>
+      <div class="tutor-card__fila">
+        <div>
+          <p class="tutor-card__materia">Tutor: ${t.tutor || t.nombre || 'No especificado'}</p>
+          <img class="tutor-card__foto "src=${t.foto} alt="${t.nombre}}" >
+          <p class="tutor-card__desde">Precio</p>
+          <p class="tutor-card__precio">${t.precio ? formatoCOP(Number(t.precio)) : '$ 0'}</p>
+          <p>Modalidad: ${t.modalidad || 'N/A'}</p>
+          <p>Nivel: ${t.nivel || 'N/A'}</p>
+        </div>
+      </div>
+    </article>`;
+}
+
+// 2. Función para renderizar específicamente las tutorías del localStorage
+function renderizarTutoriasLocalStorage() {
+  const tutoriasGuardadas = JSON.parse(localStorage.getItem("tutorias")) || [];
+  
+  if (tutoriasGuardadas.length === 0) {
+    lista.innerHTML = `<p class="tutores__vacio">No hay tutorías guardadas en el LocalStorage.</p>`;
+    paginacion.innerHTML = "";
+    return;
+  }
+
+  // Paginación opcional para tutorías o mostrarlas directo
+  lista.innerHTML = tutoriasGuardadas.map(crearCardTutoria).join("");
+  paginacion.innerHTML = ""; // Limpiamos paginación si no la usas para esto
+}
+
+/*********************************************************************************************************************************/
 function crearCupos(t) {
   const sesiones = Cupos.porTutor(t.nombre);
   if (!sesiones.length) {
@@ -140,7 +208,7 @@ function render() {
   crearPaginacion(totalPaginas);
 }*/
 
-function render() {
+/*function render() {
   // Si venimos desde el dashboard, buscamos únicamente el tutor seleccionado.
   if (nombreTutorSeleccionado) {
     const tutorSeleccionado = tutores.find(
@@ -172,6 +240,48 @@ function render() {
     : `<p class="tutores__vacio">
          No encontramos tutores con esos filtros. Prueba quitando alguno.
        </p>`;
+  crearPaginacion(totalPaginas);
+}*/
+
+// --- MODIFICA TU FUNCIÓN RENDER EXISTENTE PARA QUE QUEDE ASÍ ---
+function render() {
+  const tipoFiltro = filtros.busqueda ? filtros.busqueda.value : "tutor";
+
+  if (nombreTutorSeleccionado && tipoFiltro !== "tutoria") {
+    const tutorSeleccionado = tutores.find(
+      tutor => tutor.nombre.toLowerCase() === nombreTutorSeleccionado.toLowerCase()
+    );
+    if (tutorSeleccionado) {
+      lista.innerHTML = crearCard(tutorSeleccionado);
+      const tarjeta = lista.querySelector(".tutor-card");
+      tarjeta.classList.add("tutor-card--seleccionado");
+      paginacion.innerHTML = "";
+      return;
+    }
+  }
+
+  // CAMBIO AQUÍ: Usamos filtrarElementos en vez de filtrarTutores
+  const resultado = filtrarElementos();
+  const totalPaginas = Math.ceil(resultado.length / POR_PAGINA);
+  if (paginaActual > totalPaginas) {
+    paginaActual = 1;
+  }
+  const inicio = (paginaActual - 1) * POR_PAGINA;
+  const pagina = resultado.slice(inicio, inicio + POR_PAGINA);
+
+  if (pagina.length === 0) {
+    lista.innerHTML = `<p class="tutores__vacio">No encontramos resultados con esos filtros. Prueba quitando alguno.</p>`;
+    paginacion.innerHTML = "";
+    return;
+  }
+
+  // CAMBIO AQUÍ: Renderizamos tarjetas de tutorías o de tutores según corresponda
+  if (tipoFiltro === "tutoria") {
+    lista.innerHTML = pagina.map(crearCardTutoria).join("");
+  } else {
+    lista.innerHTML = pagina.map(crearCard).join("");
+  }
+
   crearPaginacion(totalPaginas);
 }
 
