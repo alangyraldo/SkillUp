@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi panel | SkillUp</title>
+    <link rel="stylesheet" href="/pages/dashboard-admin/dashboard-admin.css">
+    <link rel="stylesheet" href="./dashboard-usuario.css">
+    <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+<div class="pantalla-dashboard">
+
+    <aside class="barra-lateral">
+        <div class="barra-superior-logo">
+            <div class="bloque-logo">
+                <img src="/assets/skillup_logo_blanco.png" alt="SkillUp" class="imagen-logo">
+            </div>
+            <nav class="menu-navegacion">
+                <a href="#" class="enlace-menu activo"><i data-lucide="calendar-check"></i> Mis tutorías</a>
+                <a href="/pages/buscar-tutor/index.html" class="enlace-menu"><i data-lucide="search"></i> Buscar tutor</a>
+                <a href="/pages/incio/index.html" class="enlace-menu"><i data-lucide="arrow-left"></i> Ir al inicio</a>
+            </nav>
+        </div>
+        <button class="boton-salir" id="btn-cerrar-sesion">
+            <i data-lucide="log-out"></i> Cerrar Sesión
+        </button>
+    </aside>
+
+    <div class="contenido-principal">
+        <header class="barra-perfil">
+            <h1 class="titulo-pagina">Mi panel</h1>
+            <div class="bloque-usuario">
+                <span class="nombre-usuario">Hola, <span id="usuario-nombre">usuario</span></span>
+                <div class="avatar-usuario" id="usuario-avatar">U</div>
+            </div>
+        </header>
+
+        <main class="zona-paneles">
+            <section class="contenedor-tarjetas">
+                <div class="tarjeta-metrica">
+                    <div class="info-tarjeta">
+                        <p class="etiqueta-tarjeta">Tutorías reservadas</p>
+                        <h3 class="valor-tarjeta" id="total-reservas">0</h3>
+                    </div>
+                    <div class="circulo-icono"><i data-lucide="calendar-check"></i></div>
+                </div>
+                <div class="tarjeta-metrica">
+                    <div class="info-tarjeta">
+                        <p class="etiqueta-tarjeta">Tutores distintos</p>
+                        <h3 class="valor-tarjeta" id="total-tutores">0</h3>
+                    </div>
+                    <div class="circulo-icono"><i data-lucide="users"></i></div>
+                </div>
+                <div class="tarjeta-metrica">
+                    <div class="info-tarjeta">
+                        <p class="etiqueta-tarjeta">Total a pagar</p>
+                        <h3 class="valor-tarjeta" id="total-pagar">$0</h3>
+                    </div>
+                    <div class="circulo-icono"><i data-lucide="dollar-sign"></i></div>
+                </div>
+            </section>
+
+            <section class="contenedor-lista-tutores">
+                <div class="encabezado-seccion">
+                    <h2>Mis tutorías reservadas</h2>
+                    <a class="btn-nueva-tutoria" href="/pages/buscar-tutor/index.html">+ Reservar tutoría</a>
+                </div>
+
+                <div class="tabla-falsa">
+                    <div class="fila-tabla encabezado-tabla">
+                        <div class="columna">Título</div>
+                        <div class="columna">Tutor</div>
+                        <div class="columna">Fecha y hora</div>
+                        <div class="columna">Precio</div>
+                        <div class="columna">Estado</div>
+                        <div class="columna">Acciones</div>
+                    </div>
+                    <div id="listaReservas"></div>
+                </div>
+            </section>
+        </main>
+    </div>
+</div>
+
+<script src="/js/auth.js"></script>
+<script src="/js/cupos.js"></script>
+<script src="./dashboard-usuario.js"></script>
+</body>
+</html>

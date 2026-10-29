@@ -20,7 +20,9 @@ const routes = {
     'iniciar-sesion': 'pages/iniciar-sesion/index.html',
     'agendar-tutoria': 'pages/agendar-tutoria/index.html',
     registro: 'pages/registro/index.html',
-    'dashboard-admin': 'pages/dashboard-admin/index.html'
+    'dashboard-admin': 'pages/dashboard-admin/index.html',
+    'dashboard-usuario': 'pages/dashboard-usuario/index.html'
+    
 };
 
 /*
@@ -85,6 +87,31 @@ document.querySelectorAll('#site-header [data-route]').forEach(link => {
     if (esActual) link.setAttribute('aria-current', 'page');
 });
 
+// Si hay sesión iniciada, "Iniciar sesión" pasa a ser "Mi perfil" y se quita "Registrarme"
+function leerSesion() {
+    try {
+        return JSON.parse(localStorage.getItem('sesion'));
+    } catch (error) {
+        return null;
+    }
+}
+
+const sesionNav = leerSesion();
+if (sesionNav) {
+    const destino = sesionNav.rol === 'admin'
+        ? routes['dashboard-admin']
+        : routes['dashboard-usuario'];
+
+    document.querySelectorAll('#site-header [data-route="iniciar-sesion"]').forEach(link => {
+        link.textContent = 'Mi perfil';
+        link.dataset.route = 'mi-perfil';
+        link.href = ROOT + destino;
+    });
+
+    document.querySelectorAll('#site-header [data-route="registro"]').forEach(link => {
+        (link.closest('li') || link).remove();
+    });
+}
 
 // el navbarse oculta al bajar y reaparece con hover arriba al subir o con tab
 const nav = document.querySelector('#site-header .navbar-skillup');
