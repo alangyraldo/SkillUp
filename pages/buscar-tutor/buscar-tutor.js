@@ -117,9 +117,23 @@ function mostrarModalSinCupos() {
 lista.addEventListener("click", (e) => {
   const boton = e.target.closest("[data-reservar]");
   if (!boton) return;
-  const descontado = Cupos.descontar(Number(boton.dataset.reservar));
-  if (!descontado) mostrarModalSinCupos();
-});
+
+  const sesion = obtenerSesion();
+  if (!sesion) {
+    alert("Inicia sesión para reservar una tutoría.");
+    window.location.href = "/pages/iniciar-sesion/index.html";
+    return;
+  }
+  if (sesion.rol === "admin") {
+    alert("Entra con una cuenta de usuario para reservar.");
+    return;
+  }
+
+  const resultado = Reservas.reservar(Number(boton.dataset.reservar), sesion.correo);
+  if (resultado === "agotado") mostrarModalSinCupos();
+  else if (resultado === "duplicada") alert("Ya reservaste esta tutoría.");
+  else alert("¡Tutoría reservada! La verás en tu panel.");
+}); 
 
 // Si el admin cambia un cupo, la vista se actualiza sola.
 window.addEventListener("cupos:cambio", render);
