@@ -29,7 +29,7 @@
   boton.type = "button";
   boton.className = "carrito-flotante";
   boton.setAttribute("aria-label", "Abrir carrito de reservas");
-  boton.innerHTML = `<i class="bi bi-cart3"></i><span class="carrito-flotante__contador"></span>`;
+  boton.innerHTML = `<i class="bi-book"></i><span class="carrito-flotante__contador"></span>`;
  
   const panel = document.createElement("aside");
   panel.className = "carrito-panel";
