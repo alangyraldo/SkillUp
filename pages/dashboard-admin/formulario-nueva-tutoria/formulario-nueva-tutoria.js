@@ -237,7 +237,8 @@ function capturarTutoria(evento) {
     duracion: Number(document.getElementById("duracion").value),
     modalidad: document.getElementById("modalidad").value,
     precio: Number(document.getElementById("precio").value),
-    cupos: Number(document.getElementById("cupos").value)
+    cupos: Number(document.getElementById("cupos").value),
+    foto: tutorSeleccionadoActual ? tutorSeleccionadoActual.foto : ""
   };
 
   if (datosFormulario.precio < 0 || datosFormulario.cupos < 1) {
