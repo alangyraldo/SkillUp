@@ -196,10 +196,7 @@ document.getElementById("btnLimpiar").addEventListener("click", () => {
 
 render();
 
-
-// =========================================================================
-// EVENTO SUBMIT: GUARDAR LA NUEVA TUTORÍA AL PRESIONAR EL BOTÓN DEL FORMULARIO
-// =========================================================================
+/* EVENTO SUBMIT: GUARDAR LA NUEVA TUTORÍA AL PRESIONAR EL BOTÓN DEL FORMULARIO
 
 (() => {
   if (window.__tutoriasAdminCargadas) return;
@@ -232,4 +229,24 @@ render();
 
   render();
 })();
+la comentareo por la que esta aqui abajo, la diferencia es que storage detecta modificaciones hechas desde otra pestaña, 
+mientras que tutorias:cambio permite refrescar la vista cuando el formulario genera el evento en la misma pestaña.
+
+*/
+
+ // Vuelve a dibujar las tarjetas cuando cambie el catálogo de tutores.
+window.addEventListener("storage", evento => {
+  if (evento.key === "skillup_tutores" || evento.key === "tutorias") {
+    paginaActual = 1;
+    render();
+  }
+});
+
+// Actualiza las tarjetas cuando se registra una tutoría en esta misma pestaña.
+window.addEventListener("tutorias:cambio", () => {
+  sincronizarTutoresDesdeStorage();
+  paginaActual = 1;
+  render();
+});
+
 

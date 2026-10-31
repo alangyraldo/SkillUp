@@ -19,3 +19,22 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 
+// Actualiza los contadores del administrador.
+function actualizarMetricasTutores() {
+  const tutores = JSON.parse(localStorage.getItem("skillup_tutores") || "[]");
+  const tutorias = JSON.parse(localStorage.getItem("tutorias") || "[]");
+
+  const totalTutores = document.getElementById("total-tutores-admin");
+  const totalTutorias = document.getElementById("total-tutorias-admin");
+
+  if (totalTutores) totalTutores.textContent = tutores.length;
+  if (totalTutorias) totalTutorias.textContent = tutorias.length;
+}
+
+// Actualiza las métricas al cargar el dashboard.
+document.addEventListener("DOMContentLoaded", actualizarMetricasTutores);
+
+// Actualiza las métricas cuando se registra una tutoría.
+window.addEventListener("tutorias:cambio", actualizarMetricasTutores);
+
+

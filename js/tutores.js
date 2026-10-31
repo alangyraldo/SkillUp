@@ -118,3 +118,29 @@ const tutores = [
     { dia: "Sábado", hora: "14:00" } // Horario del sábado.
   ])
 ];
+
+/*cuando se abre Buscar tutor, recupera el catálogo guardado y lo combina con los tutores de ejemplo. 
+Si el identificador de un tutor ya existe, actualiza sus datos en lugar de crear un duplicado.*/
+
+function sincronizarTutoresDesdeStorage() {
+    // Recupera el catálogo completo guardado por el administrador.
+    const guardados = JSON.parse(localStorage.getItem("skillup_tutores") || "[]");
+
+    // Conserva únicamente los tutores que siguen registrados.
+    tutores.splice(0, tutores.length, ...guardados);
+
+    // Devuelve el catálogo actualizado.
+    return tutores;
+}
+
+// Sincroniza el catálogo al cargar la página.
+sincronizarTutoresDesdeStorage();
+
+// Detecta cambios realizados desde otra pestaña.
+window.addEventListener("storage", evento => {
+    if (evento.key === "skillup_tutores") {
+        sincronizarTutoresDesdeStorage();
+    }
+});
+
+

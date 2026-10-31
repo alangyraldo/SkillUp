@@ -261,12 +261,70 @@ function capturarTutoria(evento) {
   cerrarVentana();
 }
 
-// Eliminar tutoría
+/* Eliminar tutoría
 function eliminarTutoria(id) {
   tutorias = tutorias.filter(t => t.id !== id);
   localStorage.setItem("tutorias", JSON.stringify(tutorias));
   mostrarTutorias();
+}*/
+//ELIMINAR TUTORIA
+function eliminarTutoria(id) {
+  // Busca la tutoría que se quiere eliminar.
+  const tutoriaEliminada = tutorias.find(t => String(t.id) === String(id));
+
+  // Detiene el proceso si no existe.
+  if (!tutoriaEliminada) return;
+
+  // Elimina únicamente la tutoría seleccionada.
+  tutorias = tutorias.filter(t => String(t.id) !== String(id));
+
+  // Guarda la lista actualizada.
+  localStorage.setItem("tutorias", JSON.stringify(tutorias));
+
+  // Actualiza la tabla del administrador.
+  mostrarTutorias();
+
+  // Notifica que cambió la disponibilidad de tutorías.
+  window.dispatchEvent(new CustomEvent("tutorias:cambio"));
 }
+// ELIMINAR TUTOR
+
+
+function eliminarTutor(tutorId) {
+  // Recupera los tutores guardados.
+  const lista = JSON.parse(localStorage.getItem("skillup_tutores") || "[]");
+
+  // Busca el tutor seleccionado.
+  const tutor = lista.find(t => String(t.id) === String(tutorId));
+
+  // Detiene la eliminación si no existe.
+  if (!tutor) return;
+
+  // Solicita confirmación antes de eliminarlo.
+  if (!confirm(`¿Eliminar a ${tutor.nombre} y todas sus tutorías?`)) return;
+
+  // Elimina al tutor del catálogo.
+  const actualizados = lista.filter(t => String(t.id) !== String(tutorId));
+
+  // Elimina las tutorías asociadas a ese tutor.
+  tutorias = tutorias.filter(t => t.tutor !== tutor.nombre);
+
+  // Guarda los cambios.
+  localStorage.setItem("skillup_tutores", JSON.stringify(actualizados));
+  localStorage.setItem("tutorias", JSON.stringify(tutorias));
+
+  // Actualiza el catálogo en memoria.
+  if (typeof sincronizarTutoresDesdeStorage === "function") {
+    sincronizarTutoresDesdeStorage();
+  }
+
+  // Actualiza la tabla del dashboard.
+  mostrarTutorias();
+
+  // Notifica los cambios.
+  window.dispatchEvent(new CustomEvent("tutorias:cambio"));
+}
+
 
 // Mostrar las tutorías en pantalla
 function mostrarTutorias() {
@@ -355,3 +413,10 @@ window.addEventListener("storage", (e) => {
     mostrarTutorias();
   }
 });
+
+// Recarga las tutorías cuando se registra un nuevo tutor
+window.addEventListener("tutorias:cambio", () => {
+  tutorias = JSON.parse(localStorage.getItem("tutorias") || "[]");
+  mostrarTutorias();
+});
+
