@@ -195,12 +195,79 @@
   // no descuente el cupo en ese momento: los cupos se descuentan al confirmar.
  
   // Busca la sesión por su id y devuelve también a su tutor
+  // ---------- 6. Botones "Reservar" del catálogo (Tutores y Tutorías) ----------
   function buscarSesion(id) {
+    // 1. Buscar primero en las tutorías guardadas en localStorage
+    const tutoriasGuardadas = JSON.parse(localStorage.getItem("tutorias")) || [];
+    const tutoriaEncontrada = tutoriasGuardadas.find(t => Number(t.id) === Number(id));
+    
+    if (tutoriaEncontrada) {
+      return {
+        esTutoria: true,
+        datos: {
+          id: Number(tutoriaEncontrada.id),
+          tutor: tutoriaEncontrada.tutor || tutoriaEncontrada.nombre || "Tutor",
+          materia: tutoriaEncontrada.materia,
+          foto: tutoriaEncontrada.foto || `https://ui-avatars.com/api/?name=${encodeURIComponent(tutoriaEncontrada.tutor || "Tutor")}&background=random`,
+          fecha: tutoriaEncontrada.fecha || "Próximamente",
+          hora: tutoriaEncontrada.hora || "",
+          precio: Number(tutoriaEncontrada.precio || 0),
+          cupos: Number(tutoriaEncontrada.cupos || 10)
+        }
+      };
+    }
+
+    // 2. Si no es una tutoría, buscar en el listado tradicional de tutores de cupos.js
+    if (typeof tutores !== "undefined") {
+      for (const tutor of tutores) {
+        const sesiones = typeof Cupos !== "undefined" ? Cupos.porTutor(tutor.nombre) : [];
+        const sesion = sesiones.find((s) => Number(s.id) === Number(id));
+        if (sesion) {
+          return {
+            esTutoria: false,
+            datos: {
+              id: Number(id),
+              tutor: tutor.nombre,
+              materia: tutor.materia,
+              foto: tutor.foto,
+              fecha: sesion.fecha,
+              hora: sesion.hora,
+              precio: Number(tutor.precio),
+              cupos: Number(sesion.cupos)
+            }
+          };
+        }
+      }
+    }
+
+    return null;
+  }
+
+  function avisarSinCupos() {
+    const modal = document.getElementById("modalSinCupos");
+    if (modal) bootstrap.Modal.getOrCreateInstance(modal).show();
+  }
+
+  document.addEventListener("click", (e) => {
+    const botonReservar = e.target.closest("[data-reservar]");
+    if (!botonReservar) return;
+
+    const id = Number(botonReservar.dataset.reservar);
+    const encontrado = buscarSesion(id);
+    if (!encontrado) return; // Si no encuentra nada, deja que actúe el flujo normal
+
+    e.stopPropagation(); // Evita que otros scripts descuenten el cupo de inmediato
+
+    const agregado = agregado = agregar(encontrado.datos);
+
+    if (!agregado) avisarSinCupos();
+  }, true);
+  /*function buscarSesion(id) {
     for (const tutor of tutores) {
       const sesion = Cupos.porTutor(tutor.nombre).find((s) => s.id === id);
       if (sesion) return { tutor, sesion };
     }
-  }
+  }*/
  
   function avisarSinCupos() {
     const modal = document.getElementById("modalSinCupos"); // el modal que ya tienes en el HTML
