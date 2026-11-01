@@ -1,13 +1,13 @@
-
 document.addEventListener('DOMContentLoaded', () => {
-  const CLAVE_LOCAL_STORAGE_TUTORES = 'lista_tutores';
+  /*const CLAVE_LOCAL_STORAGE_TUTORES = 'lista_tutores';*/
+  const CLAVE_LOCAL_STORAGE_TUTORES = 'skillup_tutores';
 
   const elementoBotonAbrirModalNuevoTutor = document.getElementById('boton-nuevo-tutor');
   const elementoModalSuperposicion = document.getElementById('modal-superposicion-nuevo-tutor');
   const elementoBotonCerrarModalEncabezado = document.getElementById('boton-cerrar-modal-encabezado');
   const elementoBotonCancelarModalTutor = document.getElementById('boton-cancelar-modal-tutor');
   const elementoFormularioRegistroTutor = document.getElementById('formulario-registro-nuevo-tutor');
-  
+
   const elementoCampoSubidaFotoTutor = document.getElementById('campo-subida-foto-tutor');
   const elementoVistaPreviaFotoTutor = document.getElementById('vista-previa-foto-tutor');
   const elementoBotonAgregarNuevoHorario = document.getElementById('boton-agregar-nuevo-horario-tutor');
@@ -33,11 +33,11 @@ document.addEventListener('DOMContentLoaded', () => {
   if (elementoBotonAbrirModalNuevoTutor) {
     elementoBotonAbrirModalNuevoTutor.addEventListener('click', abrirModalNuevoTutor);
   }
-  
+
   if (elementoBotonCerrarModalEncabezado) {
     elementoBotonCerrarModalEncabezado.addEventListener('click', cerrarModalNuevoTutor);
   }
-  
+
   if (elementoBotonCancelarModalTutor) {
     elementoBotonCancelarModalTutor.addEventListener('click', cerrarModalNuevoTutor);
   }
@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
       lectorDeArchivos.onload = (eventoLectura) => {
         cadenaFotoPerfilEnBase64 = eventoLectura.target.result;
         elementoVistaPreviaFotoTutor.style.backgroundImage = `url('${cadenaFotoPerfilEnBase64}')`;
-        elementoVistaPreviaFotoTutor.innerHTML = ''; 
+        elementoVistaPreviaFotoTutor.innerHTML = '';
       };
       lectorDeArchivos.readAsDataURL(archivoSeleccionado);
     }
@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const valorPrecioPorClase = parseFloat(document.getElementById('campo-entrada-precio-tutor').value) || 0;
     const valorAnosExperiencia = parseInt(document.getElementById('campo-entrada-experiencia-tutor').value) || 0;
     const valorModalidadClase = document.getElementById('campo-seleccion-modalidad-tutor').value;
-    
+
     const valorRutaImagenFoto = cadenaFotoPerfilEnBase64 || `https://ui-avatars.com/api/?name=${encodeURIComponent(valorNombreCompleto)}&background=random`;
 
     const textoIdiomasInput = document.getElementById('campo-entrada-idiomas-tutor').value;
@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const arregloObjetosHorarios = Array.from(coleccionFilasHorarios).map((filaElemento, indiceHorario) => {
       const diaSeleccionado = filaElemento.querySelector('.seleccion-dia-semana-horario').value;
       const horaSeleccionada = filaElemento.querySelector('.entrada-hora-inicio-horario').value;
-      
+
       return {
         id: `${identificadorUnicoTutor}-horario-${indiceHorario + 1}`,
         dia: diaSeleccionado,
@@ -148,12 +148,55 @@ document.addEventListener('DOMContentLoaded', () => {
       horarios: arregloObjetosHorarios
     };
 
-    const listaActualTutores = obtenerListaTutoresDeLocalStorage();
+    /*const listaActualTutores = obtenerListaTutoresDeLocalStorage();
     listaActualTutores.push(objetoNuevoTutorRegistrado);
     guardarListaTutoresEnLocalStorage(listaActualTutores);
+    alert(`¡Tutor ${objetoNuevoTutorRegistrado.nombre} registrado correctamente en LocalStorage!`);*/
 
-    alert(`¡Tutor ${objetoNuevoTutorRegistrado.nombre} registrado correctamente en LocalStorage!`);
-    
+    // Recupera los tutores que ya están guardados.
+    const listaActualTutores = obtenerListaTutoresDeLocalStorage();
+
+    // Evita agregar dos veces el mismo tutor.
+    listaActualTutores.push(objetoNuevoTutorRegistrado);
+
+    // Guarda el catálogo actualizado.
+    guardarListaTutoresEnLocalStorage(listaActualTutores);
+
+    // Recupera las tutorías y sus cupos existentes.
+    const tutorias = JSON.parse(localStorage.getItem("tutorias") || "[]");
+
+    // Calcula el siguiente identificador de tutoría.
+    let siguienteId = tutorias.reduce(
+      (max, t) => Math.max(max, Number(t.id) || 0), 0
+    ) + 1;
+
+    // Crea una tutoría por cada horario del nuevo tutor.
+    objetoNuevoTutorRegistrado.horarios.forEach(horario => {
+      tutorias.push({
+        id: siguienteId++,
+        tutor: objetoNuevoTutorRegistrado.nombre,
+        materia: objetoNuevoTutorRegistrado.materia,
+        titulo: `${objetoNuevoTutorRegistrado.materia} - ${horario.dia} ${horario.hora}`,
+        nivel: objetoNuevoTutorRegistrado.nivel,
+        precio: objetoNuevoTutorRegistrado.precio,
+        modalidad: objetoNuevoTutorRegistrado.modalidad,
+        fecha: horario.dia,
+        hora: horario.hora,
+        cupos: horario.cuposDisponibles
+      });
+    });
+
+    // Guarda las nuevas tutorías sin borrar las anteriores.
+    localStorage.setItem("tutorias", JSON.stringify(tutorias));
+
+    // Notifica a los componentes de la página actual.
+    window.dispatchEvent(new CustomEvent("tutorias:cambio"));
+
+    // Informa que el registro terminó.
+    alert(`¡Tutor ${objetoNuevoTutorRegistrado.nombre} registrado correctamente!`);
+
+    // Cierra el formulario.
     cerrarModalNuevoTutor();
+
   });
 });
