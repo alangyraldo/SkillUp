@@ -11,9 +11,13 @@ function manejarSesion(evento) {
 */
 
 // Solo en la pagina de login si ya hay sesion de admin ir al dashboard
-if (document.getElementById('correo-sesion') && typeof esAdmin === 'function' && esAdmin()) {
-  window.location.replace('/pages/dashboard-admin/index.html');
+if (document.getElementById('correo-sesion') && typeof obtenerSesion === 'function') {
+  const sesionActiva = obtenerSesion();
+  if (sesionActiva) {
+    window.location.replace(rutaDashboard(sesionActiva.rol));
+  }
 }
+
 function manejarSesion(evento) {
   evento.preventDefault();
 
@@ -21,8 +25,9 @@ function manejarSesion(evento) {
   const clave = document.getElementById('contrasena-sesion').value;
   const mensajeError = document.getElementById('mensaje-error');
 
-  if (iniciarSesion(correo, clave)) {
-    window.location.href = '/pages/dashboard-admin/index.html';
+  const sesion = iniciarSesion(correo, clave);
+  if (sesion) {
+    window.location.href = rutaDashboard(sesion.rol);
   } else {
     mensajeError.textContent = 'Correo o contraseña incorrectos.';
     document.getElementById('contrasena-sesion').value = '';
@@ -32,27 +37,34 @@ function manejarSesion(evento) {
 /**
  * Controla la selección de rol en la página de registro (Aprender vs Enseñar)
  */
+let rolRegistro = 'aprender';
+
 function seleccionarRol(rol, elementoBoton) {
   const botonesRol = document.querySelectorAll('.boton-rol');
   botonesRol.forEach(btn => btn.classList.remove('activo'));
   elementoBoton.classList.add('activo');
-  console.log(`Rol seleccionado: ${rol}`);
+  rolRegistro = rol;
 }
 
-/**
- * Maneja el evento de envío del formulario de creación de cuenta
- */
 function manejarRegistro(evento) {
   evento.preventDefault();
-  const nombre = document.getElementById('nombre-registro').value;
-  const apellido = document.getElementById('apellido-registro').value;
-  const correo = document.getElementById('correo-registro').value;
-  
-  console.log(`Registrando usuario: ${nombre} ${apellido} (${correo})`);
-  alert('¡Cuenta creada correctamente! Bienvenido a SkillUp.');
-  
-  // Redirigir opcionalmente al inicio de sesión
-  window.location.href = 'index.html';
+
+  const resultado = registrarUsuario({
+    nombre: document.getElementById('nombre-registro').value.trim(),
+    apellido: document.getElementById('apellido-registro').value.trim(),
+    correo: document.getElementById('correo-registro').value,
+    clave: document.getElementById('contrasena-registro').value,
+    intencion: rolRegistro
+  });
+
+  if (!resultado.ok) {
+    alert(resultado.error);
+    return;
+  }
+
+    alert('¡Cuenta creada correctamente! Bienvenido a SkillUp.');
+  cerrarSesion();
+  window.location.href = '/pages/iniciar-sesion/index.html';
 }
 
 

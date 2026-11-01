@@ -338,3 +338,17 @@ body {
 .estado-activo { background-color: #dcfce7; color: #15803d; }
 .estado-pendiente { background-color: #fef3c7; color: #b45309; }
 .badge-estado.badge-agotado { background: #fde8e8; color: #c62828; }
+
+.barra-perfil {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 32px;
+    min-height: 72px;
+}
+.bloque-usuario {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    white-space: nowrap;
+}

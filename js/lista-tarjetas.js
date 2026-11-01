@@ -1,4 +1,5 @@
-// Lista de los 10 productos/tutorías iniciales
+
+/* Lista de las 10 tutorías iniciales con la foto de cada tutor */
 const tutoriasIniciales = [
   {
     id: 1,
@@ -7,6 +8,7 @@ const tutoriasIniciales = [
     nivel: "Avanzado",
     descripcion: "Práctica intensiva y fluidez en inglés",
     tutor: "Sofía Vélez",
+    foto: "../incio/img/incio.jpg",
     fecha: "Martes",
     hora: "18:00",
     duracion: 2,
@@ -21,6 +23,7 @@ const tutoriasIniciales = [
     nivel: "Intermedio",
     descripcion: "Estructuras gramaticales y vocabulario útil",
     tutor: "Laura Martínez",
+    foto: "../incio/img/persona(2).jpg",
     fecha: "Lunes",
     hora: "17:00",
     duracion: 2,
@@ -35,6 +38,7 @@ const tutoriasIniciales = [
     nivel: "Intermedio",
     descripcion: "Campañas efectivas en redes sociales",
     tutor: "Andrés Torres",
+    foto: "../incio/img/persona.jpg",
     fecha: "Lunes",
     hora: "16:00",
     duracion: 2,
@@ -49,6 +53,7 @@ const tutoriasIniciales = [
     nivel: "Avanzado",
     descripcion: "Optimización de embudos de conversión",
     tutor: "Camila Rojas",
+    foto: "../incio/img/persona(3).jpg",
     fecha: "Martes",
     hora: "19:00",
     duracion: 2,
@@ -63,6 +68,7 @@ const tutoriasIniciales = [
     nivel: "Avanzado",
     descripcion: "Manejo de luz y edición profesional",
     tutor: "Sara Giraldo",
+    foto: "../incio/img/persona(4).jpg",
     fecha: "Lunes",
     hora: "09:00",
     duracion: 2,
@@ -77,6 +83,7 @@ const tutoriasIniciales = [
     nivel: "Intermedio",
     descripcion: "Uso de cámara y encuadre básico",
     tutor: "Mateo Ruiz",
+    foto: "../incio/img/tutor.jpg",
     fecha: "Jueves",
     hora: "15:00",
     duracion: 2,
@@ -91,6 +98,7 @@ const tutoriasIniciales = [
     nivel: "Avanzado",
     descripcion: "Modelos de aprendizaje automático y redes neuronales",
     tutor: "Daniel Castro",
+    foto: "../incio/img/persona.jpg",
     fecha: "Martes",
     hora: "18:00",
     duracion: 2,
@@ -105,6 +113,7 @@ const tutoriasIniciales = [
     nivel: "Intermedio",
     descripcion: "Implementación de lógica y asistentes inteligentes",
     tutor: "Valentina Gómez",
+    foto: "../incio/img/persona(2).jpg",
     fecha: "Miércoles",
     hora: "17:00",
     duracion: 2,
@@ -119,6 +128,7 @@ const tutoriasIniciales = [
     nivel: "Avanzado",
     descripcion: "Matrices, vectores y sistemas de ecuaciones",
     tutor: "Juan Pérez",
+    foto: "../incio/img/persona(3).jpg",
     fecha: "Lunes",
     hora: "18:00",
     duracion: 2,
@@ -133,6 +143,7 @@ const tutoriasIniciales = [
     nivel: "Intermedio",
     descripcion: "Operaciones entre conjuntos y demostraciones matemáticas",
     tutor: "Natalia Díaz",
+    foto: "../incio/img/persona(4).jpg",
     fecha: "Martes",
     hora: "16:00",
     duracion: 2,
@@ -142,7 +153,9 @@ const tutoriasIniciales = [
   }
 ];
 
-// Si el localStorage está vacío ("tutorias" no existe o no tiene elementos), se guardan estas 10 por defecto
-if (!localStorage.getItem("tutorias") || JSON.parse(localStorage.getItem("tutorias")).length === 0) {
+// Guardar las tutorías iniciales solo si no existen o están vacías
+const tutoriasGuardadas = localStorage.getItem("tutorias");
+
+if (!tutoriasGuardadas || JSON.parse(tutoriasGuardadas).length === 0) {
   localStorage.setItem("tutorias", JSON.stringify(tutoriasIniciales));
 }

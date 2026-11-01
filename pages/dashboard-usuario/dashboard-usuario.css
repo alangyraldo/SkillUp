@@ -1,0 +1,21 @@
+a.btn-nueva-tutoria { text-decoration: none; }
+
+.reservas-vacio {
+    padding: 30px 20px;
+    text-align: center;
+    color: var(--lavanda);
+}
+.reservas-vacio a { color: var(--purpura-principal); font-weight: 600; }
+
+.btn-cancelar-reserva {
+    background: none;
+    border: 1px solid #ff4d4d;
+    color: #ff4d4d;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.btn-cancelar-reserva:hover { background-color: rgba(255, 77, 77, 0.1); }

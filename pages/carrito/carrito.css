@@ -1,0 +1,180 @@
+/* Carrito de reservas · usa las variables de tu :root (con valor de respaldo) */
+ 
+/* ---------- Botón flotante ---------- */
+.carrito-flotante {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 1045;
+  width: 60px;
+  height: 60px;
+  border: none;
+  border-radius: 50%;
+  background: var(--morado, #5b2eff);
+  color: #fff;
+  font-size: 26px;
+  cursor: pointer;
+  box-shadow: 0 8px 22px rgba(91, 46, 255, 0.35);
+  transition: right 0.3s ease;
+}
+.carrito-flotante:hover { background: #4720d6; }
+.carrito-flotante.abierto { right: calc(var(--carrito-ancho, 340px) + 20px); }
+ 
+.carrito-flotante__contador {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 6px;
+  border-radius: 999px;
+  border: 2px solid #fff;
+  background: var(--texto, #1c1b29);
+  font: 700 12px/20px "Montserrat", sans-serif;
+}
+ 
+/* ---------- Panel lateral ---------- */
+.carrito-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 1050;
+  width: var(--carrito-ancho, 340px);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 24px 0 0 24px;
+  box-shadow: -10px 0 36px rgba(0, 0, 0, 0.14);
+  font-family: "Montserrat", sans-serif;
+  transform: translateX(100%);
+  visibility: hidden;
+  transition: transform 0.3s ease, visibility 0s linear 0.3s;
+}
+.carrito-panel.abierto {
+  transform: translateX(0);
+  visibility: visible;
+  transition: transform 0.3s ease, visibility 0s;
+}
+.carrito-panel.arrastrando { transition: none; user-select: none; }
+ 
+/* Manija para arrastrar (borde izquierdo) */
+.carrito-panel__manija {
+  position: absolute;
+  left: -8px;
+  top: 0;
+  bottom: 0;
+  width: 16px;
+  cursor: ew-resize;
+  touch-action: none;
+}
+.carrito-panel__manija::before {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 50%;
+  width: 5px;
+  height: 60px;
+  margin-top: -30px;
+  border-radius: 999px;
+  background: #8b7cff;
+}
+ 
+.carrito-panel__encabezado {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 22px 20px 14px 24px;
+}
+.carrito-panel__encabezado h2 { flex: 1; font-size: 20px; font-weight: 700; }
+.carrito-panel__encabezado button {
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 10px;
+  background: #f5f6fa;
+  cursor: pointer;
+}
+.carrito-panel__encabezado button:hover { background: var(--morado-claro, #ede8ff); color: var(--morado, #5b2eff); }
+ 
+.carrito-panel__items {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 20px;
+  background: #f5f6fa;
+  display: grid;
+  gap: 14px;
+  align-content: start;
+}
+.carrito-panel__vacio { padding: 40px 8px; text-align: center; color: var(--texto-suave, #6b6b7b); }
+ 
+/* ---------- Ítem (card compacta, como la del catálogo) ---------- */
+.carrito-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 84px 1fr;
+  gap: 14px;
+  padding: 12px;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
+}
+.carrito-item__foto { width: 84px; height: 100%; min-height: 96px; object-fit: cover; border-radius: 14px; }
+.carrito-item__info { min-width: 0; padding-right: 28px; }
+.carrito-item__nombre { font-size: 16px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.carrito-item__materia { font-size: 13px; font-weight: 600; color: var(--morado, #5b2eff); }
+.carrito-item__horario { font-size: 12px; color: var(--texto-suave, #6b6b7b); }
+.carrito-item__fila { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: 10px; }
+.carrito-item__fila strong { font-size: 16px; }
+ 
+.carrito-item__cantidad { display: inline-flex; align-items: center; background: #f5f6fa; border-radius: 999px; padding: 3px; }
+.carrito-item__cantidad button {
+  width: 26px;
+  height: 26px;
+  border: none;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--morado, #5b2eff);
+  font-weight: 700;
+  cursor: pointer;
+}
+.carrito-item__cantidad button:hover { background: var(--morado, #5b2eff); color: #fff; }
+.carrito-item__cantidad span { min-width: 28px; text-align: center; font-weight: 700; font-size: 14px; }
+ 
+.carrito-item__eliminar {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--texto-suave, #6b6b7b);
+  cursor: pointer;
+}
+.carrito-item__eliminar:hover { background: #ffe9ee; color: #d6264f; }
+ 
+/* ---------- Pie ---------- */
+.carrito-panel__pie { padding: 16px 24px 22px; border-top: 1px solid var(--borde, #e4e2ee); }
+.carrito-panel__mensaje { min-height: 18px; margin-bottom: 8px; font-size: 13px; color: var(--morado, #5b2eff); }
+.carrito-panel__total { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 14px; }
+.carrito-panel__total strong { font-size: 26px; font-weight: 800; }
+.carrito-panel__confirmar {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 999px;
+  background: var(--morado, #5b2eff);
+  color: #fff;
+  font: 700 15px "Montserrat", sans-serif;
+  cursor: pointer;
+}
+.carrito-panel__confirmar:hover:not(:disabled) { background: #4720d6; }
+.carrito-panel__confirmar:disabled { background: var(--morado-claro, #ede8ff); color: #8b7cff; cursor: not-allowed; }
+ 
+/* ---------- Celular ---------- */
+@media (max-width: 575px) {
+  .carrito-panel__manija { display: none; }
+  .carrito-flotante.abierto { opacity: 0; pointer-events: none; }
+}
