@@ -212,6 +212,12 @@ body {
     justify-content: center;
 }
 
+.contenedor_listas{
+    display: flex;
+    flex-direction: column;
+    gap:30px;
+}
+
 /* --- TABLA MAQUETADA CON DIVS --- */
 .contenedor-lista-tutores {
     background-color: var(--blanco);
@@ -227,11 +233,7 @@ body {
     margin-bottom: 20px;
 }
 
-.contenedor-botones{
-    display:flex;
-    flex-direction: row;
-    column-gap: 10px;
-}
+
 
 .encabezado-seccion h2 {
     font-size: 1.2rem;

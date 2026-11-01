@@ -9,6 +9,19 @@ let tutorias = JSON.parse(localStorage.getItem("tutorias")) || [];
 let idTutoriaEnEdicion = null;
 let tutorSeleccionadoActual = null; // Guardará el objeto del tutor actual
 
+// Variables de Paginación para Tutorías en Admin (Máximo 5 por página)
+const POR_PAGINA_ADMIN_TUTORIAS = 5;
+let paginaActualAdminTutorias = 1;
+
+// Función auxiliar para obtener los tutores registrados en el módulo de tutores
+function obtenerTutoresRegistrados() {
+  try {
+    return JSON.parse(localStorage.getItem("skillup_tutores") || "[]");
+  } catch (error) {
+    return [];
+  }
+}
+
 function abrirVentana() {
   modal.classList.remove("oculto");
   document.body.classList.add("modal-abierto");
@@ -56,24 +69,24 @@ document.addEventListener("keydown", (evento) => {
   }
 });
 
-// 1. Cargar materias únicas desde tutores.js
+// 1. Cargar materias únicas desde los tutores registrados en localStorage
 function cargarSelectMaterias() {
   const selectMateria = document.getElementById("materia");
   if (!selectMateria) return;
 
-  if (typeof tutores !== "undefined" && Array.isArray(tutores)) {
-    const materiasUnicas = [...new Set(tutores.map(t => t.materia))];
-    selectMateria.innerHTML = '<option value="">Seleccionar materia</option>';
-    materiasUnicas.forEach(materia => {
-      const option = document.createElement("option");
-      option.value = materia;
-      option.textContent = materia;
-      selectMateria.appendChild(option);
-    });
-  }
+  const tutoresGuardados = obtenerTutoresRegistrados();
+  const materiasUnicas = [...new Set(tutoresGuardados.map(t => t.materia))];
+  
+  selectMateria.innerHTML = '<option value="">Seleccionar materia</option>';
+  materiasUnicas.forEach(materia => {
+    const option = document.createElement("option");
+    option.value = materia;
+    option.textContent = materia;
+    selectMateria.appendChild(option);
+  });
 }
 
-// 2. Evento Materia -> Filtra los Tutores de esa materia
+// 2. Evento Materia -> Filtra los Tutores de esa materia desde localStorage
 document.getElementById("materia").addEventListener("change", (e) => {
   const materiaSeleccionada = e.target.value;
   const selectTutor = document.getElementById("tutor");
@@ -100,7 +113,9 @@ document.getElementById("materia").addEventListener("change", (e) => {
 
   if (!materiaSeleccionada) return;
 
-  const tutoresFiltrados = tutores.filter(t => t.materia.toLowerCase() === materiaSeleccionada.toLowerCase());
+  const tutoresGuardados = obtenerTutoresRegistrados();
+  const tutoresFiltrados = tutoresGuardados.filter(t => t.materia.toLowerCase() === materiaSeleccionada.toLowerCase());
+  
   tutoresFiltrados.forEach((t) => {
     const option = document.createElement("option");
     option.value = t.nombre;
@@ -117,6 +132,8 @@ document.getElementById("tutor").addEventListener("change", (e) => {
   const selectHora = document.getElementById("hora");
   const selectModalidad = document.getElementById("modalidad");
   const inputPrecio = document.getElementById("precio");
+
+  const tutoresGuardados = obtenerTutoresRegistrados();
 
   if (!nombreTutor) {
     selectNivel.innerHTML = '<option value="">Selecciona un tutor primero</option>';
@@ -135,33 +152,30 @@ document.getElementById("tutor").addEventListener("change", (e) => {
     return;
   }
 
-  tutorSeleccionadoActual = tutores.find(t => t.nombre === nombreTutor);
+  tutorSeleccionadoActual = tutoresGuardados.find(t => t.nombre === nombreTutor);
 
   if (tutorSeleccionadoActual) {
-    // Nivel único del tutor
     selectNivel.innerHTML = `<option value="${tutorSeleccionadoActual.nivel}">${tutorSeleccionadoActual.nivel}</option>`;
     selectNivel.disabled = false;
 
-    // Modalidad única del tutor
     selectModalidad.innerHTML = `<option value="${tutorSeleccionadoActual.modalidad}">${tutorSeleccionadoActual.modalidad}</option>`;
     selectModalidad.disabled = false;
 
-    // Días disponibles del tutor
     selectDia.innerHTML = '<option value="">Seleccionar día</option>';
-    const diasUnicos = [...new Set(tutorSeleccionadoActual.horarios.map(h => h.dia))];
-    diasUnicos.forEach(dia => {
-      const option = document.createElement("option");
-      option.value = dia;
-      option.textContent = dia;
-      selectDia.appendChild(option);
-    });
+    if (tutorSeleccionadoActual.horarios && Array.isArray(tutorSeleccionadoActual.horarios)) {
+      const diasUnicos = [...new Set(tutorSeleccionadoActual.horarios.map(h => h.dia))];
+      diasUnicos.forEach(dia => {
+        const option = document.createElement("option");
+        option.value = dia;
+        option.textContent = dia;
+        selectDia.appendChild(option);
+      });
+    }
     selectDia.disabled = false;
 
-    // Resetear hora hasta que elijan día
     selectHora.innerHTML = '<option value="">Selecciona un día primero</option>';
     selectHora.disabled = true;
 
-    // Precio base del tutor
     if (inputPrecio) inputPrecio.value = tutorSeleccionadoActual.precio;
   }
 });
@@ -173,7 +187,7 @@ document.getElementById("dia").addEventListener("change", (e) => {
 
   selectHora.innerHTML = '<option value="">Seleccionar hora</option>';
 
-  if (!diaSeleccionado || !tutorSeleccionadoActual) {
+  if (!diaSeleccionado || !tutorSeleccionadoActual || !tutorSeleccionadoActual.horarios) {
     selectHora.disabled = true;
     return;
   }
@@ -197,14 +211,12 @@ function prepararEdicion(tutoria) {
   const modalTitulo = modal.querySelector(".modal-header h2");
   if (modalTitulo) modalTitulo.textContent = "Editar tutoría";
 
-  // Rellenar campos principales
   document.getElementById("titulo").value = tutoria.titulo;
   document.getElementById("descripcion").value = tutoria.descripcion;
   document.getElementById("duracion").value = tutoria.duracion;
   document.getElementById("precio").value = tutoria.precio;
   document.getElementById("cupos").value = tutoria.cupos;
 
-  // Seleccionar materia y disparar eventos en cascada
   const selectMateria = document.getElementById("materia");
   selectMateria.value = tutoria.materia;
   selectMateria.dispatchEvent(new Event("change"));
@@ -232,7 +244,7 @@ function capturarTutoria(evento) {
     nivel: document.getElementById("nivel").value,
     descripcion: document.getElementById("descripcion").value.trim(),
     tutor: document.getElementById("tutor").value,
-    fecha: document.getElementById("dia").value, // Guardamos el día seleccionado
+    fecha: document.getElementById("dia").value, 
     hora: document.getElementById("hora").value,
     duracion: Number(document.getElementById("duracion").value),
     modalidad: document.getElementById("modalidad").value,
@@ -250,7 +262,6 @@ function capturarTutoria(evento) {
     tutorias = tutorias.map(t => t.id === idTutoriaEnEdicion ? { ...t, ...datosFormulario } : t);
   } else {
     const nuevaTutoria = {
-      //id: tutorSeleccionadoActual ? tutorSeleccionadoActual.id : (tutorias.length > 0 ? Math.max(...tutorias.map(t => t.id)) + 1 : 1),
       id: tutorias.length > 0 ? Math.max(...tutorias.map(t => t.id)) + 1 : 1,
       ...datosFormulario
     };
@@ -262,81 +273,77 @@ function capturarTutoria(evento) {
   cerrarVentana();
 }
 
-/* Eliminar tutoría
+// ELIMINAR TUTORIA
 function eliminarTutoria(id) {
-  tutorias = tutorias.filter(t => t.id !== id);
-  localStorage.setItem("tutorias", JSON.stringify(tutorias));
-  mostrarTutorias();
-}*/
-//ELIMINAR TUTORIA
-function eliminarTutoria(id) {
-  // Busca la tutoría que se quiere eliminar.
   const tutoriaEliminada = tutorias.find(t => String(t.id) === String(id));
-
-  // Detiene el proceso si no existe.
   if (!tutoriaEliminada) return;
 
-  // Elimina únicamente la tutoría seleccionada.
   tutorias = tutorias.filter(t => String(t.id) !== String(id));
-
-  // Guarda la lista actualizada.
   localStorage.setItem("tutorias", JSON.stringify(tutorias));
-
-  // Actualiza la tabla del administrador.
   mostrarTutorias();
-
-  // Notifica que cambió la disponibilidad de tutorías.
   window.dispatchEvent(new CustomEvent("tutorias:cambio"));
 }
-// ELIMINAR TUTOR
 
-
-function eliminarTutor(tutorId) {
-  // Recupera los tutores guardados.
-  const lista = JSON.parse(localStorage.getItem("skillup_tutores") || "[]");
-
-  // Busca el tutor seleccionado.
-  const tutor = lista.find(t => String(t.id) === String(tutorId));
-
-  // Detiene la eliminación si no existe.
-  if (!tutor) return;
-
-  // Solicita confirmación antes de eliminarlo.
-  if (!confirm(`¿Eliminar a ${tutor.nombre} y todas sus tutorías?`)) return;
-
-  // Elimina al tutor del catálogo.
-  const actualizados = lista.filter(t => String(t.id) !== String(tutorId));
-
-  // Elimina las tutorías asociadas a ese tutor.
-  tutorias = tutorias.filter(t => t.tutor !== tutor.nombre);
-
-  // Guarda los cambios.
-  localStorage.setItem("skillup_tutores", JSON.stringify(actualizados));
-  localStorage.setItem("tutorias", JSON.stringify(tutorias));
-
-  // Actualiza el catálogo en memoria.
-  if (typeof sincronizarTutoresDesdeStorage === "function") {
-    sincronizarTutoresDesdeStorage();
+// Función para crear la paginación visual (1, 2, 3...) de Tutorías en el Admin
+function crearPaginacionAdminTutorias(totalPaginas) {
+  let contenedorPaginacionAdmin = document.getElementById("paginacionAdminTutorias");
+  
+  if (!contenedorPaginacionAdmin) {
+    contenedorPaginacionAdmin = document.createElement("div");
+    contenedorPaginacionAdmin.id = "paginacionAdminTutorias";
+    contenedorPaginacionAdmin.className = "paginacion";
+    if (listaTutorias && listaTutorias.parentNode) {
+      listaTutorias.parentNode.appendChild(contenedorPaginacionAdmin);
+    }
   }
 
-  // Actualiza la tabla del dashboard.
-  mostrarTutorias();
+  contenedorPaginacionAdmin.innerHTML = "";
+  if (totalPaginas <= 1) return;
 
-  // Notifica los cambios.
-  window.dispatchEvent(new CustomEvent("tutorias:cambio"));
+  const boton = (texto, pagina, { activo = false, deshabilitado = false } = {}) => {
+    const b = document.createElement("button");
+    b.textContent = texto;
+    if (activo) b.classList.add("activo");
+    b.disabled = deshabilitado;
+    b.addEventListener("click", () => { 
+      paginaActualAdminTutorias = pagina; 
+      mostrarTutorias(); 
+    });
+    return b;
+  };
+
+  contenedorPaginacionAdmin.appendChild(boton("‹", paginaActualAdminTutorias - 1, { deshabilitado: paginaActualAdminTutorias === 1 }));
+  for (let i = 1; i <= totalPaginas; i++) {
+    contenedorPaginacionAdmin.appendChild(boton(i, i, { activo: i === paginaActualAdminTutorias }));
+  }
+  contenedorPaginacionAdmin.appendChild(boton("›", paginaActualAdminTutorias + 1, { deshabilitado: paginaActualAdminTutorias === totalPaginas }));
 }
 
-
-// Mostrar las tutorías en pantalla
+// Mostrar tutorías con límite de 5 por página y paginación
 function mostrarTutorias() {
   listaTutorias.replaceChildren();
 
+  tutorias = JSON.parse(localStorage.getItem("tutorias")) || [];
+
   if (tutorias.length === 0) {
     listaTutorias.innerHTML = `<p class="sin-tutorias">No hay tutorías registradas.</p>`;
+    const paginacionAdmin = document.getElementById("paginacionAdminTutorias");
+    if (paginacionAdmin) paginacionAdmin.innerHTML = "";
     return;
   }
 
-  tutorias.forEach((tutoria) => {
+  // Cálculo de páginas
+  const totalPaginas = Math.ceil(tutorias.length / POR_PAGINA_ADMIN_TUTORIAS);
+  if (paginaActualAdminTutorias > totalPaginas) {
+    paginaActualAdminTutorias = 1;
+  }
+
+  const inicio = (paginaActualAdminTutorias - 1) * POR_PAGINA_ADMIN_TUTORIAS;
+  const tutoriasPagina = tutorias.slice(inicio, inicio + POR_PAGINA_ADMIN_TUTORIAS);
+
+  tutoriasPagina.forEach((tutoria) => {
+    if (!tutoria.titulo && !tutoria.materia) return;
+
     const tarjeta = document.createElement("div");
     tarjeta.className = "tutoria-card";
 
@@ -346,23 +353,23 @@ function mostrarTutorias() {
 
     const titulo = document.createElement("span");
     titulo.className = "tutoria-titulo";
-    titulo.textContent = tutoria.titulo;
+    titulo.textContent = tutoria.titulo || "Sin título";
 
     const tutor = document.createElement("span");
     tutor.className = "tutoria-tutor";
-    tutor.textContent = tutoria.tutor;
+    tutor.textContent = tutoria.tutor || "Sin tutor";
 
     const badgeMateria = document.createElement("span");
     badgeMateria.className = "badge-materia";
-    badgeMateria.textContent = tutoria.materia;
+    badgeMateria.textContent = tutoria.materia || "General";
 
     const precio = document.createElement("span");
     precio.className = "tutoria-precio";
-    precio.textContent = `$${tutoria.precio.toLocaleString()}`;
+    precio.textContent = `$${(Number(tutoria.precio) || 0).toLocaleString()}`;
 
     const badgeEstado = document.createElement("span");
     badgeEstado.className = "badge-estado";
-    const sinCupos = tutoria.cupos <= 0;
+    const sinCupos = (Number(tutoria.cupos) || 0) <= 0;
     badgeEstado.textContent = sinCupos ? "Sin cupos" : `Activa · ${tutoria.cupos} cupos`;
     badgeEstado.classList.toggle("badge-agotado", sinCupos);
 
@@ -374,9 +381,8 @@ function mostrarTutorias() {
     btnVer.className = "btn-accion btn-ver";
     btnVer.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>`;
 
-    // funcionalidad del btnVer para redirigir a la página de búsqueda de tutor con el nombre del tutor como parámetro
     btnVer.addEventListener("click", () => {
-      const url = `/pages/buscar-tutor/index.html?tutor=${encodeURIComponent(tutoria.tutor)}`;
+      const url = `/pages/buscar-tutor/index.html?id=${encodeURIComponent(tutoria.id)}&tutor=${encodeURIComponent(tutoria.tutor)}&tipo=tutoria`;
       window.location.href = url;
     });
 
@@ -385,7 +391,6 @@ function mostrarTutorias() {
     btnEditar.className = "btn-accion btn-editar";
     btnEditar.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>`;
 
-    // Conectar correctamente el botón de editar
     btnEditar.addEventListener("click", () => prepararEdicion(tutoria));
 
     const btnEliminar = document.createElement("button");
@@ -399,6 +404,9 @@ function mostrarTutorias() {
     tarjeta.append(thumbnail, titulo, tutor, badgeMateria, precio, badgeEstado, acciones);
     listaTutorias.appendChild(tarjeta);
   });
+
+  // Renderizar la barra de paginación debajo de la lista
+  crearPaginacionAdminTutorias(totalPaginas);
 }
 
 formulario.addEventListener("submit", capturarTutoria);
@@ -410,14 +418,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
 window.addEventListener("storage", (e) => {
   if (e.key === "tutorias") {
-    tutorias = JSON.parse(e.newValue) || [];
     mostrarTutorias();
+  }
+  if (e.key === "skillup_tutores") {
+    cargarSelectMaterias();
   }
 });
 
-// Recarga las tutorías cuando se registra un nuevo tutor
 window.addEventListener("tutorias:cambio", () => {
-  tutorias = JSON.parse(localStorage.getItem("tutorias") || "[]");
   mostrarTutorias();
+  cargarSelectMaterias();
 });
-
