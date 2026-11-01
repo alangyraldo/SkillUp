@@ -89,7 +89,7 @@ function crearCardTutoria(t) {
           <span class="tutor-card__disponible">
           ${Number(t.cupos) > 0 ? 'Disponible' : 'Sin cupos'}
           </span>
-          <button id="btn_reservar" class="tutor-card__boton">Reservar</button>
+          <button type="button" class="tutor-card__boton" data-reservar="${t.id}">Reservar</button>
       </div>
     </div>
   </article>`;
