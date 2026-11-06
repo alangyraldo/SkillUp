@@ -19,3 +19,104 @@ a.btn-nueva-tutoria { text-decoration: none; }
     transition: all 0.2s ease;
 }
 .btn-cancelar-reserva:hover { background-color: rgba(255, 77, 77, 0.1); }
+
+/* BOTON CONFIGURACION */
+
+.cfg-overlay {
+    position: fixed; 
+    inset: 0;
+    background: rgba(17, 20, 45, 0.55);
+    display: none; 
+    align-items: center; 
+    justify-content: center;
+    padding: 20px; 
+    z-index: 1000;
+}
+
+.cfg-overlay.abierto { 
+    display: flex; 
+}
+
+.cfg-modal {
+    background: #fff; 
+    width: 100%; 
+    max-width: 480px;
+    max-height: 90vh; 
+    overflow-y: auto;
+    border-radius: 16px; 
+    padding: 28px;
+    display: grid; 
+    gap: 12px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+}
+
+.cfg-encabezado { display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+}
+
+.cfg-encabezado h2 { margin: 0; 
+    font-size: 1.2rem; 
+    color: #11142D; 
+}
+
+.cfg-cerrar { 
+    background: none; 
+    border: none; 
+    font-size: 1.6rem; 
+    cursor: pointer; 
+    color: #8B7CFF; 
+}
+
+.cfg-modal label { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 5px; 
+    font-size: 0.78rem; 
+    font-weight: 600; 
+    color: #8B7CFF; 
+}
+
+.cfg-modal input {
+    padding: 10px 12px; 
+    border: 1px solid #e3e0f5; 
+    border-radius: 10px;
+    font-size: 0.95rem; 
+    font-family: inherit; 
+    outline: none;
+}
+
+.cfg-modal input:focus { 
+    border-color: #5B2EFF; 
+    box-shadow: 0 0 0 3px rgba(91, 46, 255, 0.12);
+}
+
+.cfg-btn {
+    background: #5B2EFF; 
+    color: #fff; 
+    border: none; 
+    padding: 10px 18px;
+    border-radius: 10px; 
+    font-weight: 600; 
+    font-family: inherit;
+    cursor: pointer; 
+    justify-self: start;
+}
+
+.cfg-btn:hover { 
+    background: #4A20E8; 
+}
+
+.cfg-msg { 
+    margin: 0; 
+    font-size: 0.85rem; 
+    min-height: 1.2em; 
+}
+
+.cfg-msg.ok { 
+    color: #1a9d57; 
+}
+
+.cfg-msg.error { 
+    color: #ff4d4d; 
+}
