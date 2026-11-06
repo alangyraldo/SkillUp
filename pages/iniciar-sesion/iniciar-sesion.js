@@ -53,6 +53,7 @@ function manejarRegistro(evento) {
     nombre: document.getElementById('nombre-registro').value.trim(),
     apellido: document.getElementById('apellido-registro').value.trim(),
     correo: document.getElementById('correo-registro').value,
+    telefono: document.getElementById("telefono-registro").value,
     clave: document.getElementById('contrasena-registro').value,
     intencion: rolRegistro
   });

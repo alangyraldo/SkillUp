@@ -26,9 +26,72 @@ function actualizarMetricasTutores() {
 
   const totalTutores = document.getElementById("total-tutores-admin");
   const totalTutorias = document.getElementById("total-tutorias-admin");
+  const totalEstudiantes = document.getElementById("total-estudiantes-admin");
 
   if (totalTutores) totalTutores.textContent = tutores.length;
   if (totalTutorias) totalTutorias.textContent = tutorias.length;
+  if (totalEstudiantes) totalEstudiantes.textContent = obtenerEstudiantes().length;
+}
+
+// Dibuja la tabla de estudiantes con el botón de eliminar.
+function pintarEstudiantes() {
+  const contenedor = document.getElementById("tabla-estudiantes");
+  if (!contenedor) return;
+
+  contenedor.innerHTML = "";
+  const estudiantes = obtenerEstudiantes();
+
+  if (estudiantes.length === 0) {
+    const vacio = document.createElement("div");
+    vacio.className = "fila-tabla";
+    const celdaVacia = document.createElement("div");
+    celdaVacia.className = "columna";
+    celdaVacia.textContent = "Aún no hay estudiantes registrados.";
+    vacio.appendChild(celdaVacia);
+    contenedor.appendChild(vacio);
+    return;
+  }
+
+  estudiantes.forEach((u) => {
+    const fila = document.createElement("div");
+    fila.className = "fila-tabla";
+
+    [`${u.nombre} ${u.apellido}`, u.correo, u.telefono || "—"].forEach((texto) => {
+      const celda = document.createElement("div");
+      celda.className = "columna";
+      celda.textContent = texto;
+      fila.appendChild(celda);
+    });
+
+   const celdaAccion = document.createElement("div");
+celdaAccion.className = "columna acciones-estudiante";
+
+const botonBorrar = document.createElement("button");
+
+botonBorrar.type = "button";
+botonBorrar.className = "boton-eliminar-estudiante";
+botonBorrar.title = "Eliminar estudiante";
+botonBorrar.setAttribute(
+    "aria-label",
+    `Eliminar a ${u.nombre} ${u.apellido}`
+);
+
+// Texto visible para comprobar que el botón aparece
+botonBorrar.textContent = "Eliminar";
+
+botonBorrar.addEventListener("click", () => {
+    if (confirm(`¿Eliminar a ${u.nombre} ${u.apellido}?`)) {
+        eliminarUsuario(u.correo);
+        pintarEstudiantes();
+        actualizarMetricasTutores();
+    }
+});
+
+celdaAccion.appendChild(botonBorrar);
+fila.appendChild(celdaAccion);
+
+    contenedor.appendChild(fila);
+  });
 }
 
 // Actualiza las métricas al cargar el dashboard.
@@ -38,3 +101,5 @@ document.addEventListener("DOMContentLoaded", actualizarMetricasTutores);
 window.addEventListener("tutorias:cambio", actualizarMetricasTutores);
 
 
+document.addEventListener("DOMContentLoaded", pintarEstudiantes);
+document.addEventListener("DOMContentLoaded", actualizarMetricasTutores);
