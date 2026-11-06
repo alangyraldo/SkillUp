@@ -15,7 +15,7 @@ function leerUsuarios() {
   }
 }
 
-function registrarUsuario({ nombre, apellido, correo, clave, intencion }) {
+function registrarUsuario({ nombre, apellido, correo, telefono, clave, intencion }) {
   const correoLimpio = correo.trim().toLowerCase();
   if (correoLimpio === ADMIN.correo) {
     return { ok: false, error: "Ese correo no está disponible." };
@@ -24,7 +24,7 @@ function registrarUsuario({ nombre, apellido, correo, clave, intencion }) {
   if (usuarios.some((u) => u.correo === correoLimpio)) {
     return { ok: false, error: "Ya existe una cuenta con ese correo." };
   }
-  usuarios.push({ nombre, apellido, correo: correoLimpio, clave, rol: "usuario", intencion });
+  usuarios.push({ nombre, apellido, correo: correoLimpio, telefono: (telefono || "").replace(/\D/g, ""), clave, rol: "usuario", intencion });
   localStorage.setItem(CLAVE_USUARIOS, JSON.stringify(usuarios));
   return { ok: true };
 }
@@ -68,4 +68,15 @@ function rutaDashboard(rol) {
 
 function cerrarSesion() {
   localStorage.removeItem(CLAVE_SESION);
+}
+
+function obtenerEstudiantes() {
+  return leerUsuarios().filter((u) => u.intencion === "aprender");
+}
+
+function eliminarUsuario(correo) {
+  if (!esAdmin()) return { ok: false, error: "No tienes permiso." };
+  const restantes = leerUsuarios().filter((u) => u.correo !== correo);
+  localStorage.setItem(CLAVE_USUARIOS, JSON.stringify(restantes));
+  return { ok: true };
 }

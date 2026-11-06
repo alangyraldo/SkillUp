@@ -72,6 +72,16 @@
             <label for="correo-registro">Correo electrónico</label>
             <input type="email" id="correo-registro" placeholder="tucorreo@ejemplo.com" required>
           </div>
+          
+          <div class="grupo-formulario">
+             <label for="telefono-registro">Número de teléfono</label>
+             <input type="tel" id="telefono-registro" placeholder="300 123 4567"
+                required pattern="3[0-9]{9}" maxlength="10" inputmode="numeric"
+                autocomplete="tel-national"
+                oninput="this.value = this.value.replace(/\D/g, '')">
+             <p class="texto-ayuda">Celular colombiano de 10 dígitos, sin el +57</p>
+          </div>
+
 
           <div class="grupo-formulario">
             <label for="contrasena-registro">Contraseña</label>
