@@ -103,3 +103,89 @@ window.addEventListener("tutorias:cambio", actualizarMetricasTutores);
 
 document.addEventListener("DOMContentLoaded", pintarEstudiantes);
 document.addEventListener("DOMContentLoaded", actualizarMetricasTutores);
+
+
+// Botón de configuracion (recordar que si el admin quiere cambiar de usuario y contraseña solo se hará en el localStorage porque
+// este está guardado como una constante en el archivo auth.js)
+
+(function () {
+  if (!esAdmin()) return;
+
+  const campos = [
+    ['nombre', 'Nombre', 'text'],
+    ['apellido', 'Apellido', 'text'],
+    ['telefono', 'Número de teléfono', 'tel'],
+    ['correo', 'Correo electrónico', 'email'],
+    ['claveActual', 'Contraseña actual (solo si cambias la contraseña)', 'password'],
+    ['claveNueva', 'Nueva contraseña', 'password'],
+    ['claveConfirmar', 'Confirmar nueva contraseña', 'password'],
+  ];
+
+  document.body.insertAdjacentHTML('beforeend', `
+    <div class="cfg-overlay" id="cfg-overlay">
+      <form class="cfg-modal" id="cfg-form" novalidate>
+        <div class="cfg-encabezado">
+          <h2>Configuración</h2>
+          <button type="button" class="cfg-cerrar" id="cfg-cerrar" aria-label="Cerrar">&times;</button>
+        </div>
+        ${campos.map(([n, t, tipo]) => `<label>${t}<input name="${n}" type="${tipo}"></label>`).join('')}
+        <p class="cfg-msg" id="cfg-msg"></p>
+        <button type="submit" class="cfg-btn">Guardar cambios</button>
+      </form>
+    </div>`);
+
+  const overlay = document.getElementById('cfg-overlay');
+  const form = document.getElementById('cfg-form');
+  const msg = document.getElementById('cfg-msg');
+  const f = form.elements;
+  const enlaceCfg = document.getElementById('btn-configuraciones');
+  const enlaceActivo = document.querySelector('.enlace-menu.activo');
+
+  const abrir = () => {
+    form.reset();
+    ['nombre', 'apellido', 'telefono', 'correo'].forEach((k) => (f[k].value = ADMIN[k] || ''));
+    msg.textContent = '';
+    enlaceActivo.classList.remove('activo');
+    enlaceCfg.classList.add('activo');
+    overlay.classList.add('abierto');
+  };
+  const cerrar = () => {
+    enlaceCfg.classList.remove('activo');
+    enlaceActivo.classList.add('activo');
+    overlay.classList.remove('abierto');
+  };
+
+  enlaceCfg.addEventListener('click', (e) => { e.preventDefault(); abrir(); });
+  document.getElementById('cfg-cerrar').addEventListener('click', cerrar);
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) cerrar(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') cerrar(); });
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const nombre = f.nombre.value.trim();
+    const correo = f.correo.value.trim().toLowerCase();
+    const telefono = f.telefono.value.replace(/\D/g, '');
+    const nueva = f.claveNueva.value;
+
+    const error =
+      !nombre ? 'El nombre es obligatorio.' :
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo) ? 'Ingresa un correo válido.' :
+      leerUsuarios().some((u) => u.correo === correo) ? 'Ese correo ya pertenece a un usuario.' :
+      telefono && telefono.length < 7 ? 'Ingresa un teléfono válido.' :
+      nueva && f.claveActual.value !== ADMIN.clave ? 'La contraseña actual es incorrecta.' :
+      nueva && nueva.length < 8 ? 'La nueva contraseña debe tener mínimo 8 caracteres.' :
+      nueva !== f.claveConfirmar.value ? 'Las contraseñas no coinciden.' : '';
+
+    msg.className = 'cfg-msg ' + (error ? 'error' : 'ok');
+    if (error) { msg.textContent = error; return; }
+
+    const perfil = { nombre, apellido: f.apellido.value.trim(), telefono, correo, clave: nueva || ADMIN.clave };
+    localStorage.setItem('adminPerfil', JSON.stringify(perfil));
+    Object.assign(ADMIN, perfil);
+    localStorage.setItem(CLAVE_SESION, JSON.stringify({ ...obtenerSesion(), correo, nombre }));
+
+    document.getElementById('admin-correo').textContent = correo;
+    msg.textContent = 'Cambios guardados correctamente.';
+    f.claveActual.value = f.claveNueva.value = f.claveConfirmar.value = '';
+  });
+})();

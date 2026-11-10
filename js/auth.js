@@ -4,6 +4,10 @@ const ADMIN = {
   rol: "admin",
 };
 
+// logica de botón configuracion del dashboard admin
+const perfilAdmin = JSON.parse(localStorage.getItem("adminPerfil") || "null");
+if (perfilAdmin) Object.assign(ADMIN, perfilAdmin);
+
 const CLAVE_SESION = "sesion";
 const CLAVE_USUARIOS = "usuarios";
 
