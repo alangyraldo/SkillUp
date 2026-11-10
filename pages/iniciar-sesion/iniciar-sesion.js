@@ -27,7 +27,8 @@ function manejarSesion(evento) {
 
   const sesion = iniciarSesion(correo, clave);
   if (sesion) {
-    window.location.href = rutaDashboard(sesion.rol);
+     mostrarAviso('Inicio de sesión exitoso. ¡Bienvenido, ' + sesion.nombre + '!');
+    setTimeout(() => { window.location.href = rutaDashboard(sesion.rol); }, 1300);
   } else {
     mensajeError.textContent = 'Correo o contraseña incorrectos.';
     document.getElementById('contrasena-sesion').value = '';
@@ -58,14 +59,14 @@ function manejarRegistro(evento) {
     intencion: rolRegistro
   });
 
-  if (!resultado.ok) {
-    alert(resultado.error);
+    if (!resultado.ok) {
+    mostrarAviso(resultado.error, 'error');
     return;
   }
 
-    alert('¡Cuenta creada correctamente! Bienvenido a SkillUp.');
+  mostrarAviso('¡Cuenta creada correctamente! Bienvenido a SkillUp.');
   cerrarSesion();
-  window.location.href = '/pages/iniciar-sesion/index.html';
+  setTimeout(() => { window.location.href = '/pages/iniciar-sesion/index.html'; }, 1500);
 }
 
 
