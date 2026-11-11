@@ -12,7 +12,7 @@ ej:
 routes.nosotros devueve pages/nosotros/index.html
 routes['buscar-tutor'] devuelve pages/buscar-tutor/index.html */
 const routes = {
-    home: 'pages/incio/index.html',
+    home: 'index.html',
     nosotros: 'pages/nosotros/index.html',
     contactanos: 'pages/contactanos/index.html',
     'buscar-tutor': 'pages/buscar-tutor/index.html',

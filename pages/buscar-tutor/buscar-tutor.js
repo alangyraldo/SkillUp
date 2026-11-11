@@ -170,7 +170,7 @@ lista.addEventListener("click", (e) => {
   const sesion = obtenerSesion();
   if (!sesion) {
     alert("Inicia sesión para reservar una tutoría.");
-    window.location.href = "/pages/iniciar-sesion/index.html";
+    window.location.href = "../../pages/iniciar-sesion/index.html";
     return;
   }
   if (sesion.rol === "admin") {

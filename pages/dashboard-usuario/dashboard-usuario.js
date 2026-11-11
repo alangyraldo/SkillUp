@@ -1,9 +1,9 @@
 const sesion = obtenerSesion();
 
 if (!sesion) {
-  window.location.replace('/pages/iniciar-sesion/index.html');
+  window.location.replace('../../pages/iniciar-sesion/index.html');
 } else if (sesion.rol === 'admin') {
-  window.location.replace('/pages/dashboard-admin/index.html');
+  window.location.replace('../../pages/dashboard-admin/index.html');
 } else {
   iniciarPanel();
 }
@@ -42,7 +42,7 @@ function iniciarPanel() {
 
     contenedor.innerHTML = reservas.length
       ? reservas.map(filaReserva).join('')
-      : `<p class="reservas-vacio">Aún no has reservado tutorías. <a href="/pages/buscar-tutor/index.html">Busca un tutor</a></p>`;
+      : `<p class="reservas-vacio">Aún no has reservado tutorías. <a href="../../pages/buscar-tutor/index.html">Busca un tutor</a></p>`;
   }
 
   contenedor.addEventListener('click', (e) => {
@@ -56,7 +56,7 @@ function iniciarPanel() {
 
   document.getElementById('btn-cerrar-sesion').addEventListener('click', () => {
     cerrarSesion();
-    window.location.href = '/pages/iniciar-sesion/index.html';
+    window.location.href = '../../pages/iniciar-sesion/index.html';
   });
 
   pintar();
