@@ -65,9 +65,12 @@ function esAdmin() {
 }
 
 function rutaDashboard(rol) {
+  // Un href escrito desde JS se resuelve respecto a la página abierta, no respecto a auth.js.
+  // Por eso se calcula el prefijo según la profundidad, igual que hace app.js con ROOT.
+  const prefijo = window.location.pathname.includes("/pages/") ? "../../" : "./";
   return rol === "admin"
-    ? "/pages/dashboard-admin/index.html"
-    : "/pages/dashboard-usuario/index.html";
+    ? prefijo + "pages/dashboard-admin/index.html"
+    : prefijo + "pages/dashboard-usuario/index.html";
 }
 
 function cerrarSesion() {

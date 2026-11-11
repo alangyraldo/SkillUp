@@ -66,7 +66,7 @@ function manejarRegistro(evento) {
 
   mostrarAviso('¡Cuenta creada correctamente! Bienvenido a SkillUp.');
   cerrarSesion();
-  setTimeout(() => { window.location.href = '/pages/iniciar-sesion/index.html'; }, 1500);
+  setTimeout(() => { window.location.href = '../../pages/iniciar-sesion/index.html'; }, 1500);
 }
 
 
