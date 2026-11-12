@@ -43,7 +43,7 @@ function iniciarSesion(correo, clave) {
   } else {
     const usuario = leerUsuarios().find((u) => u.correo === correoLimpio && u.clave === clave);
     if (usuario) {
-      sesion = { correo: usuario.correo, rol: usuario.rol, nombre: usuario.nombre };
+      sesion = { correo: usuario.correo, rol: usuario.rol, nombre: usuario.nombre, intencion: usuario.intencion };
     }
   }
 
