@@ -18,7 +18,7 @@ function iniciarPanel() {
   document.getElementById('usuario-nombre').textContent = nombre;
   document.getElementById('usuario-avatar').textContent = nombre.charAt(0).toUpperCase();
 
-  function filaReserva(r) {
+ /* function filaReserva(r) {
     return `
       <div class="fila-tabla cuerpo-tabla">
         <div class="columna texto-resaltado">${escapar(r.titulo)}</div>
@@ -30,8 +30,23 @@ function iniciarPanel() {
           <button type="button" class="btn-cancelar-reserva" data-cancelar="${r.id}">Cancelar</button>
         </div>
       </div>`;
+  }*/
+ function filaReserva(r) {
+    return `
+      <div class="fila-tabla cuerpo-tabla">
+        <div class="columna texto-resaltado">${escapar(r.titulo)}</div>
+        <div class="columna texto-resaltado">${escapar(r.titulo)} (x${Number(r.cantidad) || 1})</div>
+        <div class="columna">${escapar(r.tutor)}</div>
+        <div class="columna">${escapar(r.fecha)} ${escapar(r.hora)}</div>
+        <div class="columna">${formatoCOP(r.precio)}</div>
+        <div class="columna"><span class="etiqueta-estado estado-activo">Reservada</span></div>
+        <div class="columna">
+          <button type="button" class="btn-cancelar-reserva" data-cancelar="${r.id}">Cancelar</button>
+        </div>
+      </div>`;
   }
 
+  /*
   function pintar() {
     const reservas = Reservas.porUsuario(sesion.correo);
 
@@ -39,6 +54,22 @@ function iniciarPanel() {
     document.getElementById('total-tutores').textContent = new Set(reservas.map((r) => r.tutor)).size;
     document.getElementById('total-pagar').textContent =
       formatoCOP(reservas.reduce((suma, r) => suma + r.precio, 0));
+
+    contenedor.innerHTML = reservas.length
+      ? reservas.map(filaReserva).join('')
+      : `<p class="reservas-vacio">Aún no has reservado tutorías. <a href="../../pages/buscar-tutor/index.html">Busca un tutor</a></p>`;
+  }*/
+
+  function pintar() {
+    const reservas = Reservas.porUsuario(sesion.correo);
+
+    document.getElementById('total-reservas').textContent =
+      reservas.reduce((suma, r) => suma + (Number(r.cantidad) || 1), 0);
+
+    document.getElementById('total-pagar').textContent =
+      formatoCOP(
+        reservas.reduce(
+          (suma, r) => suma + (Number(r.precio) * (Number(r.cantidad) || 1)), 0));
 
     contenedor.innerHTML = reservas.length
       ? reservas.map(filaReserva).join('')
@@ -131,13 +162,13 @@ function iniciarPanel() {
 
     const error =
       !u ? 'No se encontró tu usuario.' :
-      !nombre ? 'El nombre es obligatorio.' :
-      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo) ? 'Ingresa un correo válido.' :
-      correo === ADMIN.correo || (correo !== u.correo && usuarios.some((x) => x.correo === correo)) ? 'Ese correo no está disponible.' :
-      telefono && telefono.length < 7 ? 'Ingresa un teléfono válido.' :
-      nueva && f.claveActual.value !== u.clave ? 'La contraseña actual es incorrecta.' :
-      nueva && nueva.length < 6 ? 'La nueva contraseña debe tener mínimo 6 caracteres.' :
-      nueva !== f.claveConfirmar.value ? 'Las contraseñas no coinciden.' : '';
+        !nombre ? 'El nombre es obligatorio.' :
+          !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo) ? 'Ingresa un correo válido.' :
+            correo === ADMIN.correo || (correo !== u.correo && usuarios.some((x) => x.correo === correo)) ? 'Ese correo no está disponible.' :
+              telefono && telefono.length < 7 ? 'Ingresa un teléfono válido.' :
+                nueva && f.claveActual.value !== u.clave ? 'La contraseña actual es incorrecta.' :
+                  nueva && nueva.length < 6 ? 'La nueva contraseña debe tener mínimo 6 caracteres.' :
+                    nueva !== f.claveConfirmar.value ? 'Las contraseñas no coinciden.' : '';
 
     msg.className = 'cfg-msg ' + (error ? 'error' : 'ok');
     if (error) { msg.textContent = error; return; }

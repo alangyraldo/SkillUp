@@ -128,6 +128,7 @@
     actualizar();
   }
 
+  /*
   function confirmar() {
     carrito = carrito.filter((item) => {
       while (item.cantidad > 0 && typeof Cupos !== "undefined" && Cupos.descontar(item.id)) item.cantidad--;
@@ -140,7 +141,51 @@
   }
 
   const haySesion = () => localStorage.getItem(CLAVE_SESION) !== null;
+*/
+  function confirmar() {
+    const sesion = obtenerSesion();
 
+    if (!sesion || sesion.rol === "admin") {
+      mostrarAviso("Inicia sesión con una cuenta de estudiante para confirmar tus reservas.", "error", 3000);
+      return;
+    }
+
+    if (typeof Reservas === "undefined") {
+      mostrarAviso("No fue posible registrar las reservas. Intenta nuevamente.", "error", 3000);
+      return;
+    }
+
+    const reservasConfirmadas = [];
+    const reservasFallidas = [];
+
+    carrito.forEach((item) => {
+     /* const resultado = Reservas.reservar(item.id, sesion.correo);*/
+      const resultado = Reservas.reservar( item.id, sesion.correo, item.cantidad);
+      if (resultado === "ok") {
+        reservasConfirmadas.push(item);
+      } else {
+        reservasFallidas.push(item);
+      }
+    });
+
+    // Quitamos del carrito únicamente las reservas que se registraron.
+    const idsConfirmados = new Set(reservasConfirmadas.map((item) => item.id));
+    carrito = carrito.filter((item) => !idsConfirmados.has(item.id));
+    actualizar();
+
+    if (reservasConfirmadas.length > 0) {
+      mostrarAviso("Tus tutorías se han asignado correctamente", "exito", 3000);
+      setTimeout(() => {
+      window.location.href = "../dashboard-usuario/index.html";}, 1500);
+      return;
+    }
+
+    if (reservasFallidas.length > 0) {
+      mostrarAviso("No fue posible confirmar las reservas. Verifica los cupos disponibles o si ya reservaste esas tutorías.", "error", 3000);
+    }
+  }
+
+  const haySesion = () => obtenerSesion() !== null;
   function irAConfirmar() {
     if (!haySesion()) {
       window.location.href = RUTA_LOGIN;
@@ -207,7 +252,7 @@
     if (!botonReservar) return;
 
     const id = Number(botonReservar.dataset.reservar);
-    
+
     // 1. Buscamos primero si es una tutoría guardada en localStorage
     const tutoriasGuardadas = JSON.parse(localStorage.getItem("tutorias")) || [];
     const tutoria = tutoriasGuardadas.find((t) => Number(t.id) === id);
