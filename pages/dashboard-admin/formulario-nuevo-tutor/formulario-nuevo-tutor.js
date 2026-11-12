@@ -201,7 +201,7 @@ elementoFormularioRegistroTutor.addEventListener('submit', (evento) => {
       }
       return t;
     });
-    alert(`¡Tutor ${valorNombreCompleto} actualizado correctamente!`);
+     mostrarAviso(`Tutor ${valorNombreCompleto} actualizado con éxito.`);
   } else {
     const objetoNuevoTutorRegistrado = {
       id: identificadorUnicoTutor,
@@ -221,7 +221,7 @@ elementoFormularioRegistroTutor.addEventListener('submit', (evento) => {
     };
 
     listaActualTutores.push(objetoNuevoTutorRegistrado);
-    alert(`¡Tutor ${objetoNuevoTutorRegistrado.nombre} registrado correctamente!`);
+     mostrarAviso(`Tutor ${objetoNuevoTutorRegistrado.nombre} añadido con éxito.`);
   }
 
   guardarListaTutoresEnLocalStorage(listaActualTutores);
