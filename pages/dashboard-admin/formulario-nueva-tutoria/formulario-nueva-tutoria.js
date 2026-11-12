@@ -237,7 +237,8 @@ function capturarTutoria(evento) {
     duracion: Number(document.getElementById("duracion").value),
     modalidad: document.getElementById("modalidad").value,
     precio: Number(document.getElementById("precio").value),
-    cupos: Number(document.getElementById("cupos").value)
+    cupos: Number(document.getElementById("cupos").value),
+    foto: tutorSeleccionadoActual ? tutorSeleccionadoActual.foto : ""
   };
 
   if (datosFormulario.precio < 0 || datosFormulario.cupos < 1) {
@@ -257,6 +258,10 @@ function capturarTutoria(evento) {
   }
 
   localStorage.setItem("tutorias", JSON.stringify(tutorias));
+
+  // Notifica a las páginas que escuchan los cambios de tutorías.
+  window.dispatchEvent(new CustomEvent("tutorias:cambio"));
+
   mostrarTutorias();
   cerrarVentana();
 }
@@ -419,4 +424,3 @@ window.addEventListener("tutorias:cambio", () => {
   tutorias = JSON.parse(localStorage.getItem("tutorias") || "[]");
   mostrarTutorias();
 });
-
