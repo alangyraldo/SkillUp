@@ -27,9 +27,18 @@ function manejarSesion(evento) {
 
   const sesion = iniciarSesion(correo, clave);
   if (sesion) {
-     mostrarAviso('Inicio de sesión exitoso. ¡Bienvenido, ' + sesion.nombre + '!');
-    setTimeout(() => { window.location.href = rutaDashboard(sesion.rol); }, 1300);
-  } else {
+  mostrarAviso('Inicio de sesión exitoso. ¡Bienvenido, ' + sesion.nombre + '!');
+
+  const destino = sessionStorage.getItem('redirigirDespues');
+  sessionStorage.removeItem('redirigirDespues');
+  const irATutores = destino === 'buscar-tutor' && sesion.intencion === 'aprender';
+
+  setTimeout(() => {
+    window.location.href = irATutores
+      ? '../../pages/buscar-tutor/index.html'
+      : rutaDashboard(sesion.rol);
+  }, 1300);
+} else {
     mensajeError.textContent = 'Correo o contraseña incorrectos.';
     document.getElementById('contrasena-sesion').value = '';
   }
