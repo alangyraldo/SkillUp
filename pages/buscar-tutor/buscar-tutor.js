@@ -95,6 +95,53 @@ function crearCardTutoria(t) {
   </article>`;
 }
 
+function crearCardTutoria(t) {
+  return `
+  <article class="tutor-card">
+  <img class="tutor-card__foto" src="${t.foto}" alt="Foto de ${t.tutor}">
+  <h3 class="tutor-card__nombre">${t.titulo}</h3>
+  <div class="tutor-card__fila">
+    <div>
+      <p class="tutor-card__materia">${t.materia}</p>
+      <p class="tutor-card__desde">Tutor</p>
+      <p class="tutor-card__tutor">${t.tutor}</p>
+      <p class="tutor-card__desde">Precio</p>
+      <p class="tutor-card__precio">
+        ${t.precio ? formatoCOP(Number(t.precio)) : '$ 0'}
+      </p>
+    </div>
+
+    <div class="tutor-card__accion">
+        <span class="tutor-card__disponible">
+        ${Number(t.cupos) > 0 ? 'Disponible' : 'Sin cupos'}
+        </span>
+        <button id="btn_reservar" class="tutor-card__boton"
+        href="#">
+        Reservar
+        </button>
+    </div>
+  </div>
+</article>`
+
+    ;
+}
+
+// 2. Función para renderizar específicamente las tutorías del localStorage
+/*function renderizarTutoriasLocalStorage() {
+  const tutoriasGuardadas = JSON.parse(localStorage.getItem("tutorias")) || [];
+
+  if (tutoriasGuardadas.length === 0) {
+    lista.innerHTML = `<p class="tutores__vacio">No hay tutorías guardadas en el LocalStorage.</p>`;
+    paginacion.innerHTML = "";
+    return;
+  }
+
+  // Paginación opcional para tutorías o mostrarlas directo
+  lista.innerHTML = tutoriasGuardadas.map(crearCardTutoria).join("");
+  paginacion.innerHTML = ""; // Limpiamos paginación si no la usas para esto
+}*/
+
+/*********************************************************************************************************************************/
 function crearCupos(t) {
   const sesiones = Cupos.porTutor(t.nombre);
   if (!sesiones.length) {

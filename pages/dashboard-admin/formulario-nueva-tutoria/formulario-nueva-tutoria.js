@@ -269,6 +269,10 @@ function capturarTutoria(evento) {
   }
 
   localStorage.setItem("tutorias", JSON.stringify(tutorias));
+
+  // Notifica a las páginas que escuchan los cambios de tutorías.
+  window.dispatchEvent(new CustomEvent("tutorias:cambio"));
+
   mostrarTutorias();
   cerrarVentana();
 }

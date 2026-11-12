@@ -123,13 +123,21 @@ const tutores = [
 Si el identificador de un tutor ya existe, actualiza sus datos en lugar de crear un duplicado.*/
 
 function sincronizarTutoresDesdeStorage() {
-    // Recupera el catálogo completo guardado por el administrador.
-    const guardados = JSON.parse(localStorage.getItem("skillup_tutores") || "[]");
 
-    // Conserva únicamente los tutores que siguen registrados.
-    tutores.splice(0, tutores.length, ...guardados);
+    const guardados = localStorage.getItem("skillup_tutores");
 
-    // Devuelve el catálogo actualizado.
+    // Si no existe el catálogo, guarda los tutores iniciales.
+    if (guardados === null) {
+        localStorage.setItem("skillup_tutores", JSON.stringify(tutores));
+        return tutores;
+    }
+
+    // Recupera el catálogo que administra el dashboard.
+    const catalogo = JSON.parse(guardados);
+
+    // Actualiza la lista compartida.
+    tutores.splice(0, tutores.length, ...catalogo);
+
     return tutores;
 }
 
@@ -142,5 +150,3 @@ window.addEventListener("storage", evento => {
         sincronizarTutoresDesdeStorage();
     }
 });
-
-
