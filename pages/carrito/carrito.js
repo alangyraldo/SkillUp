@@ -43,6 +43,9 @@
     <div class="carrito-panel__items" id="carritoItems"></div>
     <footer class="carrito-panel__pie">
       <p class="carrito-panel__mensaje" id="carritoMensaje"></p>
+      <div class="carrito-panel__total carrito-panel__total--cantidad">
+      <span>Tutorías reservadas</span><strong id="carritoCantidad"></strong>
+      </div>
       <div class="carrito-panel__total"><span>Total</span><strong id="carritoTotal"></strong></div>
       <button type="button" class="carrito-panel__confirmar" id="carritoConfirmar">Confirmar reservas</button>
     </footer>`;
@@ -69,12 +72,7 @@
           <p class="carrito-item__materia">${i.materia}</p>
           <p class="carrito-item__horario">${i.fecha} ${i.hora}</p>
           
-          <div class="carrito-item__fila">
-            <div class="carrito-item__cantidad">
-              <button type="button" data-menos="${i.id}" aria-label="Quitar un cupo">−</button>
-              <span>${i.cantidad}</span>
-              <button type="button" data-mas="${i.id}" aria-label="Agregar un cupo">+</button>
-            </div>
+
             <strong>${formatoCOP(i.precio * i.cantidad)}</strong>
           </div>
         </div>
@@ -90,6 +88,7 @@
       : `<p class="carrito-panel__vacio">Aún no tienes reservas. Pulsa "Reservar" en una tutoría para agregarla.</p>`;
 
     document.getElementById("carritoTotal").textContent = formatoCOP(calcularTotal());
+    document.getElementById("carritoCantidad").textContent = carrito.length;
     document.getElementById("carritoConfirmar").disabled = carrito.length === 0;
     contador.textContent = contarCupos();
     contador.hidden = carrito.length === 0;
@@ -102,18 +101,16 @@
   }
 
   // ---------- 4. Acciones ----------
-  function agregar(item) {
-    const existente = carrito.find((i) => i.id === item.id);
-    if (existente) {
-      existente.cupos = item.cupos;
-      if (existente.cantidad >= item.cupos) return false;
-      existente.cantidad++;
-    } else {
-      carrito.push({ ...item, cantidad: 1 });
-    }
-    actualizar();
-    return true;
+function agregar(item) {
+  const existente = carrito.find((i) => i.id === item.id);
+  if (existente) {
+    mostrarAviso("Ya tienes esta tutoría en tu carrito.", "error", 3000);
+    return true; // no es un error de cupos, así que no sale el modal
   }
+  carrito.push({ ...item, cantidad: 1 });
+  actualizar();
+  return true;
+}
 
   function cambiarCantidad(id, delta) {
     const item = carrito.find((i) => i.id === id);
@@ -226,8 +223,6 @@
   contenedor.addEventListener("click", (e) => {
     const b = e.target.closest("button");
     if (!b) return;
-    if (b.dataset.mas) cambiarCantidad(Number(b.dataset.mas), 1);
-    if (b.dataset.menos) cambiarCantidad(Number(b.dataset.menos), -1);
     if (b.dataset.eliminar) eliminar(Number(b.dataset.eliminar));
   });
 
