@@ -200,6 +200,15 @@ document.querySelectorAll('[data-asset]').forEach(img => {
     img.src = ROOT + img.dataset.asset;
 });
 
+// Icono de la pestaña (favicon) en todas las páginas
+if (!document.querySelector('link[rel~="icon"]')) {
+    const favicon = document.createElement('link');
+    favicon.rel = 'icon';
+    favicon.type = 'image/png';
+    favicon.href = ROOT + 'assets/images/favicon.png';
+    document.head.appendChild(favicon);
+}
+
 // formulario de busqueda de tutores, busca el formulario con el atributo data-search-form
 const searchForm = document.querySelector('[data-search-form]');
 // si el form existe, se registra un evento q se ejecutara cuando se envie submit
