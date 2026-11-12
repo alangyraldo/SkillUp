@@ -178,3 +178,10 @@
   .carrito-panel__manija { display: none; }
   .carrito-flotante.abierto { opacity: 0; pointer-events: none; }
 }
+
+.carrito-panel__total--cantidad { margin-bottom: 6px; }
+.carrito-panel__total--cantidad strong { font-size: 16px; }
+
+/* con un solo elemento en la fila, el precio va a la derecha y no se parte en dos líneas */
+.carrito-item__fila { justify-content: flex-end; }
+.carrito-item__fila strong { white-space: nowrap; }
