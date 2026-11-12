@@ -418,3 +418,177 @@ body {
   transform: translateY(-3px);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
+/* Botón para consultar horarios */
+.tutor-card__horarios {
+  margin-top: 20px;
+}
+
+.tutor-card__btn-horarios {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border: 1px solid #e9e5ff;
+  border-radius: 12px;
+  background: #f7f5ff;
+  color: #5B2EFF;
+  font-family: "Montserrat", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tutor-card__btn-horarios:hover {
+  background: #5B2EFF;
+  color: #fff;
+  border-color: #5B2EFF;
+  box-shadow: 0 4px 12px rgba(91, 46, 255, 0.18);
+}
+
+/* Modal de horarios */
+.modal-horarios {
+  border: none;
+  border-radius: 20px;
+  overflow: hidden;
+  font-family: "Montserrat", sans-serif;
+}
+
+.modal-horarios .modal-header {
+  padding: 24px;
+  border-bottom: 1px solid #eeeafc;
+}
+
+.modal-horarios__etiqueta {
+  display: block;
+  margin-bottom: 6px;
+  color: #8B7CFF;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.modal-horarios .modal-title {
+  color: #11142D;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.modal-horarios__subtitulo {
+  margin: 5px 0 0;
+  color: #77758a;
+  font-size: 13px;
+}
+
+.modal-horarios .modal-body {
+  padding: 20px 24px;
+  background: #faf9ff;
+}
+
+.horario-modal-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  padding: 16px;
+  margin-bottom: 12px;
+  background: #fff;
+  border: 1px solid #eeeafc;
+  border-radius: 14px;
+  box-shadow: 0 3px 10px rgba(17, 20, 45, 0.04);
+}
+
+.horario-modal-item:last-child {
+  margin-bottom: 0;
+}
+
+.horario-modal-item__info {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  color: #11142D;
+  font-size: 13px;
+}
+
+.horario-modal-item__dia {
+  color: #5B2EFF;
+  font-weight: 700;
+}
+
+.horario-modal-item__info strong {
+  font-size: 14px;
+}
+
+.horario-modal-item__cupos {
+  color: #238443;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.horario-modal-item.agotado .horario-modal-item__cupos {
+  color: #d14343;
+}
+
+.horario-modal-item__reservar {
+  flex-shrink: 0;
+  padding: 9px 17px;
+  border: none;
+  border-radius: 999px;
+  background: #5B2EFF;
+  color: white;
+  font-family: "Montserrat", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.horario-modal-item__reservar:hover:not(:disabled) {
+  background: #4720d6;
+  transform: translateY(-1px);
+}
+
+.horario-modal-item__reservar:disabled {
+  background: #e4e1ed;
+  color: #89869a;
+  cursor: not-allowed;
+}
+
+.modal-horarios .modal-footer {
+  padding: 16px 24px;
+  border-top: 1px solid #eeeafc;
+}
+
+.btn-modal-cerrar {
+  width: 100%;
+  padding: 11px;
+  border: 1px solid #ded8f8;
+  border-radius: 999px;
+  background: white;
+  color: #5B2EFF;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-modal-cerrar:hover {
+  background: #f1edff;
+}
+
+@media (max-width: 480px) {
+  .modal-horarios .modal-header,
+  .modal-horarios .modal-body {
+    padding: 18px;
+  }
+
+  .horario-modal-item {
+    padding: 12px;
+  }
+
+  .horario-modal-item__reservar {
+    padding: 9px 12px;
+  }
+}
