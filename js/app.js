@@ -12,7 +12,7 @@ ej:
 routes.nosotros devueve pages/nosotros/index.html
 routes['buscar-tutor'] devuelve pages/buscar-tutor/index.html */
 const routes = {
-    home: 'pages/incio/index.html',
+    home: 'index.html',
     nosotros: 'pages/nosotros/index.html',
     contactanos: 'pages/contactanos/index.html',
     'buscar-tutor': 'pages/buscar-tutor/index.html',
@@ -20,7 +20,9 @@ const routes = {
     'iniciar-sesion': 'pages/iniciar-sesion/index.html',
     'agendar-tutoria': 'pages/agendar-tutoria/index.html',
     registro: 'pages/registro/index.html',
-    'dashboard-admin': 'pages/dashboard-admin/index.html'
+    'dashboard-admin': 'pages/dashboard-admin/index.html',
+    'dashboard-usuario': 'pages/dashboard-usuario/index.html'
+    
 };
 
 /*
@@ -85,6 +87,31 @@ document.querySelectorAll('#site-header [data-route]').forEach(link => {
     if (esActual) link.setAttribute('aria-current', 'page');
 });
 
+// Si hay sesión iniciada, "Iniciar sesión" pasa a ser "Mi perfil" y se quita "Registrarme"
+function leerSesion() {
+    try {
+        return JSON.parse(localStorage.getItem('sesion'));
+    } catch (error) {
+        return null;
+    }
+}
+
+const sesionNav = leerSesion();
+if (sesionNav) {
+    const destino = sesionNav.rol === 'admin'
+        ? routes['dashboard-admin']
+        : routes['dashboard-usuario'];
+
+    document.querySelectorAll('#site-header [data-route="iniciar-sesion"]').forEach(link => {
+        link.textContent = 'Mi perfil';
+        link.dataset.route = 'mi-perfil';
+        link.href = ROOT + destino;
+    });
+
+    document.querySelectorAll('#site-header [data-route="registro"]').forEach(link => {
+        (link.closest('li') || link).remove();
+    });
+}
 
 // el navbarse oculta al bajar y reaparece con hover arriba al subir o con tab
 const nav = document.querySelector('#site-header .navbar-skillup');
@@ -210,3 +237,11 @@ if (exportButton) exportButton.addEventListener('click', () => {
     if (feedback) feedback.textContent = 'La exportación estará disponible cuando el dashboard esté conectado a datos reales.';
 });*/
 
+// Logica que importa el boton del carrito en todas las páginas 
+
+import("../pages/carrito/carrito.js").catch((error) => console.error("No se pudo cargar el carrito:", error));
+
+const css = document.createElement("link");
+css.rel = "stylesheet";
+css.href = new URL("../pages/carrito/carrito.css", import.meta.url).href;
+document.head.append(css);

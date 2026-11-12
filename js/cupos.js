@@ -46,3 +46,65 @@ window.addEventListener("storage", (evento) => {
     window.dispatchEvent(new CustomEvent("cupos:cambio"));
   }
 });
+
+const CLAVE_RESERVAS = "reservas";
+
+const Reservas = {
+  _leer() {
+    try {
+      return JSON.parse(localStorage.getItem(CLAVE_RESERVAS)) || [];
+    } catch (error) {
+      return [];
+    }
+  },
+
+  _guardar(lista) {
+    localStorage.setItem(CLAVE_RESERVAS, JSON.stringify(lista));
+  },
+
+  porUsuario(correo) {
+    return this._leer().filter((r) => r.correo === correo);
+  },
+
+  // Devuelve "ok", "agotado" o "duplicada"
+  reservar(idTutoria, correo) {
+    const reservas = this._leer();
+    if (reservas.some((r) => r.idTutoria === idTutoria && r.correo === correo)) {
+      return "duplicada";
+    }
+
+    const tutoria = Cupos._leer().find((t) => t.id === idTutoria);
+    if (!tutoria || !Cupos.descontar(idTutoria)) return "agotado";
+
+    reservas.push({
+      id: Date.now(),
+      idTutoria,
+      correo,
+      titulo: tutoria.titulo || tutoria.materia,
+      tutor: tutoria.tutor,
+      materia: tutoria.materia,
+      fecha: tutoria.fecha,
+      hora: tutoria.hora,
+      precio: Number(tutoria.precio || 0),
+      modalidad: tutoria.modalidad
+    });
+    this._guardar(reservas);
+    return "ok";
+  },
+
+  // Cancela la reserva y devuelve el cupo
+  cancelar(idReserva) {
+    const reservas = this._leer();
+    const reserva = reservas.find((r) => r.id === idReserva);
+    if (!reserva) return false;
+
+    const tutorias = Cupos._leer();
+    const tutoria = tutorias.find((t) => t.id === reserva.idTutoria);
+    if (tutoria) {
+      tutoria.cupos += 1;
+      Cupos._guardar(tutorias);
+    }
+    this._guardar(reservas.filter((r) => r.id !== idReserva));
+    return true;
+  }
+};

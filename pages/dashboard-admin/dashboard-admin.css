@@ -212,6 +212,12 @@ body {
     justify-content: center;
 }
 
+.contenedor_listas{
+    display: flex;
+    flex-direction: column;
+    gap:30px;
+}
+
 /* --- TABLA MAQUETADA CON DIVS --- */
 .contenedor-lista-tutores {
     background-color: var(--blanco);
@@ -227,11 +233,7 @@ body {
     margin-bottom: 20px;
 }
 
-.contenedor-botones{
-    display:flex;
-    flex-direction: row;
-    column-gap: 10px;
-}
+
 
 .encabezado-seccion h2 {
     font-size: 1.2rem;
@@ -338,3 +340,118 @@ body {
 .estado-activo { background-color: #dcfce7; color: #15803d; }
 .estado-pendiente { background-color: #fef3c7; color: #b45309; }
 .badge-estado.badge-agotado { background: #fde8e8; color: #c62828; }
+
+.barra-perfil {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 32px;
+    min-height: 72px;
+}
+.bloque-usuario {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    white-space: nowrap;
+}
+
+/* ===== Lista de estudiantes ===== */
+#seccion-estudiantes .fila-tabla:not(.encabezado-tabla) {
+  align-items: center;
+  padding: 14px 12px;
+  margin-bottom: 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  background: #fff;
+}
+
+#seccion-estudiantes .columna {
+  font-size: 0.95rem;
+  color: #1f2937;
+}
+
+.boton-eliminar-estudiante {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: #ef4444;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.boton-eliminar-estudiante:hover {
+  background: #fee2e2;
+}
+
+.boton-eliminar-estudiante svg {
+  width: 20px;
+  height: 20px;
+}
+/* Acciones de los estudiantes */
+.acciones-estudiante {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.boton-eliminar-estudiante {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 8px;
+    background-color: #fff0f0;
+    color: #ff3838;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.boton-eliminar-estudiante:hover {
+    background-color: #ffe0e0;
+}
+
+/* Boton configuraciones */
+
+.cfg-overlay {
+    position: fixed; inset: 0;
+    background: rgba(17, 20, 45, 0.55);
+    display: none;
+    padding: 20px; z-index: 1000;
+    overflow-y: auto;
+}
+.cfg-overlay.abierto { display: flex; }
+
+.cfg-modal {
+    background: #fff; width: 100%; max-width: 480px;
+    margin: auto;
+    border-radius: 16px; padding: 28px;
+    display: grid; gap: 12px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+}
+.cfg-encabezado { display: flex; justify-content: space-between; align-items: center; }
+.cfg-encabezado h2 { margin: 0; font-size: 1.2rem; color: #11142D; }
+.cfg-cerrar { background: none; border: none; font-size: 1.6rem; cursor: pointer; color: #8B7CFF; }
+
+.cfg-modal label { display: flex; flex-direction: column; gap: 5px; font-size: 0.78rem; font-weight: 600; color: #8B7CFF; }
+.cfg-modal input {
+    padding: 10px 12px; border: 1px solid #e3e0f5; border-radius: 10px;
+    font-size: 0.95rem; font-family: inherit; outline: none;
+}
+.cfg-modal input:focus { border-color: #5B2EFF; box-shadow: 0 0 0 3px rgba(91, 46, 255, 0.12); }
+
+.cfg-btn {
+    background: #5B2EFF; color: #fff; border: none; padding: 10px 18px;
+    border-radius: 10px; font-weight: 600; font-family: inherit;
+    cursor: pointer; justify-self: start;
+}
+.cfg-btn:hover { background: #4A20E8; }
+.cfg-msg { margin: 0; font-size: 0.85rem; min-height: 1.2em; }
+.cfg-msg.ok { color: #1a9d57; }
+.cfg-msg.error { color: #ff4d4d; }

@@ -230,3 +230,50 @@
     }
 
     .boton-accion-secundario:hover { background-color: #f8fafc; }
+
+
+    /*** tarjeta**/
+    /* ===== TARJETA DE TUTOR (solo estilos de la tarjeta) ===== */
+/* Reutiliza .fila-tabla y .columna de tu CSS, y .badge-materia, .btn-accion y .tutoria-acciones que ya tienes. */
+
+.fila-tutor {
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid #e5e7f0;
+  border-radius: 10px;
+  min-height: 62px;
+  box-sizing: border-box;
+}
+
+/* Celda del nombre: foto + nombre */
+.tutor-celda-nombre {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.tutor-foto {
+  flex: 0 0 40px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #ede9fe;
+}
+
+.tutor-nombre {
+  font-size: 14px;
+  font-weight: 700;
+  color: #0f1030;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Mensaje cuando no hay tutores */
+.sin-tutores {
+  margin: 0;
+  font-size: 13px;
+  color: #4b5563;
+}
