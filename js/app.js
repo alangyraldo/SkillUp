@@ -113,6 +113,50 @@ if (sesionNav) {
     });
 }
 
+
+// --- Botones "Agendar tutoría" (navbar e inicio) ---
+function intencionDe(sesion) {
+    if (sesion.intencion) return sesion.intencion;
+    // Sesiones antiguas que no guardaron la intención: se busca en la lista de usuarios
+    try {
+        const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+        const u = usuarios.find(u => u.correo === sesion.correo);
+        return u ? u.intencion : null;
+    } catch (error) {
+        return null;
+    }
+}
+
+function irAAgendarTutoria() {
+    const sesion = leerSesion();
+
+    // Sin sesión: se guarda la intención y se manda a registrarse
+    if (!sesion) {
+        sessionStorage.setItem('redirigirDespues', 'buscar-tutor');
+        location.href = ROOT + routes.registro;
+        return;
+    }
+
+    // Estudiante / aprendiz: directo a buscar tutor
+    if (sesion.rol !== 'admin' && intencionDe(sesion) === 'aprender') {
+        location.href = ROOT + routes['buscar-tutor'];
+        return;
+    }
+
+    // Tutor o admin
+    const mensaje = 'Solo los estudiantes pueden agendar tutorías.';
+    if (typeof mostrarAviso === 'function') mostrarAviso(mensaje, 'error');
+    else alert(mensaje);
+}
+
+document.addEventListener('click', (e) => {
+    const boton = e.target.closest('[data-agendar]');
+    if (!boton) return;
+    e.preventDefault();
+    irAAgendarTutoria();
+});
+
+
 // el navbarse oculta al bajar y reaparece con hover arriba al subir o con tab
 const nav = document.querySelector('#site-header .navbar-skillup');
 if (nav) {
@@ -155,6 +199,15 @@ img.src = ROOT + img.dataset.asset; */
 document.querySelectorAll('[data-asset]').forEach(img => {
     img.src = ROOT + img.dataset.asset;
 });
+
+// Icono de la pestaña (favicon) en todas las páginas
+if (!document.querySelector('link[rel~="icon"]')) {
+    const favicon = document.createElement('link');
+    favicon.rel = 'icon';
+    favicon.type = 'image/png';
+    favicon.href = ROOT + 'assets/images/favicon.png';
+    document.head.appendChild(favicon);
+}
 
 // formulario de busqueda de tutores, busca el formulario con el atributo data-search-form
 const searchForm = document.querySelector('[data-search-form]');
