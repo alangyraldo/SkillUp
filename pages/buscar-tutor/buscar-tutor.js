@@ -219,7 +219,7 @@ function crearCard(t) {
       <h3 class="tutor-card__nombre2">${t.nombre}</h3>
 
       <div class="tutor-card__fila">
-        <div>
+        <div class="tutor-card__info">
           <p class="tutor-card__materia">${t.materia}</p>
           <p class="tutor-card__desde">Desde</p>
           <p class="tutor-card__precio">${formatoCOP(t.precio)}</p>
@@ -237,7 +237,9 @@ function crearCard(t) {
         </div>
       </div>
 
-      ${crearCupos(t)}
+      <div class="tutor-card__cupos">
+        ${crearCupos(t)}
+      </div>
     </article>
   `;
 }

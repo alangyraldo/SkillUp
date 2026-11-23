@@ -231,13 +231,12 @@ body {
   font-weight: 700;
 }
 
-/* Contenedor inferior que ocupa el espacio restante */
+
 .tutor-card__fila {
   display: flex;
   justify-content: space-between;
-  align-items: stretch; 
+  align-items: stretch;
   gap: 12px;
-  flex: 1; 
 }
 
 .tutor-card__info {
