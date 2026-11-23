@@ -205,20 +205,18 @@ function crearCard(t) {
     <article
       class="tutor-card"
       data-id="${t.id}"
-      data-nombre="${t.nombre.toLowerCase().trim()}"
-    >
+      data-nombre="${t.nombre.toLowerCase().trim()}">
       <img
         class="tutor-card__foto"
         src="${t.foto}"
-        alt="Foto de ${t.nombre}"
-      >
+        alt="Foto de ${t.nombre}">
 
       <p class="tutor-card__rating">
         <span class="tutor-card__estrella">★</span>
         (${t.resenas} reseñas)
       </p>
 
-      <h3 class="tutor-card__nombre">${t.nombre}</h3>
+      <h3 class="tutor-card__nombre2">${t.nombre}</h3>
 
       <div class="tutor-card__fila">
         <div>
