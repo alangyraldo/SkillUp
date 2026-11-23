@@ -101,33 +101,28 @@ function filtrarElementos() {
 // Construye la tarjeta cuando la búsqueda se realiza por tutorías.
 function crearCardTutoria(t) {
   return `
-    <article class="tutor-card" data-id="${t.id}">
-      <img class="tutor-card__foto" src="${t.foto}" alt="Foto de ${t.tutor}">
-      <h3 class="tutor-card__nombre">${t.titulo}</h3>
+  <article class="tutor-card" data-id="${t.id}">
+    <img class="tutor-card__foto" src="${t.foto}" alt="Foto de ${t.tutor}">
+    <h3 class="tutor-card__nombre">${t.titulo}</h3>
+    <div class="tutor-card__fila">
+      <div class="tutor-card__info">
+        <p class="tutor-card__materia">${t.materia}</p>
+        <p class="tutor-card__desde">Tutor</p>
+        <p class="tutor-card__tutor">${t.tutor}</p>
 
-      <div class="tutor-card__fila">
-        <div>
-          <p class="tutor-card__materia">${t.materia}</p>
-          <p class="tutor-card__desde">Tutor</p>
-          <p class="tutor-card__tutor">${t.tutor}</p>
+        <div class="tutor-card__precio-grupo">
           <p class="tutor-card__desde">Precio</p>
-          <p class="tutor-card__precio">${formatoCOP(t.precio)}</p>
+          <p class="tutor-card__precio">
+            ${t.precio ? formatoCOP(Number(t.precio)) : '$ 0'}
+          </p>
         </div>
+      </div>
 
-        <div class="tutor-card__accion">
-          <span class="tutor-card__disponible">
-            ${Number(t.cupos) > 0 ? "Disponible" : "Sin cupos"}
-          </span>
-
-          <button
-            type="button"
-            class="tutor-card__boton"
-            data-reservar="${t.id}"
-            ${Number(t.cupos) <= 0 ? "disabled" : ""}
-          >
-            Reservar
-          </button>
-        </div>
+      <div class="tutor-card__accion">
+        <span class="tutor-card__disponible">
+          ${Number(t.cupos) > 0 ? 'Disponible' : 'Sin cupos'}
+        </span>
+        <button type="button" class="tutor-card__boton" data-reservar="${t.id}">Reservar</button>
       </div>
     </article>
   `;
@@ -210,20 +205,18 @@ function crearCard(t) {
     <article
       class="tutor-card"
       data-id="${t.id}"
-      data-nombre="${t.nombre.toLowerCase().trim()}"
-    >
+      data-nombre="${t.nombre.toLowerCase().trim()}">
       <img
         class="tutor-card__foto"
         src="${t.foto}"
-        alt="Foto de ${t.nombre}"
-      >
+        alt="Foto de ${t.nombre}">
 
       <p class="tutor-card__rating">
         <span class="tutor-card__estrella">★</span>
         (${t.resenas} reseñas)
       </p>
 
-      <h3 class="tutor-card__nombre">${t.nombre}</h3>
+      <h3 class="tutor-card__nombre2">${t.nombre}</h3>
 
       <div class="tutor-card__fila">
         <div>
