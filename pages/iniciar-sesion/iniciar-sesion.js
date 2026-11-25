@@ -18,14 +18,14 @@ if (document.getElementById('correo-sesion') && typeof obtenerSesion === 'functi
   }
 }
 
-function manejarSesion(evento) {
+async function manejarSesion(evento) {
   evento.preventDefault();
 
   const correo = document.getElementById('correo-sesion').value;
   const clave = document.getElementById('contrasena-sesion').value;
   const mensajeError = document.getElementById('mensaje-error');
 
-  const sesion = iniciarSesion(correo, clave);
+  const sesion = await iniciarSesion(correo, clave);
   if (sesion) {
   mostrarAviso('Inicio de sesión exitoso. ¡Bienvenido, ' + sesion.nombre + '!');
 
@@ -56,10 +56,10 @@ function seleccionarRol(rol, elementoBoton) {
   rolRegistro = rol;
 }
 
-function manejarRegistro(evento) {
+async function manejarRegistro(evento) {
   evento.preventDefault();
 
-  const resultado = registrarUsuario({
+  const resultado = await registrarUsuario({
     nombre: document.getElementById('nombre-registro').value.trim(),
     apellido: document.getElementById('apellido-registro').value.trim(),
     correo: document.getElementById('correo-registro').value,

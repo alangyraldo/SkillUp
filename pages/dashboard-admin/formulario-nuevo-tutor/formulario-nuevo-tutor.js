@@ -18,6 +18,110 @@ let paginaActualAdminTutores = 1;
 let cadenaFotoPerfilEnBase64 = null;
 let idTutorEnEdicion = null;
 
+// sincronizacion con back end
+let cacheMateriasBackend = [];
+
+async function cargarMateriasEnSelect() {
+  try {
+    const materias = await apiRequest('/materias');
+    cacheMateriasBackend = Array.isArray(materias) ? materias : [];
+    const selectMateria = document.getElementById('campo-seleccion-materia-tutor');
+    if (selectMateria && cacheMateriasBackend.length > 0) {
+      selectMateria.innerHTML = '<option value="">Selecciona una materia</option>';
+      cacheMateriasBackend.forEach((m) => {
+        const opt = document.createElement('option');
+        opt.value = m.nombre; // Mantenemos el nombre como value para no romper editar/pintar
+        opt.dataset.id = m.id; // Guardamos el ID real de MySQL en data-id
+        opt.textContent = m.nombre;
+        selectMateria.appendChild(opt);
+      });
+    }
+  } catch (error) {
+    console.warn('No se pudieron cargar materias del backend:', error);
+  }
+}
+// Conexion base de datos y crear materia
+// Permite crear una materia nueva directamente desde el selector del modal
+(function habilitarCreacionMateria() {
+  const selectMateria = document.getElementById('campo-seleccion-materia-tutor');
+  if (!selectMateria) return;
+
+  // Envolvemos cargarMateriasEnSelect para añadir siempre la opción de crear al final
+  const cargarOriginal = cargarMateriasEnSelect;
+  cargarMateriasEnSelect = async function () {
+    await cargarOriginal();
+    const optNueva = document.createElement('option');
+    optNueva.value = '__NUEVA_MATERIA__';
+    optNueva.textContent = '+ Crear nueva materia...';
+    selectMateria.appendChild(optNueva);
+  };
+
+  selectMateria.addEventListener('change', async function () {
+    if (selectMateria.value !== '__NUEVA_MATERIA__') return;
+
+    const nombreNueva = prompt('Escribe el nombre de la nueva materia:');
+    if (!nombreNueva || !nombreNueva.trim()) {
+      selectMateria.value = '';
+      return;
+    }
+
+    try {
+      const creada = await apiRequest('/materias', {
+        method: 'POST',
+        body: JSON.stringify({
+          nombre: nombreNueva.trim(),
+          descripcion: `Tutorías de ${nombreNueva.trim()}`
+        })
+      });
+
+      await cargarMateriasEnSelect();
+      selectMateria.value = creada.nombre;
+    } catch (error) {
+      alert(error.message || 'No se pudo crear la materia.');
+      selectMateria.value = '';
+    }
+  });
+})();
+
+//---------------------------------------------
+
+async function sincronizarTutoresConBackend() {
+  try {
+    const pagina = await apiRequest('/tutores?size=100');
+    const listaJava = pagina && Array.isArray(pagina.content) ? pagina.content : [];
+    const locales = obtenerListaTutoresDeLocalStorage();
+
+    // Adaptamos los tutores de MySQL conservando extras visuales (horarios/idiomas) si existían
+    const sincronizados = listaJava.map((t) => {
+      const previo = locales.find((l) => String(l.id) === String(t.id)) || {};
+      const nombreCompleto = t.usuario ? `${t.usuario.nombre} ${t.usuario.apellido}` : 'Tutor';
+      return {
+        id: t.id,
+        usuarioId: t.usuario ? t.usuario.id : null,
+        nombre: nombreCompleto,
+        materia: t.materia ? t.materia.nombre : '',
+        nivel: t.nivel || 'Intermedio',
+        precio: t.precio || 0,
+        experiencia: parseInt(t.experiencia) || 0,
+        modalidad: t.modalidad || 'Virtual',
+        foto: t.foto || `https://ui-avatars.com{encodeURIComponent(nombreCompleto)}&background=random`,
+        rating: previo.rating || 4.8,
+        resenas: previo.resenas || 0,
+        idiomas: previo.idiomas || ['Español'],
+        habilidades: previo.habilidades || [],
+        descripcion: previo.descripcion || `Tutor especializado en ${t.materia ? t.materia.nombre : ''}.`,
+        horarios: previo.horarios || []
+      };
+    });
+
+    guardarListaTutoresEnLocalStorage(sincronizados);
+    mostrarTutores();
+    window.dispatchEvent(new CustomEvent('tutorias:cambio'));
+  } catch (error) {
+    console.error('Error sincronizando tutores con MySQL:', error);
+  }
+}
+
 function abrirModalNuevoTutor() {
   elementoModalSuperposicion.classList.remove('modal-oculto');
 }
@@ -132,6 +236,7 @@ window.prepararEdicionTutor = function(tutorId) {
   abrirModalNuevoTutor();
 };
 
+/*
 window.eliminarTutor = function(tutorId) {
   if (confirm("¿Estás seguro de que deseas eliminar este tutor?")) {
     let listaTutores = obtenerListaTutoresDeLocalStorage();
@@ -142,7 +247,20 @@ window.eliminarTutor = function(tutorId) {
   }
 };
 
-elementoFormularioRegistroTutor.addEventListener('submit', (evento) => {
+*/
+
+window.eliminarTutor = async function(tutorId) {
+  if (!confirm("¿Estás seguro de que deseas eliminar este tutor?")) return;
+
+  try {
+    await apiRequest(`/tutores/${tutorId}`, { method: 'DELETE' });
+    await sincronizarTutoresConBackend();
+  } catch (error) {
+    alert(error.message || "Error al eliminar el tutor en el servidor.");
+  }
+};
+
+elementoFormularioRegistroTutor.addEventListener('submit', async (evento) => {
   evento.preventDefault();
 
   const identificadorUnicoTutor = idTutorEnEdicion ? idTutorEnEdicion : `tutor-${Date.now()}`;
@@ -223,6 +341,82 @@ elementoFormularioRegistroTutor.addEventListener('submit', (evento) => {
     listaActualTutores.push(objetoNuevoTutorRegistrado);
      mostrarAviso(`Tutor ${objetoNuevoTutorRegistrado.nombre} añadido con éxito.`);
   }
+// nuevo
+
+const materiaObj = cacheMateriasBackend.find(
+    (m) => m.nombre.toLowerCase() === valorMateriaEnsenar.toLowerCase()
+  );
+
+  if (!materiaObj) {
+    alert("La materia seleccionada no existe en la base de datos.");
+    return;
+  }
+
+const partesNombre = valorNombreCompleto.split(/\s+/);
+const nombre = partesNombre[0];
+const apellido = partesNombre.slice(1).join(" ") || "Tutor";
+  const fotoParaBD = valorRutaImagenFoto.length < 250
+    ? valorRutaImagenFoto
+    : `https://ui-avatars.com{encodeURIComponent(valorNombreCompleto)}&background=random`;
+
+  try {
+    if (idTutorEnEdicion) {
+      const tutorActual = listaActualTutores.find((t) => String(t.id) === String(idTutorEnEdicion));
+      if (tutorActual && tutorActual.usuarioId) {
+        await apiRequest(`/usuarios/${tutorActual.usuarioId}`, {
+          method: 'PUT',
+          body: JSON.stringify({ nombre, apellido, telefono: "" })
+        });
+      }
+      await apiRequest(`/tutores/${idTutorEnEdicion}`, {
+        method: 'PUT',
+        body: JSON.stringify({
+          usuario: { id: tutorActual.usuarioId },
+          materia: { id: materiaObj.id },
+          nivel: valorNivelConocimiento,
+          precio: valorPrecioPorClase,
+          experiencia: `${valorAnosExperiencia} años`,
+          modalidad: valorModalidadClase,
+          foto: fotoParaBD
+        })
+      });
+    } else {
+      const slug = valorNombreCompleto.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]/g, '.');
+      const usuarioCreado = await apiRequest('/auth/registro', {
+        method: 'POST',
+        body: JSON.stringify({
+          nombre,
+          apellido,
+          email: `${slug}.${Date.now()}@skillup.com`,
+          contrasena: 'TutorSkillUp123!',
+          tipoUsuario: 'ADMIN_TUTOR',
+          telefono: ""
+        })
+      });
+
+      const tutorCreado = await apiRequest('/tutores', {
+        method: 'POST',
+        body: JSON.stringify({
+          usuario: { id: usuarioCreado.id },
+          materia: { id: materiaObj.id },
+          nivel: valorNivelConocimiento,
+          precio: valorPrecioPorClase,
+          experiencia: `${valorAnosExperiencia} años`,
+          modalidad: valorModalidadClase,
+          foto: fotoParaBD
+        })
+      });
+
+      // Actualizamos el ID local con el ID real generado por MySQL
+      listaActualTutores[listaActualTutores.length - 1].id = tutorCreado.id;
+      listaActualTutores[listaActualTutores.length - 1].usuarioId = usuarioCreado.id;
+    }
+  } catch (error) {
+    alert(error.message || "Error al guardar el tutor en MySQL.");
+    return;
+  }
+
+// hasta aquí 
 
   guardarListaTutoresEnLocalStorage(listaActualTutores);
   window.dispatchEvent(new CustomEvent("tutorias:cambio"));
@@ -365,8 +559,15 @@ function mostrarTutores() {
   crearPaginacionAdminTutores(totalPaginas);
 }
 
+/*
 document.addEventListener("DOMContentLoaded", mostrarTutores);
 window.addEventListener("tutorias:cambio", mostrarTutores);
 window.addEventListener("storage", (e) => {
   if (e.key === "skillup_tutores") mostrarTutores();
+
+  */
+ document.addEventListener("DOMContentLoaded", async () => {
+  await cargarMateriasEnSelect();
+  await sincronizarTutoresConBackend();
 });
+

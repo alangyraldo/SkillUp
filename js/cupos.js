@@ -1,3 +1,4 @@
+/*
 // Cupos compartidos: leen y escriben la misma lista "tutorias" que usa el dashboard admin.
 const CLAVE_TUTORIAS = "tutorias";
 
@@ -48,6 +49,106 @@ window.addEventListener("storage", (evento) => {
 });
 
 const CLAVE_RESERVAS = "reservas";
+
+*/
+
+const CLAVE_TUTORIAS = "tutorias";
+
+const Cupos = {
+  _leer() {
+    try {
+      return JSON.parse(localStorage.getItem(CLAVE_TUTORIAS)) || [];
+    } catch (error) {
+      return [];
+    }
+  },
+
+  _guardar(lista) {
+    localStorage.setItem(CLAVE_TUTORIAS, JSON.stringify(lista));
+    window.dispatchEvent(new CustomEvent("cupos:cambio"));
+  },
+
+  // Sincroniza las tutorías reales desde MySQL hacia localStorage
+  async sincronizarDesdeBackend() {
+    try {
+      const listaJava = await apiRequest("/tutorias");
+      const tutoresCache = JSON.parse(localStorage.getItem("skillup_tutores") || "[]");
+
+      const mapeadas = (Array.isArray(listaJava) ? listaJava : []).map((t) => {
+        const tutorObj = tutoresCache.find((tu) => String(tu.id) === String(t.idPerfilTutor));
+        return {
+          id: t.id,
+          idPerfilTutor: t.idPerfilTutor,
+          idMateria: t.idMateria,
+          titulo: t.titulo,
+          tutor: tutorObj ? tutorObj.nombre : "Tutor SkillUp",
+          materia: tutorObj ? tutorObj.materia : "General",
+          fecha: t.fecha,
+          hora: t.horaInicio ? t.horaInicio.slice(0, 5) : "",
+          duracionMinutos: t.duracionMinutos || 60,
+          cupos: t.cupos ?? 0,
+          precio: Number(t.precio || 0),
+          modalidad: t.modalidad || "Virtual"
+        };
+      });
+
+      this._guardar(mapeadas);
+      return mapeadas;
+    } catch (error) {
+      console.error("Error sincronizando tutorías desde MySQL:", error);
+      return this._leer();
+    }
+  },
+
+  porTutor(nombreTutor) {
+    return this._leer().filter((t) => t.tutor === nombreTutor);
+  },
+
+  descontar(idTutoria) {
+    const lista = this._leer();
+    const tutoria = lista.find((t) => String(t.id) === String(idTutoria));
+    if (!tutoria || tutoria.cupos <= 0) return false;
+    tutoria.cupos -= 1;
+    this._guardar(lista);
+
+    // Actualiza los cupos reales en MySQL en segundo plano
+    apiRequest(`/tutorias/${tutoria.id}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        idPerfilTutor: tutoria.idPerfilTutor,
+        idMateria: tutoria.idMateria,
+        titulo: tutoria.titulo,
+        fecha: tutoria.fecha,
+        horaInicio: tutoria.hora.length === 5 ? `${tutoria.hora}:00` : tutoria.hora,
+        duracionMinutos: tutoria.duracionMinutos || 60,
+        cupos: tutoria.cupos,
+        precio: tutoria.precio,
+        modalidad: tutoria.modalidad
+      })
+    }).catch((err) => console.error("Error actualizando cupos en MySQL:", err));
+
+    return true;
+  },
+
+  resumen(nombreTutor) {
+    const sesiones = this.porTutor(nombreTutor);
+    const total = sesiones.reduce((suma, s) => suma + s.cupos, 0);
+    return { sesiones, total, agotado: sesiones.length > 0 && total <= 0 };
+  },
+
+  etiqueta(nombreTutor) {
+    const { sesiones, total, agotado } = this.resumen(nombreTutor);
+    if (!sesiones.length) return "Sin tutorías programadas";
+    return agotado ? "Sin cupos" : `${total} cupos`;
+  }
+};
+
+// Carga las tutorías reales de MySQL al abrir cualquier página que use cupos.js
+if (typeof apiRequest === "function") {
+  Cupos.sincronizarDesdeBackend();
+}
+//----------------------------------------------------------------------------------
+
 
 const Reservas = {
   _leer() {
