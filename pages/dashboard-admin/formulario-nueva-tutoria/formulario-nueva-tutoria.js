@@ -204,6 +204,187 @@ document.getElementById("dia").addEventListener("change", (e) => {
   selectHora.disabled = false;
 });
 
+// CONEXION base de datos
+
+function diaSemanaAFechaISO(diaTexto) {
+  if (/^\d{4}-\d{2}-\d{2}$/.test(diaTexto)) return diaTexto;
+  const dias = {
+    domingo: 0, lunes: 1, martes: 2, miercoles: 3, miércoles: 3,
+    jueves: 4, viernes: 5, sabado: 6, sábado: 6
+  };
+  const objetivo = dias[String(diaTexto || "").trim().toLowerCase()];
+  const hoy = new Date();
+  if (objetivo === undefined) return hoy.toISOString().slice(0, 10);
+
+  let diff = (objetivo - hoy.getDay() + 7) % 7;
+  if (diff === 0) diff = 7;
+  hoy.setDate(hoy.getDate() + diff);
+  return hoy.toISOString().slice(0, 10);
+}
+
+// Convierte una fecha YYYY-MM-DD al nombre del día ("Lunes", "Martes"...) para el select
+function fechaISOADiaSemana(fechaISO) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(fechaISO)) return fechaISO;
+  const nombres = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
+  const [anio, mes, dia] = fechaISO.split("-").map(Number);
+  const fecha = new Date(anio, mes - 1, dia);
+  return nombres[fecha.getDay()] || fechaISO;
+}
+
+// Descarga las tutorías reales de MySQL y las guarda en localStorage con el formato del front
+async function sincronizarTutoriasConBackend() {
+  try {
+    const [listaJava, materiasJava] = await Promise.all([
+      apiRequest("/tutorias"),
+      apiRequest("/materias")
+    ]);
+
+    const tutoresCache = obtenerTutoresRegistrados();
+    const localesPrevias = JSON.parse(localStorage.getItem("tutorias") || "[]");
+
+    const mapeadas = (Array.isArray(listaJava) ? listaJava : []).map((t) => {
+      const tutorObj = tutoresCache.find((tu) => String(tu.id) === String(t.idPerfilTutor));
+      const materiaObj = (Array.isArray(materiasJava) ? materiasJava : []).find((m) => String(m.id) === String(t.idMateria));
+      const previa = localesPrevias.find((l) => String(l.id) === String(t.id)) || {};
+
+      return {
+        id: t.id,
+        idPerfilTutor: t.idPerfilTutor,
+        idMateria: t.idMateria,
+        titulo: t.titulo,
+        materia: materiaObj ? materiaObj.nombre : (tutorObj ? tutorObj.materia : "General"),
+        nivel: tutorObj ? tutorObj.nivel : (previa.nivel || "Intermedio"),
+        descripcion: previa.descripcion || `Tutoría de ${t.titulo}`,
+        tutor: tutorObj ? tutorObj.nombre : "Tutor SkillUp",
+        fecha: fechaISOADiaSemana(t.fecha),
+        fechaISO: t.fecha,
+        hora: t.horaInicio ? t.horaInicio.slice(0, 5) : "",
+        duracion: t.duracionMinutos || 60,
+        modalidad: t.modalidad || "Virtual",
+        precio: Number(t.precio || 0),
+        cupos: t.cupos ?? 0,
+        foto: tutorObj ? tutorObj.foto : ""
+      };
+    });
+
+    tutorias = mapeadas;
+    localStorage.setItem("tutorias", JSON.stringify(mapeadas));
+    mostrarTutorias();
+    window.dispatchEvent(new CustomEvent("tutorias:cambio"));
+  } catch (error) {
+    console.error("Error sincronizando tutorías con MySQL:", error);
+  }
+}
+
+// Preparar edición al hacer clic en el botón de editar
+function prepararEdicion(tutoria) {
+  idTutoriaEnEdicion = tutoria.id;
+
+  const modalTitulo = modal.querySelector(".modal-header h2");
+  if (modalTitulo) modalTitulo.textContent = "Editar tutoría";
+
+  document.getElementById("titulo").value = tutoria.titulo;
+  document.getElementById("descripcion").value = tutoria.descripcion || "";
+  document.getElementById("duracion").value = tutoria.duracion || 60;
+  document.getElementById("precio").value = tutoria.precio;
+  document.getElementById("cupos").value = tutoria.cupos;
+
+  const selectMateria = document.getElementById("materia");
+  selectMateria.value = tutoria.materia;
+  selectMateria.dispatchEvent(new Event("change"));
+
+  const selectTutor = document.getElementById("tutor");
+  selectTutor.value = tutoria.tutor;
+  selectTutor.dispatchEvent(new Event("change"));
+
+  const selectDia = document.getElementById("dia");
+  selectDia.value = fechaISOADiaSemana(tutoria.fecha);
+  selectDia.dispatchEvent(new Event("change"));
+
+  document.getElementById("hora").value = tutoria.hora;
+
+  abrirVentana();
+}
+
+// Capturar datos para Guardar / Crear en MySQL (POST o PUT /api/tutorias)
+async function capturarTutoria(evento) {
+  evento.preventDefault();
+
+  const titulo = document.getElementById("titulo").value.trim();
+  const materiaNombre = document.getElementById("materia").value;
+  const hora = document.getElementById("hora").value;
+  const dia = document.getElementById("dia").value;
+  const duracion = Number(document.getElementById("duracion").value) || 60;
+  const modalidad = document.getElementById("modalidad").value;
+  const precio = Number(document.getElementById("precio").value);
+  const cupos = Number(document.getElementById("cupos").value);
+
+  if (precio < 0 || cupos < 1) {
+    alert("El precio no puede ser negativo y debe haber al menos un cupo.");
+    return;
+  }
+
+  if (!tutorSeleccionadoActual || !tutorSeleccionadoActual.id) {
+    alert("Selecciona un tutor válido.");
+    return;
+  }
+
+  try {
+    // Buscamos el ID real de la materia en MySQL
+    const materiasJava = await apiRequest("/materias");
+    const materiaObj = (Array.isArray(materiasJava) ? materiasJava : []).find(
+      (m) => m.nombre.toLowerCase() === materiaNombre.toLowerCase()
+    );
+
+    if (!materiaObj) {
+      alert("No se encontró la materia en la base de datos.");
+      return;
+    }
+
+    const payload = {
+      idPerfilTutor: Number(tutorSeleccionadoActual.id),
+      idMateria: Number(materiaObj.id),
+      titulo: titulo,
+      fecha: diaSemanaAFechaISO(dia),
+      horaInicio: hora.length === 5 ? `${hora}:00` : hora,
+      duracionMinutos: duracion,
+      cupos: cupos,
+      precio: precio,
+      modalidad: modalidad
+    };
+
+    if (idTutoriaEnEdicion !== null) {
+      await apiRequest(`/tutorias/${idTutoriaEnEdicion}`, {
+        method: "PUT",
+        body: JSON.stringify(payload)
+      });
+    } else {
+      await apiRequest("/tutorias", {
+        method: "POST",
+        body: JSON.stringify(payload)
+      });
+    }
+
+    await sincronizarTutoriasConBackend();
+    cerrarVentana();
+  } catch (error) {
+    alert(error.message || "Error al guardar la tutoría en la base de datos.");
+  }
+}
+
+// ELIMINAR TUTORIA en MySQL (DELETE /api/tutorias/{id})
+async function eliminarTutoria(id) {
+  if (!confirm("¿Estás seguro de eliminar esta tutoría?")) return;
+
+  try {
+    await apiRequest(`/tutorias/${id}`, { method: "DELETE" });
+    await sincronizarTutoriasConBackend();
+  } catch (error) {
+    alert(error.message || "Error al eliminar la tutoría en el servidor.");
+  }
+}
+
+/*
 // Preparar edición al hacer clic en el botón de editar
 function prepararEdicion(tutoria) {
   idTutoriaEnEdicion = tutoria.id;
@@ -287,6 +468,8 @@ function eliminarTutoria(id) {
   mostrarTutorias();
   window.dispatchEvent(new CustomEvent("tutorias:cambio"));
 }
+
+*/
 
 // Función para crear la paginación visual (1, 2, 3...) de Tutorías en el Admin
 function crearPaginacionAdminTutorias(totalPaginas) {
@@ -415,10 +598,20 @@ function mostrarTutorias() {
 
 formulario.addEventListener("submit", capturarTutoria);
 
+// CONEXION base de datos
+
+document.addEventListener("DOMContentLoaded", async () => {
+  cargarSelectMaterias();
+  await sincronizarTutoriasConBackend();
+});
+
+/*
 document.addEventListener("DOMContentLoaded", () => {
   cargarSelectMaterias();
   mostrarTutorias();
 });
+
+*/
 
 window.addEventListener("storage", (e) => {
   if (e.key === "tutorias") {
@@ -433,3 +626,4 @@ window.addEventListener("tutorias:cambio", () => {
   mostrarTutorias();
   cargarSelectMaterias();
 });
+

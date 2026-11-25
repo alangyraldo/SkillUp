@@ -94,8 +94,147 @@ function iniciarPanel() {
   lucide.createIcons();
 }
 
-// Boton de configuraciones
+// CONEXION base de datos Boton de configuraciones 
 
+(function () {
+  const sesionInicial = obtenerSesion();
+  if (!sesionInicial) return;
+
+  const campos = [
+    ['nombre', 'Nombre', 'text'],
+    ['apellido', 'Apellido', 'text'],
+    ['telefono', 'Número de teléfono', 'tel'],
+    ['correo', 'Correo electrónico', 'email'],
+    ['claveActual', 'Contraseña actual (solo si cambias la contraseña)', 'password'],
+    ['claveNueva', 'Nueva contraseña', 'password'],
+    ['claveConfirmar', 'Confirmar nueva contraseña', 'password'],
+  ];
+
+  document.body.insertAdjacentHTML('beforeend', `
+    <div class="cfg-overlay" id="cfg-overlay">
+      <form class="cfg-modal" id="cfg-form" novalidate>
+        <div class="cfg-encabezado">
+          <h2>Configuración</h2>
+          <button type="button" class="cfg-cerrar" id="cfg-cerrar" aria-label="Cerrar">&times;</button>
+        </div>
+        ${campos.map(([n, t, tipo]) => `<label>${t}<input name="${n}" type="${tipo}"></label>`).join('')}
+        <p class="cfg-msg" id="cfg-msg"></p>
+        <button type="submit" class="cfg-btn">Guardar cambios</button>
+      </form>
+    </div>`);
+
+  const overlay = document.getElementById('cfg-overlay');
+  const form = document.getElementById('cfg-form');
+  const msg = document.getElementById('cfg-msg');
+  const f = form.elements;
+  const enlaceCfg = document.getElementById('btn-configuraciones');
+  const enlaceActivo = document.querySelector('.enlace-menu.activo');
+
+  const abrir = () => {
+    const ses = obtenerSesion();
+    form.reset();
+    if (ses) {
+      f.nombre.value = ses.nombre || '';
+      f.apellido.value = ses.apellido || '';
+      f.telefono.value = ses.telefono || '';
+      f.correo.value = ses.correo || '';
+    }
+    msg.textContent = '';
+    if (enlaceActivo) enlaceActivo.classList.remove('activo');
+    if (enlaceCfg) enlaceCfg.classList.add('activo');
+    overlay.classList.add('abierto');
+  };
+
+  const cerrar = () => {
+    if (enlaceCfg) enlaceCfg.classList.remove('activo');
+    if (enlaceActivo) enlaceActivo.classList.add('activo');
+    overlay.classList.remove('abierto');
+  };
+
+  if (enlaceCfg) enlaceCfg.addEventListener('click', (e) => { e.preventDefault(); abrir(); });
+  document.getElementById('cfg-cerrar').addEventListener('click', cerrar);
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) cerrar(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') cerrar(); });
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const ses = obtenerSesion();
+    const nombre = f.nombre.value.trim();
+    const apellido = f.apellido.value.trim();
+    const telefono = f.telefono.value.replace(/\D/g, '');
+    const correo = f.correo.value.trim().toLowerCase();
+    const claveActual = f.claveActual.value;
+    const claveNueva = f.claveNueva.value;
+    const claveConfirmar = f.claveConfirmar.value;
+
+    const errorValidacion =
+      !nombre ? 'El nombre es obligatorio.' :
+      !apellido ? 'El apellido es obligatorio.' :
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo) ? 'Ingresa un correo válido.' :
+      telefono && telefono.length < 7 ? 'Ingresa un teléfono válido.' :
+      claveNueva && !claveActual ? 'Ingresa tu contraseña actual para cambiarla.' :
+      claveNueva && claveNueva.length < 6 ? 'La nueva contraseña debe tener mínimo 6 caracteres.' :
+      claveNueva !== claveConfirmar ? 'Las contraseñas nuevas no coinciden.' : '';
+
+    if (errorValidacion) {
+      msg.className = 'cfg-msg error';
+      msg.textContent = errorValidacion;
+      return;
+    }
+
+    try {
+      const actualizado = await apiRequest(`/usuarios/${ses.id}`, {
+        method: 'PUT',
+        body: JSON.stringify({
+          nombre,
+          apellido,
+          telefono,
+          email: correo,
+          contrasenaActual: claveActual || null,
+          contrasenaNueva: claveNueva || null
+        })
+      });
+
+      const cambioCorreo = actualizado.email.toLowerCase() !== ses.correo.toLowerCase();
+
+      localStorage.setItem(CLAVE_SESION, JSON.stringify({
+        ...ses,
+        nombre: actualizado.nombre,
+        apellido: actualizado.apellido,
+        telefono: actualizado.telefono,
+        correo: actualizado.email
+      }));
+
+      const spanAdmin = document.getElementById('admin-correo');
+      if (spanAdmin) spanAdmin.textContent = actualizado.email;
+
+      const spanUsuario = document.getElementById('usuario-nombre');
+      if (spanUsuario) spanUsuario.textContent = actualizado.nombre;
+
+      const avatarUsuario = document.getElementById('usuario-avatar');
+      if (avatarUsuario) avatarUsuario.textContent = actualizado.nombre.charAt(0).toUpperCase();
+
+      msg.className = 'cfg-msg ok';
+      f.claveActual.value = f.claveNueva.value = f.claveConfirmar.value = '';
+
+      if (cambioCorreo) {
+        msg.textContent = 'Correo actualizado. Redirigiendo para iniciar sesión de nuevo...';
+        setTimeout(() => {
+          cerrarSesion();
+          window.location.replace('../../pages/iniciar-sesion/index.html');
+        }, 1500);
+      } else {
+        msg.textContent = 'Cambios guardados correctamente.';
+      }
+    } catch (error) {
+      msg.className = 'cfg-msg error';
+      msg.textContent = error.message || 'No se pudieron guardar los cambios.';
+    }
+  });
+})();
+
+
+/*
 (function () {
   if (!obtenerSesion()) return;
 
@@ -130,58 +269,4 @@ function iniciarPanel() {
   const enlaceCfg = document.getElementById('btn-configuraciones');
   const enlaceActivo = document.querySelector('.enlace-menu.activo');
 
-  const abrir = () => {
-    const u = leerUsuarios().find((x) => x.correo === obtenerSesion().correo) || {};
-    form.reset();
-    ['nombre', 'apellido', 'telefono', 'correo'].forEach((k) => (f[k].value = u[k] || ''));
-    msg.textContent = '';
-    enlaceActivo.classList.remove('activo');
-    enlaceCfg.classList.add('activo');
-    overlay.classList.add('abierto');
-  };
-  const cerrar = () => {
-    enlaceCfg.classList.remove('activo');
-    enlaceActivo.classList.add('activo');
-    overlay.classList.remove('abierto');
-  };
-
-  document.getElementById('btn-configuraciones').addEventListener('click', (e) => { e.preventDefault(); abrir(); });
-  document.getElementById('cfg-cerrar').addEventListener('click', cerrar);
-  overlay.addEventListener('click', (e) => { if (e.target === overlay) cerrar(); });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') cerrar(); });
-
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const ses = obtenerSesion();
-    const usuarios = leerUsuarios();
-    const u = usuarios.find((x) => x.correo === ses.correo);
-    const nombre = f.nombre.value.trim();
-    const correo = f.correo.value.trim().toLowerCase();
-    const telefono = f.telefono.value.replace(/\D/g, '');
-    const nueva = f.claveNueva.value;
-
-    const error =
-      !u ? 'No se encontró tu usuario.' :
-        !nombre ? 'El nombre es obligatorio.' :
-          !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo) ? 'Ingresa un correo válido.' :
-            correo === ADMIN.correo || (correo !== u.correo && usuarios.some((x) => x.correo === correo)) ? 'Ese correo no está disponible.' :
-              telefono && telefono.length < 7 ? 'Ingresa un teléfono válido.' :
-                nueva && f.claveActual.value !== u.clave ? 'La contraseña actual es incorrecta.' :
-                  nueva && nueva.length < 6 ? 'La nueva contraseña debe tener mínimo 6 caracteres.' :
-                    nueva !== f.claveConfirmar.value ? 'Las contraseñas no coinciden.' : '';
-
-    msg.className = 'cfg-msg ' + (error ? 'error' : 'ok');
-    if (error) { msg.textContent = error; return; }
-
-    Object.assign(u, { nombre, apellido: f.apellido.value.trim(), telefono, correo });
-    if (nueva) u.clave = nueva;
-    localStorage.setItem(CLAVE_USUARIOS, JSON.stringify(usuarios));
-    localStorage.setItem(CLAVE_SESION, JSON.stringify({ ...ses, correo, nombre }));
-
-    document.getElementById('usuario-nombre').textContent = nombre;
-    document.getElementById('usuario-avatar').textContent = nombre.charAt(0).toUpperCase();
-    msg.textContent = 'Cambios guardados correctamente.';
-    f.claveActual.value = f.claveNueva.value = f.claveConfirmar.value = '';
-    if (correo !== ses.correo) setTimeout(() => location.reload(), 900);
-  });
-})();
+  */

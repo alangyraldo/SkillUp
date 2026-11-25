@@ -1,3 +1,5 @@
+/*
+
 const ADMIN = {
   correo: "admin@skillup.com",
   clave: "Admin1234",
@@ -86,4 +88,89 @@ function eliminarUsuario(correo) {
   const restantes = leerUsuarios().filter((u) => u.correo !== correo);
   localStorage.setItem(CLAVE_USUARIOS, JSON.stringify(restantes));
   return { ok: true };
+}
+
+*/
+
+
+// FETCH para conectar back con front 
+
+const CLAVE_SESION = "sesion";
+
+// Registro de usuario en MySQL (POST /api/auth/registro)
+async function registrarUsuario({ nombre, apellido, correo, telefono, clave, intencion }) {
+  try {
+    const tipoUsuarioJava = intencion !== "aprender" ? "ADMIN_TUTOR" : "ESTUDIANTE";
+
+    const usuarioCreado = await apiRequest("/auth/registro", {
+      method: "POST",
+      body: JSON.stringify({
+        nombre: nombre,
+        apellido: apellido,
+        email: correo.trim().toLowerCase(),
+        contrasena: clave,
+        tipoUsuario: tipoUsuarioJava,
+        telefono: (telefono || "").replace(/\D/g, "")
+      })
+    });
+
+    return { ok: true, usuario: usuarioCreado };
+  } catch (error) {
+    return { ok: false, error: error.message || "Error al registrar usuario." };
+  }
+}
+
+// Inicio de sesión contra MySQL + JWT (POST /api/auth/login)
+async function iniciarSesion(correo, clave) {
+  try {
+    const datosJava = await apiRequest("/auth/login", {
+      method: "POST",
+      body: JSON.stringify({
+        email: correo.trim().toLowerCase(),
+        contrasena: clave
+      })
+    });
+
+    const sesion = {
+      id: datosJava.id,
+      nombre: datosJava.nombre,
+      apellido: datosJava.apellido,
+      correo: datosJava.email,
+      telefono: datosJava.telefono,
+      tipoUsuario: datosJava.tipoUsuario,
+      token: datosJava.token,
+      rol: datosJava.tipoUsuario === "ADMIN_TUTOR" ? "admin" : "usuario",
+      intencion: datosJava.tipoUsuario === "ADMIN_TUTOR" ? "ensenar" : "aprender"
+    };
+
+    localStorage.setItem(CLAVE_SESION, JSON.stringify(sesion));
+    return sesion;
+  } catch (error) {
+    console.error("Error en login:", error.message);
+    return null;
+  }
+}
+
+function obtenerSesion() {
+  try {
+    return JSON.parse(localStorage.getItem(CLAVE_SESION));
+  } catch (error) {
+    return null;
+  }
+}
+
+function esAdmin() {
+  const sesion = obtenerSesion();
+  return sesion !== null && sesion.rol === "admin";
+}
+
+function rutaDashboard(rol) {
+  const prefijo = window.location.pathname.includes("/pages/") ? "../../" : "./";
+  return rol === "admin"
+    ? prefijo + "pages/dashboard-admin/index.html"
+    : prefijo + "pages/dashboard-usuario/index.html";
+}
+
+function cerrarSesion() {
+  localStorage.removeItem(CLAVE_SESION);
 }
