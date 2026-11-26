@@ -37,6 +37,52 @@ if (idTutoriaSeleccionada || tutorIdSeleccionado || nombreTutorSeleccionado || t
 // Convierte un número en un valor monetario con formato colombiano.
 const formatoCOP = (n) => "$ " + Number(n || 0).toLocaleString("es-CO");
 
+// Compara textos sin importar mayúsculas ni espacios sobrantes.
+const normalizar = (valor) => String(valor ?? "").trim().toLowerCase();
+
+// Llena un select con valores únicos y conserva la selección actual.
+function llenarSelect(select, valores, textoInicial, formatear = (v) => v) {
+  const seleccionado = normalizar(select.value);
+  const unicos = new Map();
+
+  valores.forEach((valor) => {
+    const clave = normalizar(valor);
+    if (clave) unicos.set(clave, String(valor).trim());
+  });
+
+  const ordenados = [...unicos.values()].sort((a, b) =>
+    a.localeCompare(b, "es", { numeric: true })
+  );
+
+  select.replaceChildren(new Option(textoInicial, ""));
+
+  ordenados.forEach((valor) => {
+    select.add(new Option(formatear(valor), valor));
+  });
+
+  select.value = unicos.get(seleccionado) || "";
+}
+
+// Actualiza las opciones según se busquen tutores o tutorías.
+function poblarFiltros() {
+  const datos = filtros.busqueda.value === "tutoria"
+    ? JSON.parse(localStorage.getItem("tutorias")) || []
+    : tutores;
+
+  llenarSelect(filtros.materia, datos.map((t) => t.materia), "Todas las materias");
+  llenarSelect(filtros.nivel, datos.map((t) => t.nivel), "Seleccionar nivel");
+  llenarSelect(filtros.modalidad, datos.map((t) => t.modalidad), "Seleccionar modalidad");
+  llenarSelect(
+    filtros.precio,
+    datos.map((t) => t.precio).filter((p) => Number(p) > 0),
+    "Seleccionar precio",
+    (p) => `Hasta ${formatoCOP(p)}`
+  );
+}
+
+
+
+
 // Filtra tutores o tutorías según el texto y las opciones seleccionadas.
 function filtrarElementos() {
   const texto = inputBuscar.value.trim().toLowerCase();
@@ -57,18 +103,27 @@ function filtrarElementos() {
         nombreTutor.toLowerCase().includes(texto) ||
         materiaTutoria.toLowerCase().includes(texto);
 
-      const coincideMateria =
+     /* const coincideMateria =
         !filtros.materia.value ||
         materiaTutoria.trim().toLowerCase() === filtros.materia.value.trim().toLowerCase();
 
       const coincideNivel =
-        !filtros.nivel.value || nivelTutoria === filtros.nivel.value;
+        !filtros.nivel.value || nivelTutoria === filtros.nivel.value;*/
 
       const coincidePrecio =
         !filtros.precio.value || precioTutoria <= Number(filtros.precio.value);
 
+    /*  const coincideModalidad =
+        !filtros.modalidad.value || modalidadTutoria === filtros.modalidad.value;*/
+
+              const coincideMateria =
+        !filtros.materia.value || normalizar(materiaTutoria) === normalizar(filtros.materia.value);
+
+      const coincideNivel =
+        !filtros.nivel.value || normalizar(nivelTutoria) === normalizar(filtros.nivel.value);
+
       const coincideModalidad =
-        !filtros.modalidad.value || modalidadTutoria === filtros.modalidad.value;
+        !filtros.modalidad.value || normalizar(modalidadTutoria) === normalizar(filtros.modalidad.value);
 
       return coincideTexto && coincideMateria && coincideNivel &&
         coincidePrecio && coincideModalidad;
@@ -81,17 +136,26 @@ function filtrarElementos() {
       t.nombre.toLowerCase().includes(texto) ||
       t.materia.toLowerCase().includes(texto);
 
-    const coincideMateria =
+   /* const coincideMateria =
       !filtros.materia.value || t.materia === filtros.materia.value;
 
     const coincideNivel =
-      !filtros.nivel.value || t.nivel === filtros.nivel.value;
+      !filtros.nivel.value || t.nivel === filtros.nivel.value;*/
 
     const coincidePrecio =
       !filtros.precio.value || t.precio <= Number(filtros.precio.value);
 
+   /* const coincideModalidad =
+      !filtros.modalidad.value || t.modalidad === filtros.modalidad.value;*/
+
+    const coincideMateria =
+      !filtros.materia.value || normalizar(t.materia) === normalizar(filtros.materia.value);
+
+    const coincideNivel =
+      !filtros.nivel.value || normalizar(t.nivel) === normalizar(filtros.nivel.value);
+
     const coincideModalidad =
-      !filtros.modalidad.value || t.modalidad === filtros.modalidad.value;
+      !filtros.modalidad.value || normalizar(t.modalidad) === normalizar(filtros.modalidad.value);
 
     return coincideTexto && coincideMateria && coincideNivel &&
       coincidePrecio && coincideModalidad;
@@ -385,6 +449,7 @@ if (modalHorarios) {
 
 // Consulta los resultados, crea las tarjetas y actualiza la paginación.
 function render() {
+  poblarFiltros(); 
   const tipoFiltro = filtros.busqueda ? filtros.busqueda.value : "tutor";
   const resultado = filtrarElementos();
 
