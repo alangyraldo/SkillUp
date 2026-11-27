@@ -250,7 +250,7 @@ window.eliminarTutor = function(tutorId) {
 */
 
 window.eliminarTutor = async function(tutorId) {
-  if (!confirm("¿Estás seguro de que deseas eliminar este tutor?")) return;
+  if (!(await confirmarAviso("¿Eliminar a este tutor?", "Esta acción no se puede deshacer.", "Eliminar"))) return;if (!confirm("¿Estás seguro de que deseas eliminar este tutor?")) return;
 
   try {
     await apiRequest(`/tutores/${tutorId}`, { method: 'DELETE' });

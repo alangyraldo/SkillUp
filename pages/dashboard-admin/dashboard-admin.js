@@ -287,7 +287,7 @@ function pintarEstudiantes() {
     botonBorrar.textContent = 'Eliminar';
 
     botonBorrar.addEventListener('click', async () => {
-      if (confirm(`¿Eliminar a ${u.nombre} ${u.apellido}?`)) {
+      if (await confirmarAviso(`¿Eliminar a ${u.nombre} ${u.apellido}?`, 'Esta acción no se puede deshacer.', 'Eliminar')) {
         try {
           await apiRequest(`/usuarios/${u.id}`, { method: 'DELETE' });
           await refrescarDatosAdmin();
