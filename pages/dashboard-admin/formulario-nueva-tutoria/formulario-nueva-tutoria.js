@@ -374,7 +374,7 @@ async function capturarTutoria(evento) {
 
 // ELIMINAR TUTORIA en MySQL (DELETE /api/tutorias/{id})
 async function eliminarTutoria(id) {
-  if (!confirm("¿Estás seguro de eliminar esta tutoría?")) return;
+  if (!(await confirmarAviso("¿Eliminar esta tutoría?", "Esta acción no se puede deshacer.", "Eliminar"))) return;
 
   try {
     await apiRequest(`/tutorias/${id}`, { method: "DELETE" });
