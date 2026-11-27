@@ -59,7 +59,7 @@ async function cargarMateriasEnSelect() {
   selectMateria.addEventListener('change', async function () {
     if (selectMateria.value !== '__NUEVA_MATERIA__') return;
 
-    const nombreNueva = prompt('Escribe el nombre de la nueva materia:');
+    const nombreNueva = await pedirDatoAviso('Nueva materia', 'Escribe el nombre de la nueva materia', 'Crear');
     if (!nombreNueva || !nombreNueva.trim()) {
       selectMateria.value = '';
       return;
