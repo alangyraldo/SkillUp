@@ -139,6 +139,7 @@ function agregar(item) {
 
   const haySesion = () => localStorage.getItem(CLAVE_SESION) !== null;
 */
+/*
   function confirmar() {
     const sesion = obtenerSesion();
 
@@ -157,6 +158,7 @@ function agregar(item) {
 
     carrito.forEach((item) => {
      /* const resultado = Reservas.reservar(item.id, sesion.correo);*/
+     /*
       const resultado = Reservas.reservar( item.id, sesion.correo, item.cantidad);
       if (resultado === "ok") {
         reservasConfirmadas.push(item);
@@ -182,6 +184,8 @@ function agregar(item) {
     }
   }
 
+
+
   const haySesion = () => obtenerSesion() !== null;
   function irAConfirmar() {
     if (!haySesion()) {
@@ -190,6 +194,65 @@ function agregar(item) {
     }
     confirmar();
   }
+
+   */
+
+  // CONEXION base de de datos 
+
+async function confirmar() {
+    const sesion = obtenerSesion();
+
+    if (!sesion || sesion.rol === "admin") {
+      mostrarAviso("Inicia sesión con una cuenta de estudiante para confirmar tus reservas.", "error", 3000);
+      return;
+    }
+
+    const reservasConfirmadas = [];
+    const reservasFallidas = [];
+
+    for (const item of carrito) {
+      try {
+        await apiRequest("/reservas", {
+          method: "POST",
+          body: JSON.stringify({
+            idUsuario: sesion.id,
+            idTutoria: Number(item.id)
+          })
+        });
+        reservasConfirmadas.push(item);
+      } catch (error) {
+        reservasFallidas.push(error.message);
+      }
+    }
+
+    const idsConfirmados = new Set(reservasConfirmadas.map((i) => Number(i.id)));
+    carrito = carrito.filter((i) => !idsConfirmados.has(Number(i.id)));
+    actualizar();
+
+    if (reservasConfirmadas.length > 0) {
+      mostrarAviso("Tus tutorías se han asignado correctamente", "exito", 3000);
+      setTimeout(() => {
+        window.location.href = "../dashboard-usuario/index.html";
+      }, 1500);
+      return;
+    }
+
+    if (reservasFallidas.length > 0) {
+      mostrarAviso(reservasFallidas || "No fue posible confirmar las reservas.", "error", 3000);
+    }
+  }
+
+  const haySesion = () => typeof obtenerSesion === "function" && obtenerSesion() !== null;
+
+  function irAConfirmar() {
+    if (!haySesion()) {
+      window.location.href = RUTA_LOGIN;
+      return;
+    }
+    confirmar();
+  }
+  //-----------------------------------------------------------------------------
+
 
   // ---------- 5. Abrir / cerrar y ancho ----------
   function abrirCerrar(abrir) {

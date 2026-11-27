@@ -60,6 +60,7 @@ function iniciarPanel() {
       : `<p class="reservas-vacio">Aún no has reservado tutorías. <a href="../../pages/buscar-tutor/index.html">Busca un tutor</a></p>`;
   }*/
 
+      /*
   function pintar() {
     const reservas = Reservas.porUsuario(sesion.correo);
 
@@ -84,6 +85,49 @@ function iniciarPanel() {
       pintar();
     }
   });
+
+  */
+
+  // CONEXION a base de datos 
+
+  function filaReserva(r) {
+    return `
+      <div class="fila-tabla cuerpo-tabla">
+        <div class="columna texto-resaltado">${escapar(r.titulo)}</div>
+        <div class="columna">${escapar(r.tutor)}</div>
+        <div class="columna">${escapar(r.fecha || '')} ${escapar(r.hora || '')}</div>
+        <div class="columna">${formatoCOP(r.precio || 0)}</div>
+        <div class="columna"><span class="etiqueta-estado estado-activo">Reservada</span></div>
+        <div class="columna">
+          <button type="button" class="btn-cancelar-reserva" data-cancelar="${r.id}">Cancelar</button>
+        </div>
+      </div>`;
+  }
+
+ async function pintar() {
+    const reservas = await apiRequest(`/reservas/usuario/${sesion.id}`);
+
+    document.getElementById('total-reservas').textContent = reservas.length;
+    document.getElementById('total-pagar').textContent =
+      formatoCOP(reservas.reduce((suma, r) => suma + Number(r.precio || 0), 0));
+
+    contenedor.innerHTML = reservas.length
+      ? reservas.map(filaReserva).join('')
+      : `<p class="reservas-vacio">Aún no has reservado tutorías. <a href="../../pages/buscar-tutor/index.html">Busca un tutor</a></p>`;
+  }
+
+
+contenedor.addEventListener('click', async (e) => {
+    const boton = e.target.closest('[data-cancelar]');
+    if (!boton) return;
+
+    if (await confirmarAviso('¿Cancelar esta reserva?', 'El cupo quedará libre de nuevo.', 'Sí, cancelar')) {
+      await apiRequest(`/reservas/${Number(boton.dataset.cancelar)}/cancelar`, { method: 'PUT' });
+      mostrarAviso('Reserva cancelada y cupo liberado.', 'exito');
+      pintar();
+    }
+  });
+  //---------------------------------------------------------------------------------------------
 
   document.getElementById('btn-cerrar-sesion').addEventListener('click', () => {
     cerrarSesion();
