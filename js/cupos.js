@@ -53,7 +53,7 @@ const CLAVE_RESERVAS = "reservas";
 */
 
 const CLAVE_TUTORIAS = "tutorias";
-
+const CLAVE_RESERVAS = "reservas"; // ME TOCO AGREGAR ALAN, ESTA CONSTANTE PARA GUARDAR LAS RESERVAS 
 const Cupos = {
   _leer() {
     try {

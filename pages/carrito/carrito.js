@@ -109,6 +109,7 @@ function agregar(item) {
   }
   carrito.push({ ...item, cantidad: 1 });
   actualizar();
+  mostrarAviso("Se agregó al carrito", "exito", 3000); // SE AGREGA
   return true;
 }
 
