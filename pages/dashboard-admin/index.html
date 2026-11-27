@@ -63,6 +63,7 @@
             <!-- Barra Superior del Perfil -->
             <header class="barra-perfil">
                 <h1 class="titulo-pagina">Panel de Control</h1>
+                
                 <div class="bloque-usuario">
                     <span class="nombre-usuario">Bienvenido, <span id="admin-correo">Administrador</span></span>
                     <div class="avatar-usuario">A</div>
@@ -125,7 +126,12 @@
                     <div class="contenedor-lista-tutores">
                         <div class="encabezado-seccion">
                             <h2>Tutores</h2>
+                            <div style="display:flex; align-items:center; gap:10px;">
+                                <button class="btn-nueva-tutoria" onclick="location.reload()" style="white-space:nowrap;">
+                                    <i data-lucide="refresh-cw" style="width:16px; height:16px;"></i> Actualizar
+                                </button>
                             <button class="btn-nueva-tutoria" id="boton-nuevo-tutor"> <span class="plus">+</span>Nuevo tutor</button>
+                                </div>
                         </div>
 
                         <div class="tabla-falsa">
@@ -141,9 +147,9 @@
                             <div id="listaTutores" class="lista-tutorias">
                                 <!-- Los tutores aparecerán aquí -->
                             </div>
-
+                                
                         </div>
-
+                        
                     </div>
 
 
@@ -458,6 +464,8 @@
         </div>
     </div>
     <!-- fin ventana emergente nuevo tutor-->
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="../../js/alertas.js"></script>
     <script src="../../js/api.js"></script>
     <script src="../../js/auth.js"></script>
     <script src="../../js/lista-tarjetas.js"></script>
