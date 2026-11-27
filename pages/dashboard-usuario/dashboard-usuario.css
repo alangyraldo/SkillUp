@@ -120,3 +120,136 @@ a.btn-nueva-tutoria { text-decoration: none; }
 .cfg-msg.error { 
     color: #ff4d4d; 
 }
+
+/* =========================================================
+   DISEÑO RESPONSIVO (TABLETS Y CELULARES)
+   ========================================================= */
+@media (max-width: 900px) {
+    /* 1. Apilar barra lateral arriba y contenido abajo */
+    .pantalla-dashboard {
+        flex-direction: column;
+        height: auto;
+        min-height: 100vh;
+    }
+
+     .barra-lateral {
+        width: 100%;
+        min-width: 100%;
+        height: auto;
+        position: static;
+        padding: 12px 14px;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .barra-superior-logo {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        width: 100%;
+    }
+
+    .bloque-logo {
+        margin-bottom: 0;
+    }
+
+    .imagen-logo {
+        max-height: 28px ;
+    }
+
+
+    /* 2. Menú horizontal en cuadrícula/flex envolvente */
+    .menu-navegacion {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 6px;
+        width: 100%;
+    }
+
+    .enlace-menu {
+        padding: 7px 8px;
+        font-size: 0.78rem;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .boton-salir {
+        width: 100%;
+        justify-content: center;
+        margin-top: 2px;
+        padding: 7px;
+        font-size: 0.8rem;
+    }
+
+    /* 3. Ajustar el contenedor principal */
+    .contenido-principal {
+        width: 100%;
+        margin-left: 0;
+        padding: 16px;
+    }
+
+    .barra-perfil {
+        flex-wrap: wrap;
+        gap: 12px;
+        padding: 14px 16px;
+    }
+
+    .titulo-pagina {
+        font-size: 1.35rem;
+    }
+
+    /* 4. Tarjetas de métricas en 1 sola columna */
+    .contenedor-tarjetas {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .tarjeta-metrica {
+        padding: 16px;
+    }
+
+    .valor-tarjeta {
+        font-size: 1.5rem;
+    }
+
+    /* 5. Encabezado de tabla y scroll horizontal limpio */
+    .encabezado-seccion {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+
+    .btn-nueva-tutoria {
+        text-align: center;
+    }
+
+    .tabla-falsa {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .fila-tabla {
+        min-width: 650px; /* Evita que las columnas se aplasten; permite deslizar con el dedo */
+    }
+}
+
+@media (max-width: 900px) {
+    html, body, .pantalla-dashboard, .contenido-principal, .zona-paneles {
+        height: auto !important;
+        max-height: none !important;
+        overflow: visible !important;
+    }
+
+    .zona-paneles {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 20px !important;
+    }
+
+    .contenedor-lista-tutores {
+        display: block !important;
+        width: 100% !important;
+        overflow-x: auto !important;
+    }
+}
