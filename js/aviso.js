@@ -1,7 +1,7 @@
 (function () {
   document.head.insertAdjacentHTML('beforeend', `<style>
     .aviso {
-      position: fixed; top: 24px; left: 50%; z-index: 2000;
+      position: fixed; top: 24px; left: 50%; z-index: 9999;
       display: flex; align-items: center; gap: 12px;
       width: max-content; max-width: calc(100vw - 48px);
       padding: 14px 18px;
@@ -25,7 +25,7 @@
 
     /* Estilos para modales de confirmación y entrada de datos */
     .aviso-overlay {
-      position: fixed; inset: 0; z-index: 2100;
+      position: fixed; inset: 0; z-index: 9999;
       display: grid; place-items: center; padding: 16px;
       background: rgba(17, 20, 45, 0.45);
       backdrop-filter: blur(2px);
