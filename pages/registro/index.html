@@ -85,6 +85,12 @@
 
 
           <div class="grupo-formulario">
+            <label for="foto-registro">Fotografía de perfil (opcional)</label>
+            <input type="file" id="foto-registro" accept="image/*">
+            <p class="texto-ayuda">Imagen JPG, PNG o WebP. Máximo 2 MB.</p>
+          </div>
+
+          <div class="grupo-formulario">
             <label for="contrasena-registro">Contraseña</label>
             <!-- Agregamos el evento oninput="verificarFortaleza(this.value)" -->
             <input type="password" id="contrasena-registro" placeholder="Crea una contraseña" required minlength="8" oninput="verificarFortaleza(this.value)">

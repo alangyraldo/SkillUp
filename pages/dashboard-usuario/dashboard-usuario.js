@@ -16,7 +16,9 @@ function iniciarPanel() {
 
   const nombre = sesion.nombre || sesion.correo;
   document.getElementById('usuario-nombre').textContent = nombre;
-  document.getElementById('usuario-avatar').textContent = nombre.charAt(0).toUpperCase();
+  const avatarInicial = document.getElementById('usuario-avatar');
+  if (sesion.foto) { avatarInicial.textContent = ''; avatarInicial.style.backgroundImage = `url(\"${sesion.foto}\")`; avatarInicial.style.backgroundSize = 'cover'; avatarInicial.style.backgroundPosition = 'center'; }
+  else avatarInicial.textContent = nombre.charAt(0).toUpperCase();
 
  /* function filaReserva(r) {
     return `
@@ -162,6 +164,7 @@ contenedor.addEventListener('click', async (e) => {
           <button type="button" class="cfg-cerrar" id="cfg-cerrar" aria-label="Cerrar">&times;</button>
         </div>
         ${campos.map(([n, t, tipo]) => `<label>${t}<input name="${n}" type="${tipo}"></label>`).join('')}
+        <label>Fotografía de perfil<input name="fotoPerfil" type="file" accept="image/*"></label>
         <p class="cfg-msg" id="cfg-msg"></p>
         <button type="submit" class="cfg-btn">Guardar cambios</button>
       </form>
@@ -235,7 +238,8 @@ contenedor.addEventListener('click', async (e) => {
           telefono,
           email: correo,
           contrasenaActual: claveActual || null,
-          contrasenaNueva: claveNueva || null
+          contrasenaNueva: claveNueva || null,
+          foto: f.fotoPerfil.files[0] ? await archivoADataUrl(f.fotoPerfil.files[0]) : undefined
         })
       });
 
@@ -246,7 +250,8 @@ contenedor.addEventListener('click', async (e) => {
         nombre: actualizado.nombre,
         apellido: actualizado.apellido,
         telefono: actualizado.telefono,
-        correo: actualizado.email
+        correo: actualizado.email,
+        foto: actualizado.foto || ses.foto || null
       }));
 
       const spanAdmin = document.getElementById('admin-correo');
@@ -256,7 +261,17 @@ contenedor.addEventListener('click', async (e) => {
       if (spanUsuario) spanUsuario.textContent = actualizado.nombre;
 
       const avatarUsuario = document.getElementById('usuario-avatar');
-      if (avatarUsuario) avatarUsuario.textContent = actualizado.nombre.charAt(0).toUpperCase();
+      if (avatarUsuario) {
+        if (actualizado.foto) {
+          avatarUsuario.textContent = '';
+          avatarUsuario.style.backgroundImage = `url("${actualizado.foto}")`;
+          avatarUsuario.style.backgroundSize = 'cover';
+          avatarUsuario.style.backgroundPosition = 'center';
+        } else {
+          avatarUsuario.style.backgroundImage = '';
+          avatarUsuario.textContent = actualizado.nombre.charAt(0).toUpperCase();
+        }
+      }
 
       msg.className = 'cfg-msg ok';
       f.claveActual.value = f.claveNueva.value = f.claveConfirmar.value = '';
@@ -300,6 +315,7 @@ contenedor.addEventListener('click', async (e) => {
           <button type="button" class="cfg-cerrar" id="cfg-cerrar" aria-label="Cerrar">&times;</button>
         </div>
         ${campos.map(([n, t, tipo]) => `<label>${t}<input name="${n}" type="${tipo}"></label>`).join('')}
+        <label>Fotografía de perfil<input name="fotoPerfil" type="file" accept="image/*"></label>
         <p class="cfg-msg" id="cfg-msg"></p>
         <button type="submit" class="cfg-btn">Guardar cambios</button>
       </form>

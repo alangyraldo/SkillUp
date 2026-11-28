@@ -8,6 +8,7 @@ const listaTutorias = document.getElementById("listaTutorias");
 let tutorias = JSON.parse(localStorage.getItem("tutorias")) || [];
 let idTutoriaEnEdicion = null;
 let tutorSeleccionadoActual = null; // Guardará el objeto del tutor actual
+let fotoTutoriaEnEdicion = null;
 
 // Variables de Paginación para Tutorías en Admin (Máximo 5 por página)
 const POR_PAGINA_ADMIN_TUTORIAS = 5;
@@ -34,6 +35,9 @@ function cerrarVentana() {
   formulario.reset();
   idTutoriaEnEdicion = null;
   tutorSeleccionadoActual = null;
+  fotoTutoriaEnEdicion = null;
+  const campoFotoTutoria = document.getElementById("foto-tutoria");
+  if (campoFotoTutoria) campoFotoTutoria.value = "";
 
   // Restablecer estados bloqueados de los selects dependientes
   document.getElementById("tutor").innerHTML = '<option value="">Selecciona una materia primero</option>';
@@ -76,7 +80,7 @@ function cargarSelectMaterias() {
 
   const tutoresGuardados = obtenerTutoresRegistrados();
   const materiasUnicas = [...new Set(tutoresGuardados.map(t => t.materia))];
-  
+
   selectMateria.innerHTML = '<option value="">Seleccionar materia</option>';
   materiasUnicas.forEach(materia => {
     const option = document.createElement("option");
@@ -115,7 +119,7 @@ document.getElementById("materia").addEventListener("change", (e) => {
 
   const tutoresGuardados = obtenerTutoresRegistrados();
   const tutoresFiltrados = tutoresGuardados.filter(t => t.materia.toLowerCase() === materiaSeleccionada.toLowerCase());
-  
+
   tutoresFiltrados.forEach((t) => {
     const option = document.createElement("option");
     option.value = t.nombre;
@@ -263,7 +267,7 @@ async function sincronizarTutoriasConBackend() {
         modalidad: t.modalidad || "Virtual",
         precio: Number(t.precio || 0),
         cupos: t.cupos ?? 0,
-        foto: tutorObj ? tutorObj.foto : ""
+        foto: t.foto || previa.foto || ""
       };
     });
 
@@ -279,6 +283,7 @@ async function sincronizarTutoriasConBackend() {
 // Preparar edición al hacer clic en el botón de editar
 function prepararEdicion(tutoria) {
   idTutoriaEnEdicion = tutoria.id;
+  fotoTutoriaEnEdicion = tutoria.foto || null;
 
   const modalTitulo = modal.querySelector(".modal-header h2");
   if (modalTitulo) modalTitulo.textContent = "Editar tutoría";
@@ -341,7 +346,17 @@ async function capturarTutoria(evento) {
       return;
     }
 
+    const archivoFotoTutoria =
+      document.getElementById("foto-tutoria")?.files?.[0];
+
+    let fotoTutoria = fotoTutoriaEnEdicion || null;
+
+    if (archivoFotoTutoria) {
+      fotoTutoria = await archivoADataUrl(archivoFotoTutoria);
+    }
+
     const payload = {
+      foto: fotoTutoria,
       idPerfilTutor: Number(tutorSeleccionadoActual.id),
       idMateria: Number(materiaObj.id),
       titulo: titulo,
@@ -474,7 +489,7 @@ function eliminarTutoria(id) {
 // Función para crear la paginación visual (1, 2, 3...) de Tutorías en el Admin
 function crearPaginacionAdminTutorias(totalPaginas) {
   let contenedorPaginacionAdmin = document.getElementById("paginacionAdminTutorias");
-  
+
   if (!contenedorPaginacionAdmin) {
     contenedorPaginacionAdmin = document.createElement("div");
     contenedorPaginacionAdmin.id = "paginacionAdminTutorias";
@@ -492,9 +507,9 @@ function crearPaginacionAdminTutorias(totalPaginas) {
     b.textContent = texto;
     if (activo) b.classList.add("activo");
     b.disabled = deshabilitado;
-    b.addEventListener("click", () => { 
-      paginaActualAdminTutorias = pagina; 
-      mostrarTutorias(); 
+    b.addEventListener("click", () => {
+      paginaActualAdminTutorias = pagina;
+      mostrarTutorias();
     });
     return b;
   };
@@ -534,9 +549,34 @@ function mostrarTutorias() {
     const tarjeta = document.createElement("div");
     tarjeta.className = "tutoria-card";
 
+    /*const thumbnail = document.createElement("div");
+    thumbnail.className = "tutoria-thumb";
+    thumbnail.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>`;*/
+
     const thumbnail = document.createElement("div");
     thumbnail.className = "tutoria-thumb";
-    thumbnail.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>`;
+
+    if (tutoria.foto) {
+      const imagen = document.createElement("img");
+
+      imagen.src = tutoria.foto;
+      imagen.alt = `Fotografía de ${tutoria.titulo}`;
+      imagen.className = "tutoria-thumb__imagen";
+
+      thumbnail.appendChild(imagen);
+    } else {
+      thumbnail.innerHTML = `
+        <svg width="18" height="18"
+             viewBox="0 0 24 24"
+             fill="none"
+             stroke="currentColor"
+             stroke-width="2">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+        </svg>
+    `;
+    }
+
 
     const titulo = document.createElement("span");
     titulo.className = "tutoria-titulo";

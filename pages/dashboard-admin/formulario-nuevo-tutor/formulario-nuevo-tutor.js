@@ -22,22 +22,48 @@ let idTutorEnEdicion = null;
 let cacheMateriasBackend = [];
 
 async function cargarMateriasEnSelect() {
+  const selectMateria = document.getElementById(
+    'campo-seleccion-materia-tutor'
+  );
+
+  if (!selectMateria) return;
+
+  // Limpiar las opciones antiguas del HTML
+  selectMateria.innerHTML = `
+        <option value="">Cargando materias...</option>
+    `;
+
   try {
     const materias = await apiRequest('/materias');
-    cacheMateriasBackend = Array.isArray(materias) ? materias : [];
-    const selectMateria = document.getElementById('campo-seleccion-materia-tutor');
-    if (selectMateria && cacheMateriasBackend.length > 0) {
-      selectMateria.innerHTML = '<option value="">Selecciona una materia</option>';
-      cacheMateriasBackend.forEach((m) => {
-        const opt = document.createElement('option');
-        opt.value = m.nombre; // Mantenemos el nombre como value para no romper editar/pintar
-        opt.dataset.id = m.id; // Guardamos el ID real de MySQL en data-id
-        opt.textContent = m.nombre;
-        selectMateria.appendChild(opt);
-      });
+
+    if (!Array.isArray(materias) || materias.length === 0) {
+      throw new Error('No hay materias registradas en MySQL.');
     }
+
+    cacheMateriasBackend = materias;
+
+    selectMateria.innerHTML = `
+            <option value="">Selecciona una materia</option>
+        `;
+
+    materias.forEach(materia => {
+      const opcion = document.createElement('option');
+
+      opcion.value = materia.nombre;
+      opcion.dataset.id = materia.id;
+      opcion.textContent = materia.nombre;
+
+      selectMateria.appendChild(opcion);
+    });
+
   } catch (error) {
-    console.warn('No se pudieron cargar materias del backend:', error);
+    console.error('Error cargando materias:', error);
+
+    cacheMateriasBackend = [];
+
+    selectMateria.innerHTML = `
+            <option value="">No se pudieron cargar las materias</option>
+        `;
   }
 }
 // Conexion base de datos y crear materia
@@ -104,7 +130,7 @@ async function sincronizarTutoresConBackend() {
         precio: t.precio || 0,
         experiencia: parseInt(t.experiencia) || 0,
         modalidad: t.modalidad || 'Virtual',
-        foto: t.foto || `https://ui-avatars.com{encodeURIComponent(nombreCompleto)}&background=random`,
+        foto: t.foto || `https://ui-avatars.com/api/?name=${encodeURIComponent(nombreCompleto)}&background=random`,
         rating: previo.rating || 4.8,
         resenas: previo.resenas || 0,
         idiomas: previo.idiomas || ['Español'],
@@ -131,7 +157,7 @@ function cerrarModalNuevoTutor() {
   elementoFormularioRegistroTutor.reset();
   cadenaFotoPerfilEnBase64 = null;
   idTutorEnEdicion = null;
-  
+
   const tituloModal = elementoModalSuperposicion.querySelector('.modal-titulo-nuevo-tutor');
   if (tituloModal) tituloModal.textContent = "Nuevo tutor";
 
@@ -154,16 +180,16 @@ if (elementoBotonCancelarModalTutor) {
   elementoBotonCancelarModalTutor.addEventListener('click', cerrarModalNuevoTutor);
 }
 
-elementoCampoSubidaFotoTutor.addEventListener('change', (evento) => {
+elementoCampoSubidaFotoTutor.addEventListener('change', async (evento) => {
   const archivoSeleccionado = evento.target.files[0];
-  if (archivoSeleccionado) {
-    const lectorDeArchivos = new FileReader();
-    lectorDeArchivos.onload = (eventoLectura) => {
-      cadenaFotoPerfilEnBase64 = eventoLectura.target.result;
-      elementoVistaPreviaFotoTutor.style.backgroundImage = `url('${cadenaFotoPerfilEnBase64}')`;
-      elementoVistaPreviaFotoTutor.innerHTML = '';
-    };
-    lectorDeArchivos.readAsDataURL(archivoSeleccionado);
+  if (!archivoSeleccionado) return;
+  try {
+    cadenaFotoPerfilEnBase64 = await archivoADataUrl(archivoSeleccionado);
+    elementoVistaPreviaFotoTutor.style.backgroundImage = `url('${cadenaFotoPerfilEnBase64}')`;
+    elementoVistaPreviaFotoTutor.innerHTML = '';
+  } catch (error) {
+    evento.target.value = '';
+    mostrarAviso(error.message, 'error');
   }
 });
 
@@ -206,7 +232,7 @@ function guardarListaTutoresEnLocalStorage(listaTutores) {
   localStorage.setItem(CLAVE_LOCAL_STORAGE_TUTORES, JSON.stringify(listaTutores));
 }
 
-window.prepararEdicionTutor = function(tutorId) {
+window.prepararEdicionTutor = function (tutorId) {
   const listaTutores = obtenerListaTutoresDeLocalStorage();
   const tutor = listaTutores.find(t => String(t.id) === String(tutorId));
 
@@ -249,8 +275,8 @@ window.eliminarTutor = function(tutorId) {
 
 */
 
-window.eliminarTutor = async function(tutorId) {
-  if (!(await confirmarAviso("¿Eliminar a este tutor?", "Esta acción no se puede deshacer.", "Eliminar"))) return;if (!confirm("¿Estás seguro de que deseas eliminar este tutor?")) return;
+window.eliminarTutor = async function (tutorId) {
+  if (!confirm("¿Estás seguro de que deseas eliminar este tutor?")) return;
 
   try {
     await apiRequest(`/tutores/${tutorId}`, { method: 'DELETE' });
@@ -271,7 +297,7 @@ elementoFormularioRegistroTutor.addEventListener('submit', async (evento) => {
   const valorAnosExperiencia = parseInt(document.getElementById('campo-entrada-experiencia-tutor').value) || 0;
   const valorModalidadClase = document.getElementById('campo-seleccion-modalidad-tutor').value;
 
-  const valorRutaImagenFoto = cadenaFotoPerfilEnBase64 || `https://ui-avatars.com/api/?name=${encodeURIComponent(valorNombreCompleto)}&background=random`;
+  const valorRutaImagenFoto = cadenaFotoPerfilEnBase64 || null;
 
   const textoIdiomasInput = document.getElementById('campo-entrada-idiomas-tutor').value;
   const arregloIdiomas = textoIdiomasInput ? textoIdiomasInput.split(',').map(idioma => idioma.trim()).filter(Boolean) : ["Español"];
@@ -319,7 +345,7 @@ elementoFormularioRegistroTutor.addEventListener('submit', async (evento) => {
       }
       return t;
     });
-     mostrarAviso(`Tutor ${valorNombreCompleto} actualizado con éxito.`);
+    mostrarAviso(`Tutor ${valorNombreCompleto} actualizado con éxito.`);
   } else {
     const objetoNuevoTutorRegistrado = {
       id: identificadorUnicoTutor,
@@ -339,11 +365,11 @@ elementoFormularioRegistroTutor.addEventListener('submit', async (evento) => {
     };
 
     listaActualTutores.push(objetoNuevoTutorRegistrado);
-     mostrarAviso(`Tutor ${objetoNuevoTutorRegistrado.nombre} añadido con éxito.`);
+    mostrarAviso(`Tutor ${objetoNuevoTutorRegistrado.nombre} añadido con éxito.`);
   }
-// nuevo
+  // nuevo
 
-const materiaObj = cacheMateriasBackend.find(
+  const materiaObj = cacheMateriasBackend.find(
     (m) => m.nombre.toLowerCase() === valorMateriaEnsenar.toLowerCase()
   );
 
@@ -352,12 +378,10 @@ const materiaObj = cacheMateriasBackend.find(
     return;
   }
 
-const partesNombre = valorNombreCompleto.split(/\s+/);
-const nombre = partesNombre[0];
-const apellido = partesNombre.slice(1).join(" ") || "Tutor";
-  const fotoParaBD = valorRutaImagenFoto.length < 250
-    ? valorRutaImagenFoto
-    : `https://ui-avatars.com{encodeURIComponent(valorNombreCompleto)}&background=random`;
+  const partesNombre = valorNombreCompleto.split(/\s+/);
+  const nombre = partesNombre[0];
+  const apellido = partesNombre.slice(1).join(" ") || "Tutor";
+  const fotoParaBD = valorRutaImagenFoto;
 
   try {
     if (idTutorEnEdicion) {
@@ -365,7 +389,7 @@ const apellido = partesNombre.slice(1).join(" ") || "Tutor";
       if (tutorActual && tutorActual.usuarioId) {
         await apiRequest(`/usuarios/${tutorActual.usuarioId}`, {
           method: 'PUT',
-          body: JSON.stringify({ nombre, apellido, telefono: "" })
+          body: JSON.stringify({ nombre, apellido, telefono: "", foto: fotoParaBD })
         });
       }
       await apiRequest(`/tutores/${idTutorEnEdicion}`, {
@@ -390,7 +414,8 @@ const apellido = partesNombre.slice(1).join(" ") || "Tutor";
           email: `${slug}.${Date.now()}@skillup.com`,
           contrasena: 'TutorSkillUp123!',
           tipoUsuario: 'ADMIN_TUTOR',
-          telefono: ""
+          telefono: "",
+          foto: fotoParaBD
         })
       });
 
@@ -416,7 +441,7 @@ const apellido = partesNombre.slice(1).join(" ") || "Tutor";
     return;
   }
 
-// hasta aquí 
+  // hasta aquí 
 
   guardarListaTutoresEnLocalStorage(listaActualTutores);
   window.dispatchEvent(new CustomEvent("tutorias:cambio"));
@@ -449,9 +474,9 @@ function crearPaginacionAdminTutores(totalPaginas) {
     b.textContent = texto;
     if (activo) b.classList.add("activo");
     b.disabled = deshabilitado;
-    b.addEventListener("click", () => { 
-      paginaActualAdminTutores = pagina; 
-      mostrarTutores(); 
+    b.addEventListener("click", () => {
+      paginaActualAdminTutores = pagina;
+      mostrarTutores();
     });
     return b;
   };
@@ -566,7 +591,7 @@ window.addEventListener("storage", (e) => {
   if (e.key === "skillup_tutores") mostrarTutores();
 
   */
- document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener("DOMContentLoaded", async () => {
   await cargarMateriasEnSelect();
   await sincronizarTutoresConBackend();
 });

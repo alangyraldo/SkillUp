@@ -59,13 +59,23 @@ function seleccionarRol(rol, elementoBoton) {
 async function manejarRegistro(evento) {
   evento.preventDefault();
 
+  let foto = null;
+  try {
+    const archivoFoto = document.getElementById('foto-registro')?.files?.[0];
+    foto = await archivoADataUrl(archivoFoto);
+  } catch (error) {
+    mostrarAviso(error.message, 'error');
+    return;
+  }
+
   const resultado = await registrarUsuario({
     nombre: document.getElementById('nombre-registro').value.trim(),
     apellido: document.getElementById('apellido-registro').value.trim(),
     correo: document.getElementById('correo-registro').value,
     telefono: document.getElementById("telefono-registro").value,
     clave: document.getElementById('contrasena-registro').value,
-    intencion: rolRegistro
+    intencion: rolRegistro,
+    foto
   });
 
     if (!resultado.ok) {
