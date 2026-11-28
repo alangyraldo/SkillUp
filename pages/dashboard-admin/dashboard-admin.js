@@ -285,25 +285,86 @@ function pintarEstudiantes() {
     const fila = document.createElement('div');
     fila.className = 'fila-tabla';
 
-    [`${u.nombre} ${u.apellido}`, u.email, u.telefono || '—'].forEach((texto) => {
-      const celda = document.createElement('div');
-      celda.className = 'columna';
-      celda.textContent = texto;
-      fila.appendChild(celda);
-    });
+    // Nombre y fotografía
+    const celdaNombre = document.createElement('div');
+    celdaNombre.className = 'columna estudiante-identidad';
+
+    const foto = document.createElement('img');
+    foto.className = 'foto-estudiante-admin';
+    foto.alt = `Foto de ${u.nombre} ${u.apellido}`;
+
+    if (u.foto) {
+      foto.src = u.foto;
+    } else {
+      foto.src = '../../assets/img/avatar-default.png';
+    }
+
+    const nombre = document.createElement('span');
+    nombre.textContent = `${u.nombre} ${u.apellido}`;
+
+    celdaNombre.appendChild(foto);
+    celdaNombre.appendChild(nombre);
+    fila.appendChild(celdaNombre);
+
+    // Correo
+    const celdaCorreo = document.createElement('div');
+    celdaCorreo.className = 'columna';
+    celdaCorreo.textContent = u.email;
+    fila.appendChild(celdaCorreo);
+
+    // Teléfono
+    const celdaTelefono = document.createElement('div');
+    celdaTelefono.className = 'columna';
+    celdaTelefono.textContent = u.telefono || '—';
+    fila.appendChild(celdaTelefono);
+
 
     const celdaAccion = document.createElement('div');
     celdaAccion.className = 'columna acciones-estudiante';
 
-    const botonBorrar = document.createElement('button');
-    botonBorrar.type = 'button';
-    botonBorrar.className = 'boton-eliminar-estudiante';
-    botonBorrar.title = 'Eliminar estudiante';
-    botonBorrar.setAttribute('aria-label', `Eliminar a ${u.nombre} ${u.apellido}`);
-    botonBorrar.textContent = 'Eliminar';
+    const acciones = document.createElement('div');
+    acciones.className = 'tutoria-acciones';
 
-    botonBorrar.addEventListener('click', async () => {
-      if (await confirmarAviso(`¿Eliminar a ${u.nombre} ${u.apellido}?`, 'Esta acción no se puede deshacer.', 'Eliminar')) {
+    // Botón VER
+    const btnVer = document.createElement('button');
+    btnVer.type = 'button';
+    btnVer.className = 'btn-accion btn-ver';
+    btnVer.title = 'Ver estudiante';
+    btnVer.setAttribute('aria-label', `Ver a ${u.nombre} ${u.apellido}`);
+    btnVer.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>`;
+
+    btnVer.addEventListener('click', () => {
+      // Próximo paso: abrir detalle del estudiante
+      alert(`Estudiante: ${u.nombre} ${u.apellido}\nCorreo: ${u.email}\nTeléfono: ${u.telefono || 'No registrado'}`);
+    });
+
+    // Botón EDITAR
+    const btnEditar = document.createElement('button');
+    btnEditar.type = 'button';
+    btnEditar.className = 'btn-accion btn-editar';
+    btnEditar.title = 'Editar estudiante';
+    btnEditar.setAttribute('aria-label', `Editar a ${u.nombre} ${u.apellido}`);
+    btnEditar.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>`;
+
+    btnEditar.addEventListener('click', () => {
+      // Próximo paso: abrir formulario de edición
+      console.log('Editar estudiante:', u.id);
+    });
+
+    // Botón ELIMINAR
+    const btnEliminar = document.createElement('button');
+    btnEliminar.type = 'button';
+    btnEliminar.className = 'btn-accion btn-eliminar';
+    btnEliminar.title = 'Eliminar estudiante';
+    btnEliminar.setAttribute('aria-label', `Eliminar a ${u.nombre} ${u.apellido}`);
+    btnEliminar.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>`;
+
+    btnEliminar.addEventListener('click', async () => {
+      if (await confirmarAviso(
+        `¿Eliminar a ${u.nombre} ${u.apellido}?`,
+        'Esta acción no se puede deshacer.',
+        'Eliminar'
+      )) {
         try {
           await apiRequest(`/usuarios/${u.id}`, { method: 'DELETE' });
           await refrescarDatosAdmin();
@@ -313,7 +374,8 @@ function pintarEstudiantes() {
       }
     });
 
-    celdaAccion.appendChild(botonBorrar);
+    acciones.append(btnVer, btnEditar, btnEliminar);
+    celdaAccion.appendChild(acciones);
     fila.appendChild(celdaAccion);
     contenedor.appendChild(fila);
   });
@@ -397,12 +459,12 @@ window.addEventListener('tutorias:cambio', actualizarMetricasTutores);
 
     const errorValidacion =
       !nombre ? 'El nombre es obligatorio.' :
-      !apellido ? 'El apellido es obligatorio.' :
-      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo) ? 'Ingresa un correo válido.' :
-      telefono && telefono.length < 7 ? 'Ingresa un teléfono válido.' :
-      claveNueva && !claveActual ? 'Ingresa tu contraseña actual para cambiarla.' :
-      claveNueva && claveNueva.length < 6 ? 'La nueva contraseña debe tener mínimo 6 caracteres.' :
-      claveNueva !== claveConfirmar ? 'Las contraseñas nuevas no coinciden.' : '';
+        !apellido ? 'El apellido es obligatorio.' :
+          !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo) ? 'Ingresa un correo válido.' :
+            telefono && telefono.length < 7 ? 'Ingresa un teléfono válido.' :
+              claveNueva && !claveActual ? 'Ingresa tu contraseña actual para cambiarla.' :
+                claveNueva && claveNueva.length < 6 ? 'La nueva contraseña debe tener mínimo 6 caracteres.' :
+                  claveNueva !== claveConfirmar ? 'Las contraseñas nuevas no coinciden.' : '';
 
     if (errorValidacion) {
       msg.className = 'cfg-msg error';

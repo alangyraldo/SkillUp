@@ -43,15 +43,15 @@ body {
 
 .bloque-logo {
     display: flex;
-    align-items: center; 
-    gap: 12px; 
+    align-items: center;
+    gap: 12px;
     padding: 15px 5px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 
 .imagen-logo {
-    width: px; 
+    width: px;
     height: 100px;
     object-fit: contain;
 }
@@ -212,10 +212,10 @@ body {
     justify-content: center;
 }
 
-.contenedor_listas{
+.contenedor_listas {
     display: flex;
     flex-direction: column;
-    gap:30px;
+    gap: 30px;
 }
 
 /* --- TABLA MAQUETADA CON DIVS --- */
@@ -259,11 +259,12 @@ body {
 }
 
 .btn-nueva-tutoria:hover {
-    background-color: var(--violeta-intenso); /* Cambia al violeta intenso en hover */
+    background-color: var(--violeta-intenso);
+    /* Cambia al violeta intenso en hover */
 }
 
 .btn-nueva-tutoria:active {
-    scale:0.98;
+    scale: 0.98;
 }
 
 /* Estilos de la tabla falsa */
@@ -271,13 +272,14 @@ body {
     display: flex;
     flex-direction: column;
     width: 100%;
-    overflow-x: auto; /* Permite scroll horizontal si la pantalla es muy chica */
+    overflow-x: auto;
+    /* Permite scroll horizontal si la pantalla es muy chica */
 }
 
 .fila-tabla {
     display: grid;
     /* Sincronizado: 2.5fr (0.5 + 2) une visualmente el icono y el texto bajo 'TÍTULO' */
-    grid-template-columns: 2.5fr 2fr 1.3fr 1.4fr 1fr 1fr; 
+    grid-template-columns: 2.5fr 2fr 1.3fr 1.4fr 1fr 1fr;
     gap: 15px;
     padding: 16px 20px;
     align-items: center;
@@ -297,9 +299,11 @@ body {
 /* Forzar que cada dato se quede en su celda y no salte hacia abajo */
 .columna {
     display: block;
-    white-space: nowrap; /* Prohíbe romper la línea */
+    white-space: nowrap;
+    /* Prohíbe romper la línea */
     overflow: hidden;
-    text-overflow: ellipsis; /* Agrega puntos suspensivos si el texto es gigante */
+    text-overflow: ellipsis;
+    /* Agrega puntos suspensivos si el texto es gigante */
 }
 
 /* Encabezados de columnas */
@@ -321,7 +325,8 @@ body {
 }
 
 .cuerpo-tabla:hover {
-    background-color: var(--lavanda-claro); /* Fondo sutil al posar el mouse */
+    background-color: var(--lavanda-claro);
+    /* Fondo sutil al posar el mouse */
 }
 
 .texto-resaltado {
@@ -337,9 +342,20 @@ body {
     border-radius: 6px;
 }
 
-.estado-activo { background-color: #dcfce7; color: #15803d; }
-.estado-pendiente { background-color: #fef3c7; color: #b45309; }
-.badge-estado.badge-agotado { background: #fde8e8; color: #c62828; }
+.estado-activo {
+    background-color: #dcfce7;
+    color: #15803d;
+}
+
+.estado-pendiente {
+    background-color: #fef3c7;
+    color: #b45309;
+}
+
+.badge-estado.badge-agotado {
+    background: #fde8e8;
+    color: #c62828;
+}
 
 .barra-perfil {
     display: flex;
@@ -348,6 +364,7 @@ body {
     padding: 16px 32px;
     min-height: 72px;
 }
+
 .bloque-usuario {
     display: flex;
     align-items: center;
@@ -357,40 +374,41 @@ body {
 
 /* ===== Lista de estudiantes ===== */
 #seccion-estudiantes .fila-tabla:not(.encabezado-tabla) {
-  align-items: center;
-  padding: 14px 12px;
-  margin-bottom: 12px;
-  border: 1px solid #e5e7eb;
-  border-radius: 16px;
-  background: #fff;
+    align-items: center;
+    padding: 14px 12px;
+    margin-bottom: 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    background: #fff;
 }
 
 #seccion-estudiantes .columna {
-  font-size: 0.95rem;
-  color: #1f2937;
+    font-size: 0.95rem;
+    color: #1f2937;
 }
 
 .boton-eliminar-estudiante {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 8px;
-  border: none;
-  border-radius: 10px;
-  background: transparent;
-  color: #ef4444;
-  cursor: pointer;
-  transition: background 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    border: none;
+    border-radius: 10px;
+    background: transparent;
+    color: #ef4444;
+    cursor: pointer;
+    transition: background 0.2s ease;
 }
 
 .boton-eliminar-estudiante:hover {
-  background: #fee2e2;
+    background: #fee2e2;
 }
 
 .boton-eliminar-estudiante svg {
-  width: 20px;
-  height: 20px;
+    width: 20px;
+    height: 20px;
 }
+
 /* Acciones de los estudiantes */
 .acciones-estudiante {
     display: flex;
@@ -420,38 +438,133 @@ body {
 /* Boton configuraciones */
 
 .cfg-overlay {
-    position: fixed; inset: 0;
+    position: fixed;
+    inset: 0;
     background: rgba(17, 20, 45, 0.55);
     display: none;
-    padding: 20px; z-index: 1000;
+    padding: 20px;
+    z-index: 1000;
     overflow-y: auto;
 }
-.cfg-overlay.abierto { display: flex; }
+
+.cfg-overlay.abierto {
+    display: flex;
+}
 
 .cfg-modal {
-    background: #fff; width: 100%; max-width: 480px;
+    background: #fff;
+    width: 100%;
+    max-width: 480px;
     margin: auto;
-    border-radius: 16px; padding: 28px;
-    display: grid; gap: 12px;
+    border-radius: 16px;
+    padding: 28px;
+    display: grid;
+    gap: 12px;
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
 }
-.cfg-encabezado { display: flex; justify-content: space-between; align-items: center; }
-.cfg-encabezado h2 { margin: 0; font-size: 1.2rem; color: #11142D; }
-.cfg-cerrar { background: none; border: none; font-size: 1.6rem; cursor: pointer; color: #8B7CFF; }
 
-.cfg-modal label { display: flex; flex-direction: column; gap: 5px; font-size: 0.78rem; font-weight: 600; color: #8B7CFF; }
-.cfg-modal input {
-    padding: 10px 12px; border: 1px solid #e3e0f5; border-radius: 10px;
-    font-size: 0.95rem; font-family: inherit; outline: none;
+.cfg-encabezado {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
-.cfg-modal input:focus { border-color: #5B2EFF; box-shadow: 0 0 0 3px rgba(91, 46, 255, 0.12); }
+
+.cfg-encabezado h2 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #11142D;
+}
+
+.cfg-cerrar {
+    background: none;
+    border: none;
+    font-size: 1.6rem;
+    cursor: pointer;
+    color: #8B7CFF;
+}
+
+.cfg-modal label {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #8B7CFF;
+}
+
+.cfg-modal input {
+    padding: 10px 12px;
+    border: 1px solid #e3e0f5;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    outline: none;
+}
+
+.cfg-modal input:focus {
+    border-color: #5B2EFF;
+    box-shadow: 0 0 0 3px rgba(91, 46, 255, 0.12);
+}
 
 .cfg-btn {
-    background: #5B2EFF; color: #fff; border: none; padding: 10px 18px;
-    border-radius: 10px; font-weight: 600; font-family: inherit;
-    cursor: pointer; justify-self: start;
+    background: #5B2EFF;
+    color: #fff;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    justify-self: start;
 }
-.cfg-btn:hover { background: #4A20E8; }
-.cfg-msg { margin: 0; font-size: 0.85rem; min-height: 1.2em; }
-.cfg-msg.ok { color: #1a9d57; }
-.cfg-msg.error { color: #ff4d4d; }
+
+.cfg-btn:hover {
+    background: #4A20E8;
+}
+
+.cfg-msg {
+    margin: 0;
+    font-size: 0.85rem;
+    min-height: 1.2em;
+}
+
+.cfg-msg.ok {
+    color: #1a9d57;
+}
+
+.cfg-msg.error {
+    color: #ff4d4d;
+}
+
+/* Identidad del estudiante en el dashboard */
+.estudiante-identidad {
+    display: flex !important;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.foto-estudiante-admin {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #e9e5ff;
+    background-color: #f3f0ff;
+}
+
+.estudiante-identidad span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.acciones-estudiante {
+    display: flex;
+    align-items: center;
+}
+
+.acciones-estudiante .tutoria-acciones {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
