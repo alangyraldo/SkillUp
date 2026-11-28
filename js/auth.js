@@ -98,7 +98,7 @@ function eliminarUsuario(correo) {
 const CLAVE_SESION = "sesion";
 
 // Registro de usuario en MySQL (POST /api/auth/registro)
-async function registrarUsuario({ nombre, apellido, correo, telefono, clave, intencion }) {
+async function registrarUsuario({ nombre, apellido, correo, telefono, clave, intencion, foto }) {
   try {
     const tipoUsuarioJava = intencion !== "aprender" ? "ADMIN_TUTOR" : "ESTUDIANTE";
 
@@ -110,7 +110,8 @@ async function registrarUsuario({ nombre, apellido, correo, telefono, clave, int
         email: correo.trim().toLowerCase(),
         contrasena: clave,
         tipoUsuario: tipoUsuarioJava,
-        telefono: (telefono || "").replace(/\D/g, "")
+        telefono: (telefono || "").replace(/\D/g, ""),
+        foto: foto || null
       })
     });
 
@@ -137,6 +138,7 @@ async function iniciarSesion(correo, clave) {
       apellido: datosJava.apellido,
       correo: datosJava.email,
       telefono: datosJava.telefono,
+      foto: datosJava.foto || null,
       tipoUsuario: datosJava.tipoUsuario,
       token: datosJava.token,
       rol: datosJava.tipoUsuario === "ADMIN_TUTOR" ? "admin" : "usuario",
@@ -173,4 +175,29 @@ function rutaDashboard(rol) {
 
 function cerrarSesion() {
   localStorage.removeItem(CLAVE_SESION);
+}
+
+// Convierte una imagen seleccionada en Data URL para persistirla en MySQL.
+function archivoADataUrl(archivo) {
+  return new Promise((resolve, reject) => {
+    if (!archivo) return resolve(null);
+    if (!archivo.type || !archivo.type.startsWith('image/')) return reject(new Error('Selecciona un archivo de imagen válido.'));
+    if (archivo.size > 2 * 1024 * 1024) return reject(new Error('La imagen original no debe superar 2 MB.'));
+    const lector = new FileReader();
+    lector.onerror = () => reject(new Error('No se pudo leer la imagen seleccionada.'));
+    lector.onload = () => {
+      const imagen = new Image();
+      imagen.onerror = () => reject(new Error('El archivo seleccionado no es una imagen válida.'));
+      imagen.onload = () => {
+        const escala = Math.min(1, 900 / Math.max(imagen.width, imagen.height));
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.max(1, Math.round(imagen.width * escala));
+        canvas.height = Math.max(1, Math.round(imagen.height * escala));
+        canvas.getContext('2d').drawImage(imagen, 0, 0, canvas.width, canvas.height);
+        resolve(canvas.toDataURL('image/jpeg', 0.82));
+      };
+      imagen.src = lector.result;
+    };
+    lector.readAsDataURL(archivo);
+  });
 }

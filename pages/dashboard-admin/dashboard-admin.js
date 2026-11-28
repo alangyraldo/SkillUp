@@ -1,3 +1,18 @@
+// Hidrata el avatar del administrador desde la sesión persistida.
+(function cargarAvatarAdministrador() {
+  const ses = typeof obtenerSesion === 'function' ? obtenerSesion() : null;
+  const avatar = document.getElementById('usuario-avatar');
+  if (!avatar || !ses) return;
+  if (ses.foto) {
+    avatar.textContent = '';
+    avatar.style.backgroundImage = `url("${ses.foto}")`;
+    avatar.style.backgroundSize = 'cover';
+    avatar.style.backgroundPosition = 'center';
+  } else {
+    avatar.textContent = (ses.nombre || 'A').charAt(0).toUpperCase();
+  }
+})();
+
 // Protege la vista: si no es admin, vuelve al login
 
 /*
@@ -131,6 +146,7 @@ document.addEventListener("DOMContentLoaded", actualizarMetricasTutores);
           <button type="button" class="cfg-cerrar" id="cfg-cerrar" aria-label="Cerrar">&times;</button>
         </div>
         ${campos.map(([n, t, tipo]) => `<label>${t}<input name="${n}" type="${tipo}"></label>`).join('')}
+        <label>Fotografía de perfil<input name="fotoPerfil" type="file" accept="image/*"></label>
         <p class="cfg-msg" id="cfg-msg"></p>
         <button type="submit" class="cfg-btn">Guardar cambios</button>
       </form>
@@ -329,6 +345,7 @@ window.addEventListener('tutorias:cambio', actualizarMetricasTutores);
           <button type="button" class="cfg-cerrar" id="cfg-cerrar" aria-label="Cerrar">&times;</button>
         </div>
         ${campos.map(([n, t, tipo]) => `<label>${t}<input name="${n}" type="${tipo}"></label>`).join('')}
+        <label>Fotografía de perfil<input name="fotoPerfil" type="file" accept="image/*"></label>
         <p class="cfg-msg" id="cfg-msg"></p>
         <button type="submit" class="cfg-btn">Guardar cambios</button>
       </form>
@@ -402,7 +419,8 @@ window.addEventListener('tutorias:cambio', actualizarMetricasTutores);
           telefono,
           email: correo,
           contrasenaActual: claveActual || null,
-          contrasenaNueva: claveNueva || null
+          contrasenaNueva: claveNueva || null,
+          foto: f.fotoPerfil.files[0] ? await archivoADataUrl(f.fotoPerfil.files[0]) : undefined
         })
       });
 
@@ -413,7 +431,8 @@ window.addEventListener('tutorias:cambio', actualizarMetricasTutores);
         nombre: actualizado.nombre,
         apellido: actualizado.apellido,
         telefono: actualizado.telefono,
-        correo: actualizado.email
+        correo: actualizado.email,
+        foto: actualizado.foto || ses.foto || null
       }));
 
       const spanAdmin = document.getElementById('admin-correo');
@@ -423,7 +442,17 @@ window.addEventListener('tutorias:cambio', actualizarMetricasTutores);
       if (spanUsuario) spanUsuario.textContent = actualizado.nombre;
 
       const avatarUsuario = document.getElementById('usuario-avatar');
-      if (avatarUsuario) avatarUsuario.textContent = actualizado.nombre.charAt(0).toUpperCase();
+      if (avatarUsuario) {
+        if (actualizado.foto) {
+          avatarUsuario.textContent = '';
+          avatarUsuario.style.backgroundImage = `url("${actualizado.foto}")`;
+          avatarUsuario.style.backgroundSize = 'cover';
+          avatarUsuario.style.backgroundPosition = 'center';
+        } else {
+          avatarUsuario.style.backgroundImage = '';
+          avatarUsuario.textContent = actualizado.nombre.charAt(0).toUpperCase();
+        }
+      }
 
       msg.className = 'cfg-msg ok';
       f.claveActual.value = f.claveNueva.value = f.claveConfirmar.value = '';

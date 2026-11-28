@@ -103,20 +103,20 @@ function filtrarElementos() {
         nombreTutor.toLowerCase().includes(texto) ||
         materiaTutoria.toLowerCase().includes(texto);
 
-     /* const coincideMateria =
-        !filtros.materia.value ||
-        materiaTutoria.trim().toLowerCase() === filtros.materia.value.trim().toLowerCase();
-
-      const coincideNivel =
-        !filtros.nivel.value || nivelTutoria === filtros.nivel.value;*/
+      /* const coincideMateria =
+         !filtros.materia.value ||
+         materiaTutoria.trim().toLowerCase() === filtros.materia.value.trim().toLowerCase();
+ 
+       const coincideNivel =
+         !filtros.nivel.value || nivelTutoria === filtros.nivel.value;*/
 
       const coincidePrecio =
         !filtros.precio.value || precioTutoria <= Number(filtros.precio.value);
 
-    /*  const coincideModalidad =
-        !filtros.modalidad.value || modalidadTutoria === filtros.modalidad.value;*/
+      /*  const coincideModalidad =
+          !filtros.modalidad.value || modalidadTutoria === filtros.modalidad.value;*/
 
-              const coincideMateria =
+      const coincideMateria =
         !filtros.materia.value || normalizar(materiaTutoria) === normalizar(filtros.materia.value);
 
       const coincideNivel =
@@ -136,17 +136,17 @@ function filtrarElementos() {
       t.nombre.toLowerCase().includes(texto) ||
       t.materia.toLowerCase().includes(texto);
 
-   /* const coincideMateria =
-      !filtros.materia.value || t.materia === filtros.materia.value;
-
-    const coincideNivel =
-      !filtros.nivel.value || t.nivel === filtros.nivel.value;*/
+    /* const coincideMateria =
+       !filtros.materia.value || t.materia === filtros.materia.value;
+ 
+     const coincideNivel =
+       !filtros.nivel.value || t.nivel === filtros.nivel.value;*/
 
     const coincidePrecio =
       !filtros.precio.value || t.precio <= Number(filtros.precio.value);
 
-   /* const coincideModalidad =
-      !filtros.modalidad.value || t.modalidad === filtros.modalidad.value;*/
+    /* const coincideModalidad =
+       !filtros.modalidad.value || t.modalidad === filtros.modalidad.value;*/
 
     const coincideMateria =
       !filtros.materia.value || normalizar(t.materia) === normalizar(filtros.materia.value);
@@ -164,6 +164,51 @@ function filtrarElementos() {
 
 // Construye la tarjeta cuando la búsqueda se realiza por tutorías.
 function crearCardTutoria(t) {
+  return `
+    <article class="tutor-card" data-id="${t.id}">
+
+      ${t.foto
+      ? `<img class="tutor-card__foto"
+                  src="${t.foto}"
+                  alt="Foto de la tutoría ${t.titulo}">`
+      : `<div class="tutor-card__foto">
+               Fotografía no disponible
+             </div>`
+    }
+
+      <h3 class="tutor-card__nombre">${t.titulo}</h3>
+
+      <div class="tutor-card__fila">
+        <div class="tutor-card__info">
+          <p class="tutor-card__materia">${t.materia}</p>
+          <p class="tutor-card__desde">Tutor</p>
+          <p class="tutor-card__tutor">${t.tutor}</p>
+
+          <div class="tutor-card__precio-grupo">
+            <p class="tutor-card__desde">Precio</p>
+            <p class="tutor-card__precio">
+              ${t.precio ? formatoCOP(Number(t.precio)) : '$ 0'}
+            </p>
+          </div>
+        </div>
+
+        <div class="tutor-card__accion">
+          <span class="tutor-card__disponible">
+            ${Number(t.cupos) > 0 ? 'Disponible' : 'Sin cupos'}
+          </span>
+
+          <button type="button"
+                  class="tutor-card__boton"
+                  data-reservar="${t.id}">
+            Reservar
+          </button>
+        </div>
+      </div>
+    </article>
+  `;
+}
+
+/*function crearCardTutoria(t) {
   return `
   <article class="tutor-card" data-id="${t.id}">
     <img class="tutor-card__foto" src="${t.foto}" alt="Foto de ${t.tutor}">
@@ -190,7 +235,8 @@ function crearCardTutoria(t) {
       </div>
     </article>
   `;
-}
+}*/
+
 
 // Construye el botón que permite consultar los horarios de un tutor.
 function crearCupos(t) {
@@ -449,7 +495,7 @@ if (modalHorarios) {
 
 // Consulta los resultados, crea las tarjetas y actualiza la paginación.
 function render() {
-  poblarFiltros(); 
+  poblarFiltros();
   const tipoFiltro = filtros.busqueda ? filtros.busqueda.value : "tutor";
   const resultado = filtrarElementos();
 
@@ -547,6 +593,70 @@ function render() {
   }
 }
 
+async function sincronizarTutoriasCatalogo() {
+  try {
+    const [listaJava, materiasJava] = await Promise.all([
+      apiRequest("/tutorias"),
+      apiRequest("/materias")
+    ]);
+
+    const tutoresCache = JSON.parse(
+      localStorage.getItem("skillup_tutores") || "[]"
+    );
+
+    const mapeadas = listaJava.map((t) => {
+      const tutorObj = tutoresCache.find(
+        (tu) => String(tu.id) === String(t.idPerfilTutor)
+      );
+
+      const materiaObj = materiasJava.find(
+        (m) => String(m.id) === String(t.idMateria)
+      );
+
+      return {
+        id: t.id,
+        idPerfilTutor: t.idPerfilTutor,
+        idMateria: t.idMateria,
+        titulo: t.titulo,
+        materia: materiaObj?.nombre || "General",
+        nivel: tutorObj?.nivel || "Intermedio",
+        tutor: tutorObj?.nombre || "Tutor SkillUp",
+        fecha: t.fecha,
+        fechaISO: t.fecha,
+        hora: t.horaInicio?.slice(0, 5) || "",
+        duracion: t.duracionMinutos || 60,
+        modalidad: t.modalidad || "Virtual",
+        precio: Number(t.precio || 0),
+        cupos: t.cupos ?? 0,
+
+        // La fotografía viene exclusivamente de la tutoría en MySQL.
+        foto: t.foto || ""
+      };
+    });
+
+    localStorage.setItem("tutorias", JSON.stringify(mapeadas));
+
+    console.log(
+      "Tutorías sincronizadas:",
+      mapeadas.map(t => ({
+        id: t.id,
+        titulo: t.titulo,
+        tieneFoto: Boolean(t.foto)
+      }))
+    );
+
+    paginaActual = 1;
+    render();
+
+  } catch (error) {
+    console.error(
+      "Error recuperando fotografías de tutorías:",
+      error
+    );
+  }
+}
+
+
 // Ejecuta la búsqueda cuando se envía el formulario.
 document.getElementById("formBuscador").addEventListener("submit", (e) => {
   e.preventDefault();
@@ -594,6 +704,17 @@ window.addEventListener("cupos:cambio", () => {
 
 // Carga las tarjetas cuando se abre la página.
 render();
+
+// Sincroniza las tutorías y fotografías desde MySQL.
+if (document.readyState === "loading") {
+    document.addEventListener(
+        "DOMContentLoaded",
+        sincronizarTutoriasCatalogo,
+        { once: true }
+    );
+} else {
+    sincronizarTutoriasCatalogo();
+}
 
 // Actualiza la información cuando otra pestaña modifica el almacenamiento local.
 window.addEventListener("storage", (evento) => {
